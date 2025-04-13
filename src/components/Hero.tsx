@@ -26,7 +26,7 @@ const Hero = () => {
             {/* Small tag line */}
             <div className="inline-flex items-center rounded-full border border-border/30 bg-card/30 backdrop-blur-sm px-3 py-1 text-sm font-medium text-muted-foreground mb-6">
               <span className="flex h-2 w-2 rounded-full bg-accent mr-2"></span>
-              AI & Machine Learning Engineer
+              Data Engineering & AI Student
             </div>
             
             {/* Main heading with gradient accents */}
@@ -37,14 +37,30 @@ const Hero = () => {
             
             {/* Description with highlight animations */}
             <p className="text-lg text-muted-foreground mb-8 max-w-lg animate-slide-up" style={{ animationDelay: '0.2s' }}>
-              Transforming raw data into actionable intelligence through
-              <span className="highlight ml-1 mr-1">predictive analytics</span>,
+              Results-driven Data Engineering & AI student with a focus on 
+              <span className="highlight ml-1 mr-1">scalable data pipelines</span>,
               <span className="highlight ml-1 mr-1">machine learning</span>, and
-              <span className="highlight ml-1">intelligent data pipelines</span>.
+              <span className="highlight ml-1">big data solutions</span> at TUAS.
             </p>
             
+            {/* Key metrics */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8 animate-slide-up" style={{ animationDelay: '0.3s' }}>
+              <div className="rounded-xl bg-card/50 border border-border/40 p-4 dark:bg-dark-card/50 hover:border-accent/30 transition-all duration-300">
+                <p className="text-3xl font-display font-bold text-accent dark:text-accent">40%</p>
+                <p className="text-sm text-muted-foreground">Latency reduction in water data pipeline</p>
+              </div>
+              <div className="rounded-xl bg-card/50 border border-border/40 p-4 dark:bg-dark-card/50 hover:border-accent/30 transition-all duration-300">
+                <p className="text-3xl font-display font-bold text-accent dark:text-accent">90%</p>
+                <p className="text-sm text-muted-foreground">ML prediction accuracy for vessel tracking</p>
+              </div>
+              <div className="rounded-xl bg-card/50 border border-border/40 p-4 dark:bg-dark-card/50 hover:border-accent/30 transition-all duration-300">
+                <p className="text-3xl font-display font-bold text-accent dark:text-accent">99.9%</p>
+                <p className="text-sm text-muted-foreground">System uptime for data platforms</p>
+              </div>
+            </div>
+            
             {/* CTA buttons with enhanced animations */}
-            <div className="flex flex-wrap gap-4 mb-10 animate-slide-up" style={{ animationDelay: '0.3s' }}>
+            <div className="flex flex-wrap gap-4 mb-10 animate-slide-up" style={{ animationDelay: '0.4s' }}>
               <a
                 href="https://github.com/imaddde867"
                 target="_blank"
@@ -66,11 +82,11 @@ const Hero = () => {
             </div>
             
             {/* Status indicator with modern styling */}
-            <div className="text-muted-foreground text-sm animate-slide-up" style={{ animationDelay: '0.4s' }}>
+            <div className="text-muted-foreground text-sm animate-slide-up" style={{ animationDelay: '0.5s' }}>
               <span className="block mb-1">Currently:</span>
               <div className="inline-flex items-center gap-2 rounded-full border border-accent/20 bg-accent/5 px-3 py-1 text-sm font-medium text-accent">
                 <span className="h-2 w-2 rounded-full bg-accent animate-pulse"></span>
-                Advanced Data Engineering & AI Student @ AWS ML Specialization
+                Data Engineering Intern @ AIS Laboratory - TUAS
               </div>
             </div>
           </div>
@@ -106,7 +122,7 @@ const Hero = () => {
               
               <div className="absolute bottom-20 -right-8 bg-card shadow-lg dark:shadow-neon-blue-glow/20 rounded-xl px-4 py-2 border border-border/50 dark:border-accent/20 backdrop-blur-sm animate-float" style={{ animationDelay: '0.7s' }}>
                 <span className="text-foreground font-semibold text-sm dark:text-white">
-                  AWS ML
+                  Python & SQL
                 </span>
               </div>
               
