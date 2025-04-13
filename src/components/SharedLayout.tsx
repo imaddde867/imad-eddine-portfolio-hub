@@ -27,10 +27,10 @@ const Header: React.FC = () => {
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2 transition-opacity hover:opacity-90">
           <div className="relative flex h-9 w-9 items-center justify-center overflow-hidden rounded-lg bg-gradient-to-br from-primary to-accent shadow-sm">
-            <span className="font-heading text-lg font-bold text-primary-foreground">IE</span>
+            <span className="font-heading text-lg font-bold text-primary-foreground">IL</span>
           </div>
           <span className="font-display text-xl font-semibold text-foreground">
-            Imad<span className="hidden sm:inline">Eddine</span>
+            Imad<span className="hidden sm:inline">Lab</span>
           </span>
         </Link>
 
@@ -90,11 +90,13 @@ const Header: React.FC = () => {
             onClick={toggleTheme}
             className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border bg-background text-sm font-medium ring-offset-background transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
           >
-            {isDarkMode ? (
-              <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-            ) : (
-              <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-            )}
+            <div className="relative h-[1.2rem] w-[1.2rem]">
+              {isDarkMode ? (
+                <Sun className="h-full w-full text-amber-500" />
+              ) : (
+                <Moon className="h-full w-full text-indigo-500" />
+              )}
+            </div>
             <span className="sr-only">Toggle theme</span>
           </button>
 
@@ -196,9 +198,9 @@ const Footer: React.FC = () => {
           <div className="col-span-1 lg:col-span-2">
             <Link to="/" className="flex items-center gap-2 mb-4">
               <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-accent">
-                <span className="font-heading text-lg font-bold text-primary-foreground">IE</span>
+                <span className="font-heading text-lg font-bold text-primary-foreground">IL</span>
               </div>
-              <span className="font-display text-xl font-semibold text-foreground">ImadEddine</span>
+              <span className="font-display text-xl font-semibold text-foreground">ImadLab</span>
             </Link>
             <p className="text-muted-foreground mb-4 max-w-xs">
               AI & Machine Learning Engineer transforming complex data into intelligent solutions with a focus on predictive analytics and ML pipelines.
@@ -263,10 +265,10 @@ const Footer: React.FC = () => {
               </li>
               <li>
                 <a
-                  href="mailto:imadeddine.data@gmail.com"
+                  href="mailto:imadeddine200507@gmail.com"
                   className="text-muted-foreground hover:text-accent transition-colors"
                 >
-                  imadeddine.data@gmail.com
+                  imadeddine200507@gmail.com
                 </a>
               </li>
             </ul>

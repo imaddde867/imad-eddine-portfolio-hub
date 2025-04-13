@@ -1,13 +1,20 @@
 import React from "react";
 import { useParams, Link } from "react-router-dom";
-import { samplePosts, PostData } from "../data/sampleData";
+import { useAdminStore } from "../data/adminStore";
 import NotFound from "./NotFound"; // Import NotFound for handling invalid slugs
 import SkillBadge from "../components/SkillBadge";
 import { ArrowLeft, Calendar, Clock } from "lucide-react";
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import rehypeRaw from 'rehype-raw';
+import rehypeSanitize from 'rehype-sanitize';
+import rehypeHighlight from 'rehype-highlight';
+import 'highlight.js/styles/github-dark.css';
 
 const PostDetail: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
-  const post = samplePosts.find((p) => p.slug === slug);
+  const { posts } = useAdminStore();
+  const post = posts.find((p) => p.slug === slug);
 
   // Handle case where post with the slug is not found
   if (!post) {
@@ -57,14 +64,67 @@ const PostDetail: React.FC = () => {
         </div>
       )}
 
-      {/* Post Content Area - Style using prose classes */}
-      <article className="prose prose-invert lg:prose-xl max-w-none prose-headings:text-foreground prose-p:text-muted-foreground prose-a:text-accent prose-strong:text-foreground prose-blockquote:border-accent prose-li:marker:text-accent">
-        {/* Render markdown here if 'content' is markdown, or just display text */}
-        {post.content ? (
-          <p>{post.content}</p> // Replace with markdown renderer if needed
-        ) : (
-          <p>Blog post content coming soon...</p>
-        )}
+      {/* Post Content Area - Enhanced with Markdown support */}
+      <article className="prose prose-invert prose-lg max-w-none">
+        <ReactMarkdown
+          remarkPlugins={[remarkGfm]}
+          rehypePlugins={[rehypeRaw, rehypeSanitize, rehypeHighlight]}
+          components={{
+            // Custom components for enhanced styling
+            h1: ({node, ...props}) => <h1 className="text-3xl font-bold mb-6 text-foreground" {...props} />,
+            h2: ({node, ...props}) => <h2 className="text-2xl font-bold mb-4 text-foreground" {...props} />,
+            h3: ({node, ...props}) => <h3 className="text-xl font-bold mb-3 text-foreground" {...props} />,
+            p: ({node, ...props}) => <p className="mb-4 text-muted-foreground" {...props} />,
+            a: ({node, ...props}) => (
+              <a
+                className="text-accent hover:text-accent/80 underline-offset-4 hover:underline"
+                target="_blank"
+                rel="noopener noreferrer"
+                {...props}
+              />
+            ),
+            img: ({node, ...props}) => (
+              <div className="my-6">
+                <img
+                  className="rounded-lg shadow-lg max-h-[500px] w-auto mx-auto"
+                  {...props}
+                  loading="lazy"
+                />
+              </div>
+            ),
+            code: ({node, inline, ...props}) => 
+              inline ? (
+                <code className="bg-muted px-1.5 py-0.5 rounded text-sm" {...props} />
+              ) : (
+                <code className="block bg-muted p-4 rounded-lg overflow-x-auto" {...props} />
+              ),
+            ul: ({node, ...props}) => <ul className="list-disc pl-6 mb-4 space-y-2" {...props} />,
+            ol: ({node, ...props}) => <ol className="list-decimal pl-6 mb-4 space-y-2" {...props} />,
+            li: ({node, ...props}) => <li className="text-muted-foreground" {...props} />,
+            blockquote: ({node, ...props}) => (
+              <blockquote
+                className="border-l-4 border-accent pl-4 italic my-4 text-muted-foreground"
+                {...props}
+              />
+            ),
+            table: ({node, ...props}) => (
+              <div className="overflow-x-auto my-6">
+                <table className="min-w-full divide-y divide-border" {...props} />
+              </div>
+            ),
+            th: ({node, ...props}) => (
+              <th
+                className="px-4 py-2 text-left font-semibold text-foreground bg-muted"
+                {...props}
+              />
+            ),
+            td: ({node, ...props}) => (
+              <td className="px-4 py-2 border-t border-border" {...props} />
+            ),
+          }}
+        >
+          {post.content || 'Blog post content coming soon...'}
+        </ReactMarkdown>
       </article>
     </div>
   );

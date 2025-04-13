@@ -6,7 +6,7 @@ const Blog: React.FC = () => {
   return (
     <div className="container-custom section-padding">
       <h1 className="section-title text-center mb-4">Blog</h1>
-      <p className="section-subtitle text-center">
+      <p className="section-subtitle mb-12">
         Thoughts, tutorials, and insights on data science and tech.
       </p>
 

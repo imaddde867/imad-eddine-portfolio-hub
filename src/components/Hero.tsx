@@ -40,7 +40,7 @@ const Hero = () => {
               Results-driven Data Engineering & AI student with a focus on 
               <span className="highlight ml-1 mr-1">scalable data pipelines</span>,
               <span className="highlight ml-1 mr-1">machine learning</span>, and
-              <span className="highlight ml-1">big data solutions</span> at TUAS.
+              <span className="highlight ml-1">big data solutions</span>.
             </p>
             
             {/* Improved CTA buttons */}

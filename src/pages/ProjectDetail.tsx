@@ -1,10 +1,16 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { useParams, Link } from "react-router-dom";
 import { ProjectData } from "../data/sampleData"; // Import only the type
 import { useAdminStore } from "../data/adminStore"; // Import the admin store
 import NotFound from "./NotFound"; // Import NotFound for handling invalid slugs
 import SkillBadge from "../components/SkillBadge";
 import { ArrowLeft, ExternalLink, Github } from "lucide-react";
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import rehypeRaw from 'rehype-raw';
+import rehypeSanitize from 'rehype-sanitize';
+import rehypeHighlight from 'rehype-highlight';
+import 'highlight.js/styles/github-dark.css';
 
 const ProjectDetail: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -16,6 +22,18 @@ const ProjectDetail: React.FC = () => {
   if (!project) {
     return <NotFound />;
   }
+
+  // Add a cache-busting parameter to prevent browser caching of updated images
+  const imageSrc = useMemo(() => {
+    if (!project?.image) return null;
+    // If it's a data URL or an absolute URL with http(s), return as is
+    if (project.image.startsWith('data:') || project.image.startsWith('http')) {
+      return project.image;
+    }
+    // For relative URLs, add a cache-busting parameter with a version key
+    const version = new Date().getTime();
+    return `${project.image}?v=${version}`;
+  }, [project?.image, project?._lastUpdated]); // Add _lastUpdated to dependencies
 
   return (
     <div className="container-custom section-padding">
@@ -42,12 +60,13 @@ const ProjectDetail: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
         {/* Main Content Area */}
         <div className="lg:col-span-2 space-y-6">
-          {project.image && (
-            <div className="mb-8 rounded-md overflow-hidden border border-border shadow-md">
+          {imageSrc && (
+            <div className="relative rounded-xl overflow-hidden mb-8">
               <img
-                src={project.image}
+                src={imageSrc}
                 alt={`${project.title} preview`}
                 className="w-full h-auto object-cover"
+                key={imageSrc} // Add key to force re-render when image changes
               />
             </div>
           )}
@@ -57,9 +76,66 @@ const ProjectDetail: React.FC = () => {
           </h2>
           {/* Display long description if available, otherwise fallback or hide */}
           {project.longDescription ? (
-            <div className="prose prose-invert max-w-none text-muted-foreground text-lg">
-              {/* Render markdown here if needed, or just display text */}
-              <p>{project.longDescription}</p>
+            <div className="prose prose-invert prose-lg max-w-none">
+              <ReactMarkdown
+                remarkPlugins={[remarkGfm]}
+                rehypePlugins={[rehypeRaw, rehypeSanitize, rehypeHighlight]}
+                components={{
+                  // Custom components for enhanced styling
+                  h1: ({node, ...props}) => <h1 className="text-3xl font-bold mb-6 text-foreground" {...props} />,
+                  h2: ({node, ...props}) => <h2 className="text-2xl font-bold mb-4 text-foreground" {...props} />,
+                  h3: ({node, ...props}) => <h3 className="text-xl font-bold mb-3 text-foreground" {...props} />,
+                  p: ({node, ...props}) => <p className="mb-4 text-muted-foreground" {...props} />,
+                  a: ({node, ...props}) => (
+                    <a
+                      className="text-accent hover:text-accent/80 underline-offset-4 hover:underline"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      {...props}
+                    />
+                  ),
+                  img: ({node, ...props}) => (
+                    <div className="my-6">
+                      <img
+                        className="rounded-lg shadow-lg max-h-[500px] w-auto mx-auto"
+                        {...props}
+                        loading="lazy"
+                      />
+                    </div>
+                  ),
+                  code: ({node, inline, ...props}) => 
+                    inline ? (
+                      <code className="bg-muted px-1.5 py-0.5 rounded text-sm" {...props} />
+                    ) : (
+                      <code className="block bg-muted p-4 rounded-lg overflow-x-auto" {...props} />
+                    ),
+                  ul: ({node, ...props}) => <ul className="list-disc pl-6 mb-4 space-y-2" {...props} />,
+                  ol: ({node, ...props}) => <ol className="list-decimal pl-6 mb-4 space-y-2" {...props} />,
+                  li: ({node, ...props}) => <li className="text-muted-foreground" {...props} />,
+                  blockquote: ({node, ...props}) => (
+                    <blockquote
+                      className="border-l-4 border-accent pl-4 italic my-4 text-muted-foreground"
+                      {...props}
+                    />
+                  ),
+                  table: ({node, ...props}) => (
+                    <div className="overflow-x-auto my-6">
+                      <table className="min-w-full divide-y divide-border" {...props} />
+                    </div>
+                  ),
+                  th: ({node, ...props}) => (
+                    <th
+                      className="px-4 py-2 text-left font-semibold text-foreground bg-muted"
+                      {...props}
+                    />
+                  ),
+                  td: ({node, ...props}) => (
+                    <td className="px-4 py-2 border-t border-border" {...props} />
+                  ),
+                }}
+              >
+                {project.longDescription}
+              </ReactMarkdown>
             </div>
           ) : (
             <p className="text-muted-foreground text-lg">
