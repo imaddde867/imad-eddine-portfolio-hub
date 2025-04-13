@@ -9,6 +9,7 @@ export interface ProjectData {
   demoUrl?: string;
   image?: string; // Optional preview image
   longDescription?: string; // Optional longer description for detail page
+  date?: string; // Publication/creation date
 }
 
 export interface PostData {
@@ -33,7 +34,8 @@ export const sampleProjects: ProjectData[] = [
     repoUrl: "#", // Add repo URL
     demoUrl: "#", // Add demo URL
     // image: "/path/to/navicast-image.jpg" // Add image path if available
-    longDescription: "Detailed description about NaviCast..."
+    longDescription: "Detailed description about NaviCast...",
+    date: "2024-05-15"
   },
   {
     slug: "recommendation-engine",
@@ -41,7 +43,8 @@ export const sampleProjects: ProjectData[] = [
     description: "Developed a content recommendation system using collaborative filtering and NLP techniques to personalize user experience.",
     technologies: ["Python", "Scikit-learn", "NLTK", "Flask", "React"],
     repoUrl: "#",
-    longDescription: "More details about the recommendation engine..."
+    longDescription: "More details about the recommendation engine...",
+    date: "2024-04-10"
   },
   {
     slug: "serverless-data-pipeline",
@@ -49,7 +52,8 @@ export const sampleProjects: ProjectData[] = [
     description: "Architected and implemented a scalable, real-time data processing pipeline using AWS Lambda, Kinesis, and DynamoDB.",
     technologies: ["AWS Lambda", "Kinesis", "DynamoDB", "Serverless", "Python", "IaC"],
     repoUrl: "#",
-    longDescription: "In-depth explanation of the serverless pipeline..."
+    longDescription: "In-depth explanation of the serverless pipeline...",
+    date: "2024-03-05"
   },
   {
     slug: "portfolio-website-v2",
@@ -57,7 +61,8 @@ export const sampleProjects: ProjectData[] = [
     description: "This very website! Built with React, TypeScript, Tailwind CSS, featuring a sleek dark mode and minimalist design.",
     technologies: ["React", "TypeScript", "Tailwind CSS", "Vite"],
     repoUrl: "#", // Add link to this repo
-    longDescription: "Details about the portfolio build process..."
+    longDescription: "Details about the portfolio build process...",
+    date: "2024-02-20"
   },
 ];
 

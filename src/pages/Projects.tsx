@@ -1,8 +1,12 @@
 import React from 'react';
 import ProjectCard from '../components/ProjectCard';
-import { sampleProjects, ProjectData } from '../data/sampleData'; // Import data and type
+import { ProjectData } from '../data/sampleData'; // Import only the type
+import { useAdminStore } from '../data/adminStore'; // Import the admin store
 
 const Projects: React.FC = () => {
+  // Get projects from the admin store instead of the static sample data
+  const { projects } = useAdminStore();
+  
   return (
     <div className="container-custom section-padding">
       <h1 className="section-title text-center mb-4">Projects</h1>
@@ -11,9 +15,9 @@ const Projects: React.FC = () => {
       </p>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
-        {sampleProjects.map((project: ProjectData) => ( // Ensure type safety
+        {projects.map((project: ProjectData) => (
           <ProjectCard 
-            key={project.slug} // Use slug as key
+            key={project.slug}
             slug={project.slug}
             title={project.title}
             description={project.description}

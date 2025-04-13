@@ -1,13 +1,16 @@
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { sampleProjects, ProjectData } from '../data/sampleData';
+import { ProjectData } from '../data/sampleData'; // Import only the type
+import { useAdminStore } from '../data/adminStore'; // Import the admin store
 import NotFound from './NotFound'; // Import NotFound for handling invalid slugs
 import SkillBadge from '../components/SkillBadge';
 import { ArrowLeft, ExternalLink, Github } from 'lucide-react';
 
 const ProjectDetail: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
-  const project = sampleProjects.find((p) => p.slug === slug);
+  // Get projects from the admin store instead of the static sample data
+  const { projects } = useAdminStore();
+  const project = projects.find((p) => p.slug === slug);
 
   // Handle case where project with the slug is not found
   if (!project) {
@@ -53,7 +56,7 @@ const ProjectDetail: React.FC = () => {
         </div>
 
         {/* Sidebar Info */} 
-        <aside className="lg:sticky lg:top-24 h-fit bg-card p-6 rounded-md border border-border">
+        <aside className="bg-card/30 border border-border rounded-md p-6 lg:p-8 h-fit">
           <h3 className="text-xl font-semibold text-foreground mb-4 border-b border-border pb-3">Details</h3>
           
            {/* Technologies */}
