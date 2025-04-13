@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ProjectCard from "../components/ProjectCard";
+import NewsletterSubscription from "../components/NewsletterSubscription";
 import { ProjectData } from "../data/sampleData";
 import { useAdminStore } from "../data/adminStore";
 import { Filter, ArrowDownUp, X, Layers, Code2, Database } from "lucide-react";
@@ -213,6 +214,11 @@ const Projects: React.FC = () => {
           </button>
         </div>
       )}
+
+      {/* Newsletter Subscription */}
+      <div className="mt-16 max-w-2xl mx-auto">
+        <NewsletterSubscription />
+      </div>
     </div>
   );
 };

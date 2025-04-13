@@ -26,6 +26,7 @@ import BlogForm from "./pages/admin/BlogForm";
 // Context providers
 import { AuthProvider } from "./context/AuthContext";
 import { EmailProvider } from "./context/EmailContext";
+import { NewsletterProvider } from "./context/NewsletterContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 const queryClient = new QueryClient();
@@ -35,45 +36,47 @@ const App = () => (
     <TooltipProvider>
       <AuthProvider>
         <EmailProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <Routes>
-              {/* Public routes */}
-              <Route path="/" element={<SharedLayout />}>
-                <Route index element={<Index />} />
-                <Route path="projects" element={<Projects />} />
-                <Route path="projects/:slug" element={<ProjectDetail />} />
-                <Route path="blog" element={<Blog />} />
-                <Route path="blog/:slug" element={<PostDetail />} />
-                <Route path="*" element={<NotFound />} />
-              </Route>
+          <NewsletterProvider>
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
+              <Routes>
+                {/* Public routes */}
+                <Route path="/" element={<SharedLayout />}>
+                  <Route index element={<Index />} />
+                  <Route path="projects" element={<Projects />} />
+                  <Route path="projects/:slug" element={<ProjectDetail />} />
+                  <Route path="blog" element={<Blog />} />
+                  <Route path="blog/:slug" element={<PostDetail />} />
+                  <Route path="*" element={<NotFound />} />
+                </Route>
 
-              {/* Admin Authentication Routes */}
-              <Route path="/admin/login" element={<AdminLogin />} />
-              <Route path="/admin/reset-password" element={<PasswordReset />} />
-              
-              {/* Protected Admin Routes */}
-              <Route
-                path="/admin"
-                element={
-                  <ProtectedRoute>
-                    <AdminLayout />
-                  </ProtectedRoute>
-                }
-              >
-                <Route index element={<Dashboard />} />
-                <Route path="projects" element={<ProjectList />} />
-                <Route path="projects/new" element={<ProjectForm />} />
-                <Route path="projects/edit/:slug" element={<ProjectForm />} />
-                <Route path="blog" element={<BlogList />} />
-                <Route path="blog/new" element={<BlogForm />} />
-                <Route path="blog/edit/:slug" element={<BlogForm />} />
-                {/* Catch unhandled admin routes and redirect to dashboard */}
-                <Route path="*" element={<Navigate to="/admin" replace />} />
-              </Route>
-            </Routes>
-          </BrowserRouter>
+                {/* Admin Authentication Routes */}
+                <Route path="/admin/login" element={<AdminLogin />} />
+                <Route path="/admin/reset-password" element={<PasswordReset />} />
+                
+                {/* Protected Admin Routes */}
+                <Route
+                  path="/admin"
+                  element={
+                    <ProtectedRoute>
+                      <AdminLayout />
+                    </ProtectedRoute>
+                  }
+                >
+                  <Route index element={<Dashboard />} />
+                  <Route path="projects" element={<ProjectList />} />
+                  <Route path="projects/new" element={<ProjectForm />} />
+                  <Route path="projects/edit/:slug" element={<ProjectForm />} />
+                  <Route path="blog" element={<BlogList />} />
+                  <Route path="blog/new" element={<BlogForm />} />
+                  <Route path="blog/edit/:slug" element={<BlogForm />} />
+                  {/* Catch unhandled admin routes and redirect to dashboard */}
+                  <Route path="*" element={<Navigate to="/admin" replace />} />
+                </Route>
+              </Routes>
+            </BrowserRouter>
+          </NewsletterProvider>
         </EmailProvider>
       </AuthProvider>
     </TooltipProvider>

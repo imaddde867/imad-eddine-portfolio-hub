@@ -7,9 +7,38 @@ import { ArrowLeft, Calendar, Clock } from "lucide-react";
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
-import rehypeSanitize from 'rehype-sanitize';
+import rehypeSanitize, { defaultSchema } from 'rehype-sanitize';
 import rehypeHighlight from 'rehype-highlight';
 import 'highlight.js/styles/github-dark.css';
+import NewsletterSubscription from "../components/NewsletterSubscription";
+import YouTubeEmbed from "../components/YouTubeEmbed";
+
+// Extended sanitization schema to allow iframes for YouTube
+const schema = {
+  ...defaultSchema,
+  attributes: {
+    ...defaultSchema.attributes,
+    div: [...(defaultSchema.attributes?.div || []), ['className']],
+    iframe: [
+      ['className'],
+      ['src'],
+      ['title'],
+      ['allow'],
+      ['allowFullScreen'],
+      ['width'],
+      ['height'],
+      ['style'],
+    ],
+  },
+  tagNames: [...(defaultSchema.tagNames || []), 'iframe'],
+};
+
+// Helper function to extract YouTube video ID from various URL formats
+const getYouTubeId = (url: string): string | null => {
+  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+  const match = url.match(regExp);
+  return match && match[2].length === 11 ? match[2] : null;
+};
 
 const PostDetail: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -64,25 +93,51 @@ const PostDetail: React.FC = () => {
         </div>
       )}
 
-      {/* Post Content Area - Enhanced with Markdown support */}
+      {/* Post Content Area - Enhanced with Markdown and YouTube support */}
       <article className="prose prose-invert prose-lg max-w-none">
         <ReactMarkdown
           remarkPlugins={[remarkGfm]}
-          rehypePlugins={[rehypeRaw, rehypeSanitize, rehypeHighlight]}
+          rehypePlugins={[
+            rehypeRaw,
+            [rehypeSanitize, schema],
+            rehypeHighlight
+          ]}
           components={{
             // Custom components for enhanced styling
             h1: ({node, ...props}) => <h1 className="text-3xl font-bold mb-6 text-foreground" {...props} />,
             h2: ({node, ...props}) => <h2 className="text-2xl font-bold mb-4 text-foreground" {...props} />,
             h3: ({node, ...props}) => <h3 className="text-xl font-bold mb-3 text-foreground" {...props} />,
-            p: ({node, ...props}) => <p className="mb-4 text-muted-foreground" {...props} />,
-            a: ({node, ...props}) => (
-              <a
-                className="text-accent hover:text-accent/80 underline-offset-4 hover:underline"
-                target="_blank"
-                rel="noopener noreferrer"
-                {...props}
-              />
-            ),
+            p: ({node, children, ...props}) => {
+              // Check if the paragraph contains a YouTube URL
+              const content = children?.toString() || '';
+              if (content.includes('youtube.com') || content.includes('youtu.be')) {
+                const videoId = getYouTubeId(content);
+                if (videoId) {
+                  return <YouTubeEmbed videoId={videoId} />;
+                }
+              }
+              return <p className="mb-4 text-muted-foreground" {...props}>{children}</p>;
+            },
+            a: ({node, href, children, ...props}) => {
+              // Check if the link is a YouTube URL
+              if (href && (href.includes('youtube.com') || href.includes('youtu.be'))) {
+                const videoId = getYouTubeId(href);
+                if (videoId) {
+                  return <YouTubeEmbed videoId={videoId} title={children?.toString()} />;
+                }
+              }
+              return (
+                <a
+                  className="text-accent hover:text-accent/80 underline-offset-4 hover:underline"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href={href}
+                  {...props}
+                >
+                  {children}
+                </a>
+              );
+            },
             img: ({node, ...props}) => (
               <div className="my-6">
                 <img
@@ -126,6 +181,11 @@ const PostDetail: React.FC = () => {
           {post.content || 'Blog post content coming soon...'}
         </ReactMarkdown>
       </article>
+
+      {/* Newsletter Subscription */}
+      <div className="mt-16">
+        <NewsletterSubscription />
+      </div>
     </div>
   );
 };

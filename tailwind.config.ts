@@ -138,6 +138,27 @@ export default {
 					'50%': { transform: 'translateY(-10px)' },
 					'100%': { transform: 'translateY(0px)' }
 				},
+				'float-smooth': {
+					'0%': { transform: 'translate(0px, 0px) rotate(0deg)' },
+					'25%': { transform: 'translate(10px, -8px) rotate(2deg)' },
+					'50%': { transform: 'translate(0px, -12px) rotate(0deg)' },
+					'75%': { transform: 'translate(-10px, -8px) rotate(-2deg)' },
+					'100%': { transform: 'translate(0px, 0px) rotate(0deg)' }
+				},
+				'float-orbital': {
+					'0%': { transform: 'translate(0px, 0px) rotate(0deg)' },
+					'25%': { transform: 'translate(15px, -10px) rotate(3deg)' },
+					'50%': { transform: 'translate(0px, -15px) rotate(0deg)' },
+					'75%': { transform: 'translate(-15px, -10px) rotate(-3deg)' },
+					'100%': { transform: 'translate(0px, 0px) rotate(0deg)' }
+				},
+				'float-orbital-alt': {
+					'0%': { transform: 'translate(0px, 0px) rotate(0deg)' },
+					'25%': { transform: 'translate(-12px, -12px) rotate(-2deg)' },
+					'50%': { transform: 'translate(0px, -18px) rotate(0deg)' },
+					'75%': { transform: 'translate(12px, -12px) rotate(2deg)' },
+					'100%': { transform: 'translate(0px, 0px) rotate(0deg)' }
+				},
 				'text-shimmer': {
 					'0%': { backgroundPosition: '-200% 0' },
 					'100%': { backgroundPosition: '200% 0' }
@@ -158,6 +179,20 @@ export default {
 					'0%': { opacity: '0', filter: 'blur(10px)' },
 					'100%': { opacity: '1', filter: 'blur(0)' }
 				},
+				'grid-shift': {
+					'0%': { backgroundPosition: '0 0, 0 0' },
+					'100%': { backgroundPosition: '40px 40px, 40px 40px' }
+				},
+				'mesh-shift': {
+					'0%': { backgroundPosition: '0% 0%, 0% 0%' },
+					'50%': { backgroundPosition: '100% 100%, 100% 100%' },
+					'100%': { backgroundPosition: '0% 0%, 0% 0%' }
+				},
+				'particle-float': {
+					'0%': { transform: 'translateY(0) translateX(0)' },
+					'50%': { transform: 'translateY(-20px) translateX(10px)' },
+					'100%': { transform: 'translateY(0) translateX(0)' }
+				},
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
@@ -169,17 +204,24 @@ export default {
 				'morph': 'morph 8s ease-in-out infinite',
 				'glow-pulse': 'glow-pulse 2s ease-in-out infinite',
 				'float': 'float 4s ease-in-out infinite',
+				'float-smooth': 'float-smooth 5s ease-in-out infinite',
+				'float-orbital': 'float-orbital 6s ease-in-out infinite',
+				'float-orbital-alt': 'float-orbital-alt 7s ease-in-out infinite',
 				'text-shimmer': 'text-shimmer 4s linear infinite',
 				'slide-up': 'slide-up 0.7s ease-out',
 				'slide-in-left': 'slide-in-left 0.7s ease-out',
 				'fade-in-scale': 'fade-in-scale 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
 				'blur-in': 'blur-in 0.6s ease-out',
+				'grid-shift': 'grid-shift 20s linear infinite',
+				'mesh-shift': 'mesh-shift 30s ease-in-out infinite',
+				'particle-float': 'particle-float 8s ease-in-out infinite',
+				'float-slow': 'float 15s ease-in-out infinite',
 			},
 			fontFamily: {
-				sans: ['Inter', 'Roboto', 'sans-serif'],
-				mono: ['JetBrains Mono', 'monospace'],
+				display: ['Clash Display', 'sans-serif'],
 				heading: ['Space Grotesk', 'sans-serif'],
-				display: ['"Clash Display"', 'sans-serif'],
+				sans: ['Inter', 'sans-serif'],
+				mono: ['JetBrains Mono', 'monospace'],
 			},
 			backgroundImage: {
 				'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
@@ -192,6 +234,12 @@ export default {
 				'neon-glow-blue': 'linear-gradient(to right, rgba(32, 156, 255, 0), rgba(32, 156, 255, 0.2), rgba(32, 156, 255, 0))',
 				'neon-glow-purple': 'linear-gradient(to right, rgba(190, 75, 255, 0), rgba(190, 75, 255, 0.2), rgba(190, 75, 255, 0))',
 				'glass-gradient': 'linear-gradient(to right bottom, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.01))',
+				'modern-grid': "url(\"data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%239C92AC' fill-opacity='0.1' fill-rule='evenodd'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40'/%3E%3C/g%3E%3C/svg%3E\")",
+				'modern-mesh': "linear-gradient(45deg, var(--primary) 0%, var(--secondary) 100%)",
+				'neon-glow-blue': "linear-gradient(90deg, transparent, var(--primary), transparent)",
+				'neon-glow-purple': "linear-gradient(90deg, transparent, var(--secondary), transparent)",
+				'dark-mesh': "radial-gradient(circle at center, var(--primary) 0%, transparent 100%)",
+				'particle-dots': 'radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px)',
 			},
 			boxShadow: {
 				'brutal': '4px 4px 0px 0px rgba(0, 0, 0, 1)',
@@ -215,5 +263,5 @@ export default {
 			},
 		}
 	},
-	plugins: [require("tailwindcss-animate")],
+	plugins: [],
 } satisfies Config;

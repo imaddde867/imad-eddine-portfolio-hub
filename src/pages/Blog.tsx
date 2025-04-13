@@ -1,5 +1,6 @@
 import React from "react";
 import BlogCard from "../components/BlogCard";
+import NewsletterSubscription from "../components/NewsletterSubscription";
 import { samplePosts, PostData } from "../data/sampleData"; // Import data and type
 
 const Blog: React.FC = () => {
@@ -29,7 +30,11 @@ const Blog: React.FC = () => {
           ),
         )}
       </div>
-      {/* Add Pagination or Load More button if needed */}
+
+      {/* Newsletter Subscription */}
+      <div className="mt-16 max-w-2xl mx-auto">
+        <NewsletterSubscription />
+      </div>
     </div>
   );
 };

@@ -20,6 +20,7 @@ export const stringToSlug = (str: string) => {
 interface AdminStore {
   projects: ProjectData[];
   posts: PostData[];
+  activePost: string | null;
   addProject: (project: Omit<ProjectData, "slug">) => void;
   updateProject: (
     slug: string,
@@ -29,6 +30,7 @@ interface AdminStore {
   addPost: (post: Omit<PostData, "slug">) => void;
   updatePost: (slug: string, post: Partial<Omit<PostData, "slug">>) => void;
   deletePost: (slug: string) => void;
+  setActivePost: (slug: string | null) => void;
 }
 
 // Use create from zustand to create a store with persistence
@@ -38,6 +40,7 @@ export const useAdminStore = create<AdminStore>()(
       // Initial state - Using the updated projects instead of sample projects
       projects: updatedProjects,
       posts: samplePosts,
+      activePost: null,
 
       // Add a new project
       addProject: (project) =>
@@ -104,10 +107,15 @@ export const useAdminStore = create<AdminStore>()(
         set((state) => ({
           posts: state.posts.filter((p) => p.slug !== slug),
         })),
+
+      // Set active post
+      setActivePost: (slug) =>
+        set(() => ({
+          activePost: slug,
+        })),
     }),
     {
-      name: "admin-storage", // unique name for localStorage key
-      skipHydration: false, // ensure store is hydrated on page load
+      name: "admin-storage",
     }
   )
 );
