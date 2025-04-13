@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import bcrypt from "bcryptjs";
+import { useNavigate } from "react-router-dom";
 
 interface User {
   username: string;
@@ -29,16 +30,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  
   // Track a temporary password if one has been generated
   const [tempPasswordData, setTempPasswordData] = useState<{
     password: string;
     hash: string;
   } | null>(null);
 
-  // Hash of admin password - in production this would be stored server-side
-  // This is just for demo - in real app, this would be on a backend
+  // Authentication constants - in production these would be stored server-side
   const ADMIN_USERNAME = "admin";
-  const ADMIN_EMAIL = "admin@imadlab.com";
+  const ADMIN_EMAIL = "imadeddine200507@gmail.com";
   const ADMIN_PASSWORD_HASH =
     "$2a$10$Cl7fV0isXtdggLYcx5IgV.d7FBUhN6FPCQl.52n6l9zdYh2v2lnY."; // hashed version of '120705imad'
 
@@ -68,8 +69,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     setIsLoading(true);
 
     try {
-      console.log("Login attempt:", { username });
-
       // Check if login is locked
       if (loginLockedUntil && new Date() < loginLockedUntil) {
         const minutesRemaining = Math.ceil(
@@ -82,7 +81,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
       // Validate credentials
       if (username !== ADMIN_USERNAME) {
-        console.log("Username doesn't match:", username);
         loginAttempts++;
         if (loginAttempts >= MAX_LOGIN_ATTEMPTS) {
           loginLockedUntil = new Date(
@@ -95,31 +93,24 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         throw new Error("Invalid username or password");
       }
 
-      console.log("Username matched, verifying password");
-
       // Variable to track if any authentication method succeeded
       let authSuccess = false;
 
       try {
         // First check if the password matches the main admin password
         const isValid = await bcrypt.compare(password, ADMIN_PASSWORD_HASH);
-        console.log("Password verification result:", isValid);
-
+        
         if (isValid) {
           authSuccess = true;
         }
         // Check if password matches temporary password if one exists
         else if (tempPasswordData && password === tempPasswordData.password) {
-          console.log("Temporary password matched");
           authSuccess = true;
           // Clear the temporary password after successful use
           setTempPasswordData(null);
         }
         // Direct password match for fallback/debug
         else if (password === "120705imad") {
-          console.log(
-            "Password matched the expected string but bcrypt compare failed",
-          );
           authSuccess = true;
         }
 
@@ -137,7 +128,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         }
       } catch (bcryptError) {
         if (!authSuccess) {
-          console.error("bcrypt error:", bcryptError);
+          console.error("Authentication error:", bcryptError);
           throw new Error("Authentication error");
         }
       }
@@ -174,6 +165,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     setUser(null);
     setIsAuthenticated(false);
     localStorage.removeItem("adminUser");
+    // Reset any related state
+    setError(null);
   };
 
   const resetPassword = async (email: string): Promise<string> => {
@@ -196,13 +189,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         // In a real app, we would store this new hash in a database
         // For this demo, we'll store it in state
         setTempPasswordData({ password: tempPassword, hash: newPasswordHash });
-        console.log("Password reset successful. New hash:", newPasswordHash);
 
-        // Return the temporary password
+        setIsLoading(false);
         return tempPassword;
-      } catch (hashError) {
-        console.error("Error hashing new password:", hashError);
-        throw new Error("Error generating temporary password");
+      } catch (bcryptError) {
+        console.error("Error hashing temp password:", bcryptError);
+        throw new Error("Error creating temporary password");
       }
     } catch (err) {
       if (err instanceof Error) {
@@ -210,9 +202,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       } else {
         setError("An unknown error occurred");
       }
-      throw err;
-    } finally {
       setIsLoading(false);
+      throw err;
     }
   };
 
@@ -224,58 +215,58 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     setIsLoading(true);
 
     try {
-      // First verify the current password
-      let isCurrentPasswordValid = false;
+      // Verify current password
+      let passwordVerified = false;
 
+      // Compare against admin password hash
       try {
-        // Check against primary password
-        isCurrentPasswordValid = await bcrypt.compare(
+        const isValid = await bcrypt.compare(
           currentPassword,
           ADMIN_PASSWORD_HASH,
         );
-
-        // If that fails, check against temporary password
-        if (
-          !isCurrentPasswordValid &&
-          tempPasswordData &&
-          currentPassword === tempPasswordData.password
-        ) {
-          isCurrentPasswordValid = true;
+        if (isValid) {
+          passwordVerified = true;
         }
-
-        // Fallback check for direct comparison
-        if (!isCurrentPasswordValid && currentPassword === "120705imad") {
-          isCurrentPasswordValid = true;
-        }
-      } catch (error) {
-        console.error("Error verifying current password:", error);
+      } catch (bcryptError) {
+        console.error("Error verifying current password:", bcryptError);
       }
 
-      if (!isCurrentPasswordValid) {
+      // If temp password exists, check against that too
+      if (
+        !passwordVerified &&
+        tempPasswordData &&
+        currentPassword === tempPasswordData.password
+      ) {
+        passwordVerified = true;
+      }
+
+      // Fallback check for debug
+      if (!passwordVerified && currentPassword === "120705imad") {
+        passwordVerified = true;
+      }
+
+      if (!passwordVerified) {
         throw new Error("Current password is incorrect");
       }
 
       // Hash the new password
       try {
         const newPasswordHash = await bcrypt.hash(newPassword, 10);
-
-        // In a real app, this would update the hash in the database
-        // For this demo, we'll just log it (and have to restart the app to see changes)
+        
+        // In a real app, this would update a database
+        // For this demo, we'll just log it
         console.log(
-          "Password changed successfully. New hash:",
+          "Password changed successfully. New hash would be:",
           newPasswordHash,
         );
-        console.log(
-          "To implement: Update ADMIN_PASSWORD_HASH in the code with this new hash",
-        );
 
-        // Clear any existing temporary password
+        // Clear any temporary password
         setTempPasswordData(null);
 
-        return;
-      } catch (hashError) {
-        console.error("Error hashing new password:", hashError);
-        throw new Error("Error updating password");
+        setIsLoading(false);
+      } catch (bcryptError) {
+        console.error("Error hashing new password:", bcryptError);
+        throw new Error("Error changing password");
       }
     } catch (err) {
       if (err instanceof Error) {
@@ -283,25 +274,24 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       } else {
         setError("An unknown error occurred");
       }
-      throw err;
-    } finally {
       setIsLoading(false);
+      throw err;
     }
   };
 
+  const authContextValue: AuthContextType = {
+    user,
+    isLoading,
+    error,
+    login,
+    logout,
+    resetPassword,
+    changePassword,
+    isAuthenticated,
+  };
+
   return (
-    <AuthContext.Provider
-      value={{
-        user,
-        isLoading,
-        error,
-        login,
-        logout,
-        resetPassword,
-        changePassword,
-        isAuthenticated,
-      }}
-    >
+    <AuthContext.Provider value={authContextValue}>
       {children}
     </AuthContext.Provider>
   );
@@ -309,10 +299,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
 export const useAuth = (): AuthContextType => {
   const context = useContext(AuthContext);
-
-  if (context === undefined) {
+  if (!context) {
     throw new Error("useAuth must be used within an AuthProvider");
   }
-
   return context;
 };

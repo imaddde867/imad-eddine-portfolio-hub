@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 // Public Pages
 import Index from "./pages/Index";
@@ -49,9 +49,11 @@ const App = () => (
                 <Route path="*" element={<NotFound />} />
               </Route>
 
-              {/* Admin routes */}
+              {/* Admin Authentication Routes */}
               <Route path="/admin/login" element={<AdminLogin />} />
               <Route path="/admin/reset-password" element={<PasswordReset />} />
+              
+              {/* Protected Admin Routes */}
               <Route
                 path="/admin"
                 element={
@@ -67,6 +69,8 @@ const App = () => (
                 <Route path="blog" element={<BlogList />} />
                 <Route path="blog/new" element={<BlogForm />} />
                 <Route path="blog/edit/:slug" element={<BlogForm />} />
+                {/* Catch unhandled admin routes and redirect to dashboard */}
+                <Route path="*" element={<Navigate to="/admin" replace />} />
               </Route>
             </Routes>
           </BrowserRouter>

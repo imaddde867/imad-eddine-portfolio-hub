@@ -1,77 +1,91 @@
 import React from "react";
-import { Outlet, Link } from "react-router-dom";
-import { LayoutDashboard, FolderKanban, FileText, LogOut } from "lucide-react";
+import { Outlet, Link, useNavigate } from "react-router-dom";
+import { LayoutDashboard, FolderKanban, FileText, LogOut, User } from "lucide-react";
+import { useAuth } from "@/context/AuthContext";
 
 const AdminLayout = () => {
-  // Placeholder for authentication check
-  const isAuthenticated = true; // Replace with actual auth logic
+  const { isAuthenticated, logout, user } = useAuth();
+  const navigate = useNavigate();
 
-  // Placeholder for logout function
+  // Properly handle logout with auth context
   const handleLogout = () => {
-    console.log("Logout clicked - implement actual logout logic");
-    // Redirect to login or home page after logout
+    logout();
+    navigate("/admin/login");
   };
 
   if (!isAuthenticated) {
-    // In a real app, you'd redirect to /admin/login
-    // For now, we'll just show a message or redirect in a useEffect
-    // For simplicity here, we assume auth happens before this component mounts,
-    // or a HOC/Route protection handles the redirect.
-    return <div>Redirecting to login...</div>;
+    // Redirect to login page if not authenticated
+    navigate("/admin/login");
+    return null;
   }
 
   return (
-    <div className="min-h-screen flex bg-imadlab-gradient text-white font-sans">
+    <div className="min-h-screen flex bg-gradient-to-br from-gray-900 to-black text-white font-sans">
       {/* Sidebar */}
-      <aside className="w-64 bg-imadlab.deep-navy/30 backdrop-blur-md p-4 flex flex-col border-r border-imadlab.neon-blue/20">
+      <aside className="w-64 bg-black/30 backdrop-blur-md p-4 flex flex-col border-r border-[#40C4FF]/20">
         <div className="mb-8 text-center">
           <Link
-            to="/admin/dashboard"
+            to="/admin"
             className="text-2xl font-bold font-heading text-white flex items-center justify-center"
           >
-            <span className="text-imadlab.neon-blue mr-1">[</span>
-            <span>ImadLab</span>
-            <span className="text-imadlab.neon-blue ml-1">Admin]</span>
+            <span className="text-[#40C4FF] mr-1">[</span>
+            <span>Admin Portal</span>
+            <span className="text-[#40C4FF] ml-1">]</span>
           </Link>
         </div>
+
+        {/* User info */}
+        <div className="mb-6 px-2 py-3 bg-[#40C4FF]/5 rounded-md border border-[#40C4FF]/10">
+          <div className="flex items-center space-x-3">
+            <div className="p-2 bg-[#40C4FF]/10 rounded-full">
+              <User size={18} className="text-[#40C4FF]" />
+            </div>
+            <div>
+              <div className="text-sm font-medium">{user?.username || "Admin"}</div>
+              <div className="text-xs text-gray-400">{user?.email || "admin@example.com"}</div>
+            </div>
+          </div>
+        </div>
+
         <nav className="flex-grow">
-          <ul>
-            <li className="mb-2">
+          <ul className="space-y-1">
+            <li>
               <Link
-                to="/admin/dashboard"
-                className="flex items-center p-2 rounded-md text-gray-300 hover:bg-imadlab.neon-blue/20 hover:text-white transition-colors duration-200"
+                to="/admin"
+                className="flex items-center p-2 rounded-md text-gray-300 hover:bg-[#40C4FF]/20 hover:text-white transition-colors duration-200"
               >
                 <LayoutDashboard
                   size={18}
-                  className="mr-3 text-imadlab.neon-blue"
+                  className="mr-3 text-[#40C4FF]"
                 />
                 Dashboard
               </Link>
             </li>
-            <li className="mb-2">
+            <li>
               <Link
-                to="/admin/portfolio"
-                className="flex items-center p-2 rounded-md text-gray-300 hover:bg-imadlab.neon-blue/20 hover:text-white transition-colors duration-200"
+                to="/admin/projects"
+                className="flex items-center p-2 rounded-md text-gray-300 hover:bg-[#40C4FF]/20 hover:text-white transition-colors duration-200"
               >
                 <FolderKanban
                   size={18}
-                  className="mr-3 text-imadlab.neon-blue"
+                  className="mr-3 text-[#40C4FF]"
                 />
-                Portfolio
+                Projects
               </Link>
             </li>
-            <li className="mb-2">
+            <li>
               <Link
                 to="/admin/blog"
-                className="flex items-center p-2 rounded-md text-gray-300 hover:bg-imadlab.neon-blue/20 hover:text-white transition-colors duration-200"
+                className="flex items-center p-2 rounded-md text-gray-300 hover:bg-[#40C4FF]/20 hover:text-white transition-colors duration-200"
               >
-                <FileText size={18} className="mr-3 text-imadlab.neon-blue" />
+                <FileText size={18} className="mr-3 text-[#40C4FF]" />
                 Blog
               </Link>
             </li>
           </ul>
         </nav>
-        <div>
+
+        <div className="border-t border-[#40C4FF]/10 pt-4 mt-4">
           <button
             onClick={handleLogout}
             className="w-full flex items-center p-2 rounded-md text-gray-300 hover:bg-red-500/30 hover:text-white transition-colors duration-200"
@@ -83,12 +97,7 @@ const AdminLayout = () => {
       </aside>
 
       {/* Main Content Area */}
-      <main className="flex-1 p-6 md:p-10 overflow-y-auto relative">
-        {/* Subtle Particle Effect Placeholder - Implement actual particle library if needed */}
-        <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          {/* Example: Add a div for background effects */}
-          {/* <div className="absolute top-0 left-0 w-full h-full bg-dot-pattern opacity-5"></div> */}
-        </div>
+      <main className="flex-1 p-6 md:p-10 overflow-y-auto">
         <Outlet /> {/* Child routes will render here */}
       </main>
     </div>

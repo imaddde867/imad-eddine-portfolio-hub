@@ -76,7 +76,7 @@ const Contact = () => {
                 <Github size={20} />
               </a>
               <a
-                href="https://linkedin.com/in/imad-eddine-el-moussaoui"
+                href="https://www.linkedin.com/in/imad-eddine-el-mouss-986741262/"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="LinkedIn Profile"
