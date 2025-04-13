@@ -52,20 +52,20 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
-				'dark-bg': '#000000',
-				'dark-bg-alt': '#1A1A1A',
-				'dark-card': '#2C2C2C',
-				'dark-border': '#2C2C2C',
-				'dark-border-bright': '#3A3A3A',
-				'accent-vibrant': '#FF5722',
-				'accent-secondary': '#FFB300',
-				'accent-tertiary': '#607D8B',
-				'neon-blue': '#FF5722',
-				'neon-violet': '#FFB300',
-				'neon-teal': '#607D8B',
-				'neon-pink': '#FF5722',
-				'neon-blue-glow': 'rgb(255, 87, 34)',
-				'neon-purple-glow': 'rgb(255, 179, 0)',
+				'dark-bg': '#121212', /* Deep Charcoal */
+				'dark-bg-alt': '#1A1A1A', /* Charcoal Gray */
+				'dark-card': '#1A1A1A', /* Charcoal Gray */
+				'dark-border': '#2C2C2C', /* Steel Gray */
+				'dark-border-bright': '#2C2C2C', /* Steel Gray */
+				'accent-vibrant': '#FF5722', /* Burnt Orange */
+				'accent-secondary': '#FFB300', /* Amber Gold */
+				'accent-tertiary': '#FF9800', /* Bright Orange */
+				'neon-blue': '#FF5722', /* Burnt Orange */
+				'neon-violet': '#FFB300', /* Amber Gold */
+				'neon-teal': '#FF9800', /* Bright Orange */
+				'neon-pink': '#FF5722', /* Burnt Orange */
+				'neon-blue-glow': 'rgb(255, 87, 34)', /* Burnt Orange */
+				'neon-purple-glow': 'rgb(255, 179, 0)', /* Amber Gold */
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',
@@ -77,12 +77,12 @@ export default {
 					ring: 'hsl(var(--sidebar-ring))'
 				},
 				imadlab: {
-					'deep-navy': '#000000',
+					'deep-navy': '#121212', /* Deep Charcoal */
 					'black': '#000000',
-					'neon-blue': '#FF5722',
-					'neon-green': '#FFB300',
+					'neon-blue': '#FF5722', /* Burnt Orange */
+					'neon-green': '#FFB300', /* Amber Gold */
 					'semi-transparent-dark': 'rgba(26, 26, 26, 0.85)'
-				},
+				  },
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -244,9 +244,9 @@ export default {
 				'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
 				'dot-pattern': 'radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px)',
 				'noise': "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.1'/%3E%3C/svg%3E\")",
-				'imadlab-gradient': 'linear-gradient(135deg, #000000 0%, #1A1A1A 100%)',
+				'imadlab-gradient': 'linear-gradient(135deg, #FF5722 0%, #FFB300 100%)',
 				'neon-grid': 'linear-gradient(rgba(255, 87, 34, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 87, 34, 0.1) 1px, transparent 1px)',
-				'dark-mesh': 'radial-gradient(at 40% 40%, rgb(26, 26, 26) 0px, transparent 50%), radial-gradient(at 90% 10%, rgb(44, 44, 44) 0px, transparent 50%)',
+				'dark-mesh': 'radial-gradient(at 40% 40%, rgb(20, 24, 40) 0px, transparent 50%), radial-gradient(at 90% 10%, rgb(30, 30, 70) 0px, transparent 50%)',
 				'neon-glow-blue': 'linear-gradient(to right, rgba(255, 87, 34, 0), rgba(255, 87, 34, 0.2), rgba(255, 87, 34, 0))',
 				'neon-glow-purple': 'linear-gradient(to right, rgba(255, 179, 0, 0), rgba(255, 179, 0, 0.2), rgba(255, 179, 0, 0))',
 				'glass-gradient': 'linear-gradient(to right bottom, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.01))',
@@ -258,13 +258,13 @@ export default {
 				'brutal': '4px 4px 0px 0px rgba(0, 0, 0, 1)',
 				'brutal-accent': '4px 4px 0px 0px hsl(var(--accent))',
 				'glow': '0 0 20px rgba(var(--accent), 0.3)',
-				'neon-blue-glow': '0 0 15px rgba(255, 87, 34, 0.6)',
-				'neon-green-glow': '0 0 15px rgba(255, 179, 0, 0.6)',
-				'neon-purple-glow': '0 0 15px rgba(96, 125, 139, 0.6)',
+				'neon-blue-glow': '0 0 15px rgba(64, 196, 255, 0.6)',
+				'neon-green-glow': '0 0 15px rgba(0, 230, 118, 0.6)',
+				'neon-purple-glow': '0 0 15px rgba(190, 75, 255, 0.6)',
 				'glass': '0 0 20px rgba(0, 0, 0, 0.2)',
 				'glass-light': '0 8px 20px rgba(0, 0, 0, 0.15)',
 				'3d-dark': '0 10px 30px -10px rgba(0, 0, 0, 0.5)',
-				'inner-glow': 'inset 0 0 15px rgba(255, 87, 34, 0.3)',
+				'inner-glow': 'inset 0 0 15px rgba(64, 196, 255, 0.3)',
 			},
 			backdropBlur: {
 				'sm': '4px',

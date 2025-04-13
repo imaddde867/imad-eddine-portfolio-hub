@@ -38,9 +38,9 @@ const NavItem: React.FC<{ to: string; children: React.ReactNode; onClick?: () =>
     className={({ isActive }) =>
       `relative px-4 py-2 text-sm font-medium transition-all duration-300 ${
         isActive
-          ? "text-accent after:scale-x-100"
-          : "text-foreground/70 hover:text-foreground after:group-hover:scale-x-100"
-      } after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-full after:origin-left after:scale-x-0 after:bg-accent after:transition-transform after:duration-300`
+          ? "text-accent"
+          : "text-foreground/70 hover:text-foreground"
+      }`
     }
     onClick={onClick}
   >

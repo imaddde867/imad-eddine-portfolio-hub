@@ -32,40 +32,45 @@ const TechBadge: React.FC<{
 const BackgroundEffects: React.FC = () => (
   <div className="absolute inset-0 pointer-events-none overflow-hidden">
     {/* Static grid overlay */}
-    <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=\'40\' height=\'40\' viewBox=\'0 0 40 40\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'%239C92AC\' fill-opacity=\'0.1\' fill-rule=\'evenodd\'%3E%3Cpath d=\'M0 40L40 0H20L0 20M40 40V20L20 40\'/%3E%3C/g%3E%3C/svg%3E')] bg-[length:40px_40px] opacity-[0.03]" />
+    <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=\'40\' height=\'40\' viewBox=\'0 0 40 40\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'%239C92AC\' fill-opacity=\'0.1\' fill-rule=\'evenodd\'%3E%3Cpath d=\'M0 40L40 0H20L0 20M40 40V20L20 40\'/%3E%3C/g%3E%3C/svg%3E')] bg-[length:40px_40px] opacity-[0.08]" />
     
     {/* Static mesh gradient */}
-    <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-secondary/5 to-transparent opacity-10" />
+    <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-secondary/10 to-transparent opacity-20" />
     
     {/* Minimal floating particles */}
-    <div className="absolute top-1/4 left-1/4 w-2 h-2 rounded-full bg-accent/30 animate-float-smooth" style={{ animationDelay: '0s' }} />
-    <div className="absolute top-2/3 right-1/4 w-3 h-3 rounded-full bg-secondary/30 animate-float-smooth" style={{ animationDelay: '5s' }} />
-    <div className="absolute top-1/3 right-1/3 w-1.5 h-1.5 rounded-full bg-primary/20 animate-float-smooth" style={{ animationDelay: '2s' }} />
-    <div className="absolute bottom-1/4 left-1/3 w-2.5 h-2.5 rounded-full bg-accent/25 animate-float-smooth" style={{ animationDelay: '7s' }} />
+    <div className="absolute top-1/4 left-1/4 w-3 h-3 rounded-full bg-accent/50 animate-float-smooth" style={{ animationDelay: '0s' }} />
+    <div className="absolute top-2/3 right-1/4 w-4 h-4 rounded-full bg-secondary/50 animate-float-smooth" style={{ animationDelay: '5s' }} />
+    <div className="absolute top-1/3 right-1/3 w-2.5 h-2.5 rounded-full bg-primary/40 animate-float-smooth" style={{ animationDelay: '2s' }} />
+    <div className="absolute bottom-1/4 left-1/3 w-3.5 h-3.5 rounded-full bg-accent/40 animate-float-smooth" style={{ animationDelay: '7s' }} />
+    
+    {/* Additional particles */}
+    <div className="absolute top-1/5 right-1/5 w-2 h-2 rounded-full bg-accent/40 animate-float-smooth" style={{ animationDelay: '1s' }} />
+    <div className="absolute bottom-1/5 left-1/5 w-2.5 h-2.5 rounded-full bg-secondary/40 animate-float-smooth" style={{ animationDelay: '3s' }} />
+    <div className="absolute top-3/4 left-1/2 w-3 h-3 rounded-full bg-primary/40 animate-float-smooth" style={{ animationDelay: '4s' }} />
     
     {/* Static glow accent */}
-    <div className="absolute -left-32 top-1/4 w-64 h-1 bg-gradient-to-r from-transparent via-primary/20 to-transparent opacity-20 blur-xl" />
+    <div className="absolute -left-32 top-1/4 w-64 h-1 bg-gradient-to-r from-transparent via-primary/30 to-transparent opacity-30 blur-xl" />
     
     {/* Static radial gradient */}
-    <div className="absolute inset-0 bg-gradient-radial from-accent/5 via-transparent to-transparent opacity-30" />
+    <div className="absolute inset-0 bg-gradient-radial from-accent/10 via-transparent to-transparent opacity-40" />
     
     {/* Modern geometric shapes */}
-    <div className="absolute top-1/4 right-1/4 w-32 h-32 rounded-full border border-primary/10 opacity-20 animate-pulse-slow" style={{ animationDuration: '8s' }} />
-    <div className="absolute bottom-1/3 left-1/4 w-24 h-24 rounded-full border border-secondary/10 opacity-20 animate-pulse-slow" style={{ animationDuration: '6s' }} />
+    <div className="absolute top-1/4 right-1/4 w-32 h-32 rounded-full border border-primary/20 opacity-30 animate-pulse-slow" style={{ animationDuration: '8s' }} />
+    <div className="absolute bottom-1/3 left-1/4 w-24 h-24 rounded-full border border-secondary/20 opacity-30 animate-pulse-slow" style={{ animationDuration: '6s' }} />
     
     {/* Animated gradient orbs */}
-    <div className="absolute top-1/3 left-1/3 w-40 h-40 rounded-full bg-gradient-to-r from-primary/5 to-accent/5 blur-3xl animate-float-slow" style={{ animationDelay: '3s' }} />
-    <div className="absolute bottom-1/4 right-1/4 w-60 h-60 rounded-full bg-gradient-to-r from-secondary/5 to-primary/5 blur-3xl animate-float-slow" style={{ animationDelay: '6s' }} />
+    <div className="absolute top-1/3 left-1/3 w-40 h-40 rounded-full bg-gradient-to-r from-primary/10 to-accent/10 blur-3xl animate-float-slow" style={{ animationDelay: '3s' }} />
+    <div className="absolute bottom-1/4 right-1/4 w-60 h-60 rounded-full bg-gradient-to-r from-secondary/10 to-primary/10 blur-3xl animate-float-slow" style={{ animationDelay: '6s' }} />
     
     {/* Subtle noise texture */}
-    <div className="absolute inset-0 opacity-[0.015] mix-blend-overlay" style={{ 
+    <div className="absolute inset-0 opacity-[0.03] mix-blend-overlay" style={{ 
       backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
       backgroundSize: '200px 200px'
     }} />
     
     {/* Animated lines */}
-    <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary/10 to-transparent animate-slide-right" style={{ animationDuration: '15s' }} />
-    <div className="absolute bottom-0 right-0 w-full h-1 bg-gradient-to-r from-transparent via-secondary/10 to-transparent animate-slide-left" style={{ animationDuration: '12s' }} />
+    <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary/20 to-transparent animate-slide-right" style={{ animationDuration: '15s' }} />
+    <div className="absolute bottom-0 right-0 w-full h-1 bg-gradient-to-r from-transparent via-secondary/20 to-transparent animate-slide-left" style={{ animationDuration: '12s' }} />
   </div>
 );
 

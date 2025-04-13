@@ -55,7 +55,7 @@ const NewsletterSubscription: React.FC<NewsletterSubscriptionProps> = ({
       toast({
         title: "Success!",
         description: "You've been subscribed to our newsletter.",
-        className: "bg-[#40C4FF]/10 border-[#40C4FF]/20 text-white",
+        className: "bg-[#FF5722]/10 border-[#FF5722]/20 text-white",
       });
       setEmail("");
       if (onClose) onClose();
@@ -72,18 +72,18 @@ const NewsletterSubscription: React.FC<NewsletterSubscriptionProps> = ({
   };
 
   return (
-    <div className={`bg-black/30 border border-[#40C4FF]/20 rounded-lg p-6 space-y-4 ${
+    <div className={`bg-black/30 border border-[#FF5722]/20 rounded-lg p-6 space-y-4 ${
       isPopup ? 'fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 w-full max-w-md' : ''
     }`}>
       {isPopup && (
         <div className="flex justify-between items-start mb-2">
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-[#40C4FF]/10 rounded-lg">
-              <Mail className="h-5 w-5 text-[#40C4FF]" />
+            <div className="p-2 bg-[#FF5722]/10 rounded-lg">
+              <Mail className="h-5 w-5 text-[#FF5722]" />
             </div>
             <div>
               <h3 className="text-lg font-semibold text-white">Stay Updated</h3>
-              <p className="text-sm text-[#40C4FF]/70">
+              <p className="text-sm text-[#FFB300]/70">
                 Subscribe to receive updates on new blog posts and projects
               </p>
             </div>
@@ -91,7 +91,7 @@ const NewsletterSubscription: React.FC<NewsletterSubscriptionProps> = ({
           <Button
             variant="ghost"
             size="icon"
-            className="text-[#40C4FF]/70 hover:text-[#40C4FF] hover:bg-[#40C4FF]/10"
+            className="text-[#FFB300]/70 hover:text-[#FF5722] hover:bg-[#FF5722]/10"
             onClick={onClose}
           >
             <X className="h-4 w-4" />
@@ -101,12 +101,12 @@ const NewsletterSubscription: React.FC<NewsletterSubscriptionProps> = ({
 
       {!isPopup && (
         <div className="flex items-center gap-3">
-          <div className="p-2 bg-[#40C4FF]/10 rounded-lg">
-            <Mail className="h-5 w-5 text-[#40C4FF]" />
+          <div className="p-2 bg-[#FF5722]/10 rounded-lg">
+            <Mail className="h-5 w-5 text-[#FF5722]" />
           </div>
           <div>
             <h3 className="text-lg font-semibold text-white">Stay Updated</h3>
-            <p className="text-sm text-[#40C4FF]/70">
+            <p className="text-sm text-[#FFB300]/70">
               Subscribe to receive updates on new blog posts and projects
             </p>
           </div>
@@ -119,12 +119,12 @@ const NewsletterSubscription: React.FC<NewsletterSubscriptionProps> = ({
           placeholder="Enter your email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="bg-black/60 border-[#40C4FF]/40 focus:border-[#40C4FF] text-white"
+          className="bg-black/60 border-[#FF5722]/40 focus:border-[#FF5722] text-white"
           required
         />
         <Button
           type="submit"
-          className="bg-[#40C4FF] hover:bg-[#40C4FF]/80 text-black font-medium"
+          className="bg-gradient-to-r from-[#FF5722] to-[#FFB300] hover:from-[#FF5722]/90 hover:to-[#FFB300]/90 text-black font-medium"
           disabled={isLoading}
         >
           {isLoading ? (
@@ -135,7 +135,7 @@ const NewsletterSubscription: React.FC<NewsletterSubscriptionProps> = ({
         </Button>
       </form>
 
-      <p className="text-xs text-[#40C4FF]/50">
+      <p className="text-xs text-[#FFB300]/50">
         We respect your privacy. Unsubscribe at any time.
       </p>
     </div>

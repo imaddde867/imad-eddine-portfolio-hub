@@ -58,7 +58,7 @@ const Contact = () => {
               <div className="space-y-6 mb-10">
                 <div className="flex items-start group">
                   <div className="p-2 rounded-full bg-accent/10 group-hover:bg-accent/20 transition-all duration-300 mr-4 dark:shadow-neon-blue-glow/20 group-hover:scale-110">
-                    <Mail className="text-accent group-hover:rotate-12 transition-transform duration-300" size={20} />
+                    <Mail className="text-accent transition-transform duration-300" size={20} />
                   </div>
                   <div>
                     <h4 className="font-medium text-foreground">Email</h4>
@@ -74,7 +74,7 @@ const Contact = () => {
                 
                 <div className="flex items-start group">
                   <div className="p-2 rounded-full bg-accent/10 group-hover:bg-accent/20 transition-all duration-300 mr-4 dark:shadow-neon-blue-glow/20 group-hover:scale-110">
-                    <MapPin className="text-accent group-hover:rotate-12 transition-transform duration-300" size={20} />
+                    <MapPin className="text-accent transition-transform duration-300" size={20} />
                   </div>
                   <div>
                     <h4 className="font-medium text-foreground">Location</h4>
@@ -84,7 +84,7 @@ const Contact = () => {
                 
                 <div className="flex items-start group">
                   <div className="p-2 rounded-full bg-accent/10 group-hover:bg-accent/20 transition-all duration-300 mr-4 dark:shadow-neon-blue-glow/20 group-hover:scale-110">
-                    <MessageSquare className="text-accent group-hover:rotate-12 transition-transform duration-300" size={20} />
+                    <MessageSquare className="text-accent transition-transform duration-300" size={20} />
                   </div>
                   <div>
                     <h4 className="font-medium text-foreground">Response Time</h4>
@@ -105,7 +105,7 @@ const Contact = () => {
                   aria-label="GitHub Profile"
                   className="group relative w-10 h-10 rounded-full bg-card hover:bg-accent/10 border border-border flex items-center justify-center text-muted-foreground hover:text-accent transition-all duration-300 hover:scale-110"
                 >
-                  <Github size={18} className="group-hover:rotate-12 transition-transform duration-300" />
+                  <Github size={18} className="transition-transform duration-300" />
                   <div className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 dark:group-hover:shadow-neon-blue-glow transition-opacity duration-300"></div>
                 </a>
                 <a
@@ -115,7 +115,7 @@ const Contact = () => {
                   aria-label="LinkedIn Profile"
                   className="group relative w-10 h-10 rounded-full bg-card hover:bg-accent/10 border border-border flex items-center justify-center text-muted-foreground hover:text-accent transition-all duration-300 hover:scale-110"
                 >
-                  <Linkedin size={18} className="group-hover:rotate-12 transition-transform duration-300" />
+                  <Linkedin size={18} className="transition-transform duration-300" />
                   <div className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 dark:group-hover:shadow-neon-blue-glow transition-opacity duration-300"></div>
                 </a>
               </div>

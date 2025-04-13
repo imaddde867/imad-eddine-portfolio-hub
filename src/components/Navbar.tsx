@@ -17,7 +17,7 @@ const Navbar: React.FC = () => {
   // Function for navigation link classes
   const getNavLinkClass = ({ isActive }: { isActive: boolean }): string => {
     return isActive
-      ? "text-white font-medium border-b-2 border-primary pb-1"
+      ? "text-white font-medium pb-1"
       : "text-gray-300 hover:text-white transition-colors";
   };
 
