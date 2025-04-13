@@ -1,5 +1,5 @@
 import React from "react";
-import { ArrowDown, Github, Linkedin, ChevronRight, Code, Database, Terminal } from "lucide-react";
+import { ArrowDown, Code, Database, Terminal } from "lucide-react";
 
 const Hero = () => {
   return (
@@ -43,66 +43,38 @@ const Hero = () => {
               <span className="highlight ml-1">big data solutions</span> at TUAS.
             </p>
             
-            {/* Key metrics */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8 animate-slide-up" style={{ animationDelay: '0.3s' }}>
-              <div className="rounded-xl bg-card/50 border border-border/40 p-4 dark:bg-dark-card/50 hover:border-accent/30 transition-all duration-300">
-                <p className="text-3xl font-display font-bold text-accent dark:text-accent">40%</p>
-                <p className="text-sm text-muted-foreground">Latency reduction in water data pipeline</p>
-              </div>
-              <div className="rounded-xl bg-card/50 border border-border/40 p-4 dark:bg-dark-card/50 hover:border-accent/30 transition-all duration-300">
-                <p className="text-3xl font-display font-bold text-accent dark:text-accent">90%</p>
-                <p className="text-sm text-muted-foreground">ML prediction accuracy for vessel tracking</p>
-              </div>
-              <div className="rounded-xl bg-card/50 border border-border/40 p-4 dark:bg-dark-card/50 hover:border-accent/30 transition-all duration-300">
-                <p className="text-3xl font-display font-bold text-accent dark:text-accent">99.9%</p>
-                <p className="text-sm text-muted-foreground">System uptime for data platforms</p>
-              </div>
-            </div>
-            
-            {/* CTA buttons with enhanced animations */}
-            <div className="flex flex-wrap gap-4 mb-10 animate-slide-up" style={{ animationDelay: '0.4s' }}>
+            {/* Improved CTA buttons */}
+            <div className="flex gap-5 mb-10 animate-slide-up" style={{ animationDelay: '0.4s' }}>
               <a
-                href="https://github.com/imaddde867"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-outline flex items-center group"
+                href="#projects"
+                className="relative overflow-hidden group px-8 py-3 bg-gradient-to-r from-primary/90 to-accent/90 rounded-full text-white font-medium shadow-lg hover:shadow-accent/20 transition-all duration-300"
               >
-                <Github size={18} className="mr-2 group-hover:rotate-[-8deg] transition-transform" />
-                GitHub
+                <span className="relative z-10">Projects</span>
+                <span className="absolute inset-0 bg-gradient-to-r from-accent to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
               </a>
               <a
-                href="https://www.linkedin.com/in/imad-eddine-el-mouss-986741262/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-primary flex items-center group"
+                href="#blog"
+                className="relative overflow-hidden group px-8 py-3 bg-transparent border border-border/50 dark:border-border/30 rounded-full font-medium shadow-sm hover:border-accent/50 hover:text-accent transition-all duration-300"
               >
-                <Linkedin size={18} className="mr-2 group-hover:rotate-[-8deg] transition-transform" />
-                LinkedIn
+                <span>Blog</span>
               </a>
-            </div>
-            
-            {/* Status indicator with modern styling */}
-            <div className="text-muted-foreground text-sm animate-slide-up" style={{ animationDelay: '0.5s' }}>
-              <span className="block mb-1">Currently:</span>
-              <div className="inline-flex items-center gap-2 rounded-full border border-accent/20 bg-accent/5 px-3 py-1 text-sm font-medium text-accent">
-                <span className="h-2 w-2 rounded-full bg-accent animate-pulse"></span>
-                Data Engineering Intern @ AIS Laboratory - TUAS
-              </div>
             </div>
           </div>
           
           {/* Right side with profile illustration and floating tech badges */}
           <div className="order-1 md:order-2 flex justify-center md:justify-end">
             <div className="relative">
-              {/* Main profile blob */}
+              {/* Main profile blob - FIXED to maintain circular shape during animation */}
               <div className="w-64 h-64 sm:w-80 sm:h-80 relative group animate-fade-in-scale" style={{ animationDelay: '0.3s' }}>
-                <div className="absolute inset-0 rounded-full opacity-50 group-hover:opacity-70 transition-opacity duration-700 blur-xl">
-                  <div className="absolute inset-0 rounded-full bg-gradient-to-br from-accent via-primary to-secondary opacity-60 dark:opacity-80 animate-morph"></div>
+                {/* Background glow effect */}
+                <div className="absolute inset-0 rounded-full opacity-50 group-hover:opacity-70 transition-opacity duration-700 blur-xl overflow-hidden">
+                  <div className="absolute inset-0 rounded-full bg-gradient-to-br from-accent via-primary to-secondary opacity-60 dark:opacity-80 animate-pulse"></div>
                 </div>
                 
-                <div className="absolute inset-0 animate-morph">
-                  <div className="relative h-full w-full rounded-full bg-gradient-to-br from-card to-background p-1 dark:from-dark-card dark:to-dark-bg shadow-xl overflow-hidden">
-                    <div className="w-full h-full rounded-full bg-card dark:bg-dark-card flex items-center justify-center overflow-hidden border border-border/50">
+                {/* Main circle with strict border-radius enforcement */}
+                <div className="absolute inset-0 rounded-[50%] overflow-hidden">
+                  <div className="relative h-full w-full rounded-[50%] bg-gradient-to-br from-card to-background p-1 dark:from-dark-card dark:to-dark-bg shadow-xl overflow-hidden">
+                    <div className="w-full h-full rounded-[50%] bg-card dark:bg-dark-card flex items-center justify-center overflow-hidden border border-border/50">
                       <span className="text-8xl font-bold text-accent/70 font-display dark:text-accent/90 dark:drop-shadow-[0_0_8px_rgba(64,196,255,0.5)]">
                         IE
                       </span>
@@ -133,8 +105,8 @@ const Hero = () => {
           </div>
         </div>
 
-        {/* Scroll indicator */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center opacity-70 hover:opacity-100 transition-opacity animate-fade-in" style={{ animationDelay: '1.2s' }}>
+        {/* Scroll indicator - moved further down */}
+        <div className="absolute -bottom-3 left-1/2 transform -translate-x-1/2 flex flex-col items-center opacity-70 hover:opacity-100 transition-opacity animate-fade-in" style={{ animationDelay: '1.2s' }}>
           <p className="text-muted-foreground text-xs mb-2">Scroll for more</p>
           <a
             href="#about"
