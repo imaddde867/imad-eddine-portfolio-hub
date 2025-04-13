@@ -1,4 +1,3 @@
-
 import React from "react";
 import { ExternalLink, Github } from "lucide-react";
 import SkillBadge from "./SkillBadge";
@@ -21,35 +20,38 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
   technologies,
 }) => {
   return (
-    <div className="rounded-lg overflow-hidden shadow-md border border-navy-100 dark:border-navy-700 bg-white dark:bg-navy-900 transition-transform duration-300 hover:-translate-y-1 hover:shadow-lg">
-      <div className="h-48 bg-navy-100 dark:bg-navy-800 overflow-hidden">
-        {image ? (
-          <img src={image} alt={title} className="w-full h-full object-cover" />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-github/20 to-teal-500/20">
-            <span className="text-2xl font-bold text-navy-500 dark:text-navy-300">{title.slice(0, 2)}</span>
-          </div>
-        )}
-      </div>
-      <div className="p-6">
-        <h3 className="text-xl font-bold text-navy-800 dark:text-white mb-2">{title}</h3>
-        <p className="text-navy-600 dark:text-navy-300 mb-4">{description}</p>
+    <div className="bg-card rounded-md border border-border overflow-hidden subtle-hover brutalist-padding flex flex-col h-full">
+      {image && (
+        <div className="h-48 bg-muted/50 overflow-hidden">
+          <img src={image} alt={`${title} preview`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+        </div>
+      )}
+      {!image && (
+        <div className="h-48 bg-gradient-to-br from-accent/10 to-secondary/10 flex items-center justify-center">
+          <span className="text-3xl font-bold text-accent font-heading opacity-50">{title.charAt(0)}</span>
+        </div>
+      )}
+      
+      <div className={`p-6 flex-grow flex flex-col ${!image ? 'pt-6' : ''}`}>
+        <h3 className="text-xl font-bold text-foreground mb-2">{title}</h3>
+        <p className="text-muted-foreground text-sm mb-4 flex-grow">{description}</p>
         
-        <div className="flex flex-wrap gap-1 mb-4">
+        <div className="flex flex-wrap gap-2 mb-5">
           {technologies.map((tech) => (
             <SkillBadge key={tech} name={tech} size="sm" />
           ))}
         </div>
         
-        <div className="flex space-x-3">
+        <div className="flex space-x-4 mt-auto pt-4 border-t border-border/50">
           {repoUrl && (
             <a
               href={repoUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-navy-700 dark:text-navy-200 hover:text-github transition-colors duration-200 flex items-center text-sm"
+              aria-label={`View code for ${title}`}
+              className="text-muted-foreground hover:text-accent transition-colors duration-200 flex items-center text-sm font-medium"
             >
-              <Github size={16} className="mr-1" />
+              <Github size={16} className="mr-1.5" />
               Code
             </a>
           )}
@@ -58,9 +60,10 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
               href={demoUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-navy-700 dark:text-navy-200 hover:text-github transition-colors duration-200 flex items-center text-sm"
+              aria-label={`View live demo for ${title}`}
+              className="text-muted-foreground hover:text-accent transition-colors duration-200 flex items-center text-sm font-medium"
             >
-              <ExternalLink size={16} className="mr-1" />
+              <ExternalLink size={16} className="mr-1.5" />
               Live Demo
             </a>
           )}

@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -53,6 +52,11 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
+				'dark-bg': 'hsl(220, 15%, 10%)',
+				'dark-card': 'hsl(220, 15%, 15%)',
+				'dark-border': 'hsl(220, 15%, 25%)',
+				'accent-vibrant': 'hsl(178, 100%, 50%)',
+				'accent-secondary': 'hsl(300, 69%, 61%)',
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',
@@ -140,6 +144,11 @@ export default {
                     '50%': { transform: 'rotate(10.0deg)' },
                     '60%': { transform: 'rotate(0.0deg)' },
                     '100%': { transform: 'rotate(0.0deg)' }
+                },
+                'gradient-shift': {
+                    '0%': { backgroundPosition: '0% 50%' },
+                    '50%': { backgroundPosition: '100% 50%' },
+                    '100%': { backgroundPosition: '0% 50%' }
                 }
 			},
 			animation: {
@@ -147,11 +156,13 @@ export default {
 				'accordion-up': 'accordion-up 0.2s ease-out',
                 'fade-in': 'fade-in 0.6s ease-out',
                 'fade-in-right': 'fade-in-right 0.6s ease-out',
-                'wave': 'wave 2.5s ease-in-out infinite'
+                'wave': 'wave 2.5s ease-in-out infinite',
+                'gradient-shift': 'gradient-shift 4s ease infinite'
 			},
             fontFamily: {
                 sans: ['Inter', 'sans-serif'],
-                mono: ['JetBrains Mono', 'monospace']
+                mono: ['JetBrains Mono', 'monospace'],
+                heading: ['Poppins', 'sans-serif']
             }
 		}
 	},
