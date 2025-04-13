@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 import {
   sampleProjects,
   samplePosts,
@@ -30,59 +31,83 @@ interface AdminStore {
   deletePost: (slug: string) => void;
 }
 
-// Use create from zustand to create a store
-export const useAdminStore = create<AdminStore>((set) => ({
-  // Initial state - Using the updated projects instead of sample projects
-  projects: updatedProjects,
-  posts: samplePosts,
+// Use create from zustand to create a store with persistence
+export const useAdminStore = create<AdminStore>()(
+  persist(
+    (set) => ({
+      // Initial state - Using the updated projects instead of sample projects
+      projects: updatedProjects,
+      posts: samplePosts,
 
-  // Add a new project
-  addProject: (project) =>
-    set((state) => ({
-      projects: [
-        ...state.projects,
-        {
-          ...project,
-          slug: stringToSlug(project.title),
-        },
-      ],
-    })),
+      // Add a new project
+      addProject: (project) =>
+        set((state) => ({
+          projects: [
+            ...state.projects,
+            {
+              ...project,
+              slug: stringToSlug(project.title),
+              _lastUpdated: new Date().getTime(),
+            },
+          ],
+        })),
 
-  // Update an existing project
-  updateProject: (slug, project) =>
-    set((state) => ({
-      projects: state.projects.map((p) =>
-        p.slug === slug ? { ...p, ...project } : p,
-      ),
-    })),
+      // Update an existing project
+      updateProject: (slug, project) =>
+        set((state) => ({
+          projects: state.projects.map((p) =>
+            p.slug === slug
+              ? {
+                  ...p,
+                  ...project,
+                  _lastUpdated: new Date().getTime(),
+                }
+              : p
+          ),
+        })),
 
-  // Delete a project
-  deleteProject: (slug) =>
-    set((state) => ({
-      projects: state.projects.filter((p) => p.slug !== slug),
-    })),
+      // Delete a project
+      deleteProject: (slug) =>
+        set((state) => ({
+          projects: state.projects.filter((p) => p.slug !== slug),
+        })),
 
-  // Add a new post
-  addPost: (post) =>
-    set((state) => ({
-      posts: [
-        ...state.posts,
-        {
-          ...post,
-          slug: stringToSlug(post.title),
-        },
-      ],
-    })),
+      // Add a new post
+      addPost: (post) =>
+        set((state) => ({
+          posts: [
+            ...state.posts,
+            {
+              ...post,
+              slug: stringToSlug(post.title),
+              _lastUpdated: new Date().getTime(),
+            },
+          ],
+        })),
 
-  // Update an existing post
-  updatePost: (slug, post) =>
-    set((state) => ({
-      posts: state.posts.map((p) => (p.slug === slug ? { ...p, ...post } : p)),
-    })),
+      // Update an existing post
+      updatePost: (slug, post) =>
+        set((state) => ({
+          posts: state.posts.map((p) =>
+            p.slug === slug
+              ? {
+                  ...p,
+                  ...post,
+                  _lastUpdated: new Date().getTime(),
+                }
+              : p
+          ),
+        })),
 
-  // Delete a post
-  deletePost: (slug) =>
-    set((state) => ({
-      posts: state.posts.filter((p) => p.slug !== slug),
-    })),
-}));
+      // Delete a post
+      deletePost: (slug) =>
+        set((state) => ({
+          posts: state.posts.filter((p) => p.slug !== slug),
+        })),
+    }),
+    {
+      name: "admin-storage", // unique name for localStorage key
+      skipHydration: false, // ensure store is hydrated on page load
+    }
+  )
+);

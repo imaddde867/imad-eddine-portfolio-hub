@@ -10,6 +10,7 @@ export interface ProjectData {
   image?: string; // Optional preview image
   longDescription?: string; // Optional longer description for detail page
   date?: string; // Publication/creation date
+  _lastUpdated?: number; // Timestamp for cache busting
 }
 
 export interface PostData {
