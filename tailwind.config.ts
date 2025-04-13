@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,7 +62,32 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
-				}
+				},
+                github: "#3584E4",
+                navy: {
+                    50: "#F0F4F9",
+                    100: "#D3E0F3",
+                    200: "#A6C1E6",
+                    300: "#79A2DA",
+                    400: "#4D83CD",
+                    500: "#2064C1",
+                    600: "#1A509A",
+                    700: "#133C74",
+                    800: "#0D284D",
+                    900: "#061427"
+                },
+                teal: {
+                    50: "#F0FDFC",
+                    100: "#CCFAF5",
+                    200: "#99F6EF",
+                    300: "#66F1E8",
+                    400: "#33EDE2",
+                    500: "#00E8DB",
+                    600: "#00BAAF",
+                    700: "#008B83",
+                    800: "#005D58",
+                    900: "#002E2C"
+                }
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -84,12 +110,49 @@ export default {
 					to: {
 						height: '0'
 					}
-				}
+				},
+                'fade-in': {
+                    '0%': {
+                        opacity: '0',
+                        transform: 'translateY(10px)'
+                    },
+                    '100%': {
+                        opacity: '1',
+                        transform: 'translateY(0)'
+                    }
+                },
+                'fade-in-right': {
+                    '0%': {
+                        opacity: '0',
+                        transform: 'translateX(20px)'
+                    },
+                    '100%': {
+                        opacity: '1',
+                        transform: 'translateX(0)'
+                    }
+                },
+                'wave': {
+                    '0%': { transform: 'rotate(0.0deg)' },
+                    '10%': { transform: 'rotate(14.0deg)' },
+                    '20%': { transform: 'rotate(-8.0deg)' },
+                    '30%': { transform: 'rotate(14.0deg)' },
+                    '40%': { transform: 'rotate(-4.0deg)' },
+                    '50%': { transform: 'rotate(10.0deg)' },
+                    '60%': { transform: 'rotate(0.0deg)' },
+                    '100%': { transform: 'rotate(0.0deg)' }
+                }
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
-			}
+				'accordion-up': 'accordion-up 0.2s ease-out',
+                'fade-in': 'fade-in 0.6s ease-out',
+                'fade-in-right': 'fade-in-right 0.6s ease-out',
+                'wave': 'wave 2.5s ease-in-out infinite'
+			},
+            fontFamily: {
+                sans: ['Inter', 'sans-serif'],
+                mono: ['JetBrains Mono', 'monospace']
+            }
 		}
 	},
 	plugins: [require("tailwindcss-animate")],
