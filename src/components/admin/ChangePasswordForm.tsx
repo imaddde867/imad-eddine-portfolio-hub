@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { z } from 'zod';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
+import React, { useState } from "react";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,
   FormControl,
@@ -10,27 +10,36 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { AlertCircle, CheckCircle, Key, Eye, EyeOff } from 'lucide-react';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { useAuth } from '@/context/AuthContext';
-import { useToast } from '@/components/ui/use-toast';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { AlertCircle, CheckCircle, Key, Eye, EyeOff } from "lucide-react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { useAuth } from "@/context/AuthContext";
+import { useToast } from "@/components/ui/use-toast";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 // Form schema for validation
-const passwordChangeSchema = z.object({
-  currentPassword: z.string().min(8, { message: 'Current password is required' }),
-  newPassword: z.string().min(8, { message: 'Password must be at least 8 characters' })
-    .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/, {
-      message: "Password must contain at least one uppercase letter, one lowercase letter, and one number",
-    }),
-  confirmPassword: z.string().min(8, { message: 'Please confirm your password' }),
-}).refine(data => data.newPassword === data.confirmPassword, {
-  message: "Passwords don't match",
-  path: ["confirmPassword"], 
-});
+const passwordChangeSchema = z
+  .object({
+    currentPassword: z
+      .string()
+      .min(8, { message: "Current password is required" }),
+    newPassword: z
+      .string()
+      .min(8, { message: "Password must be at least 8 characters" })
+      .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/, {
+        message:
+          "Password must contain at least one uppercase letter, one lowercase letter, and one number",
+      }),
+    confirmPassword: z
+      .string()
+      .min(8, { message: "Please confirm your password" }),
+  })
+  .refine((data) => data.newPassword === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ["confirmPassword"],
+  });
 
 type PasswordChangeForm = z.infer<typeof passwordChangeSchema>;
 
@@ -45,9 +54,9 @@ const ChangePasswordForm: React.FC = () => {
   const form = useForm<PasswordChangeForm>({
     resolver: zodResolver(passwordChangeSchema),
     defaultValues: {
-      currentPassword: '',
-      newPassword: '',
-      confirmPassword: '',
+      currentPassword: "",
+      newPassword: "",
+      confirmPassword: "",
     },
   });
 
@@ -58,9 +67,9 @@ const ChangePasswordForm: React.FC = () => {
       setSuccess(true);
       form.reset();
       toast({
-        title: 'Password changed',
-        description: 'Your password has been successfully updated.',
-        variant: 'default',
+        title: "Password changed",
+        description: "Your password has been successfully updated.",
+        variant: "default",
       });
     } catch (err) {
       // Error is handled by the useAuth hook
@@ -80,7 +89,9 @@ const ChangePasswordForm: React.FC = () => {
         {success && (
           <Alert className="bg-green-900/30 border-green-800/50 text-green-200 mb-6">
             <CheckCircle className="h-4 w-4" />
-            <AlertDescription>Your password has been successfully updated</AlertDescription>
+            <AlertDescription>
+              Your password has been successfully updated
+            </AlertDescription>
           </Alert>
         )}
 
@@ -98,7 +109,9 @@ const ChangePasswordForm: React.FC = () => {
               name="currentPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-[#40C4FF]/80">Current Password</FormLabel>
+                  <FormLabel className="text-[#40C4FF]/80">
+                    Current Password
+                  </FormLabel>
                   <FormControl>
                     <div className="relative">
                       <Input
@@ -112,9 +125,15 @@ const ChangePasswordForm: React.FC = () => {
                         variant="ghost"
                         size="icon"
                         className="absolute right-0 top-0 h-full px-3 text-[#40C4FF]/60 hover:text-[#40C4FF]"
-                        onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+                        onClick={() =>
+                          setShowCurrentPassword(!showCurrentPassword)
+                        }
                       >
-                        {showCurrentPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                        {showCurrentPassword ? (
+                          <EyeOff className="h-4 w-4" />
+                        ) : (
+                          <Eye className="h-4 w-4" />
+                        )}
                       </Button>
                     </div>
                   </FormControl>
@@ -128,7 +147,9 @@ const ChangePasswordForm: React.FC = () => {
               name="newPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-[#40C4FF]/80">New Password</FormLabel>
+                  <FormLabel className="text-[#40C4FF]/80">
+                    New Password
+                  </FormLabel>
                   <FormControl>
                     <div className="relative">
                       <Input
@@ -144,12 +165,17 @@ const ChangePasswordForm: React.FC = () => {
                         className="absolute right-0 top-0 h-full px-3 text-[#40C4FF]/60 hover:text-[#40C4FF]"
                         onClick={() => setShowNewPassword(!showNewPassword)}
                       >
-                        {showNewPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                        {showNewPassword ? (
+                          <EyeOff className="h-4 w-4" />
+                        ) : (
+                          <Eye className="h-4 w-4" />
+                        )}
                       </Button>
                     </div>
                   </FormControl>
                   <FormDescription className="text-[#40C4FF]/60 text-xs">
-                    Password must be at least 8 characters with at least one uppercase letter, one lowercase letter, and one number
+                    Password must be at least 8 characters with at least one
+                    uppercase letter, one lowercase letter, and one number
                   </FormDescription>
                   <FormMessage className="text-red-400" />
                 </FormItem>
@@ -161,7 +187,9 @@ const ChangePasswordForm: React.FC = () => {
               name="confirmPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-[#40C4FF]/80">Confirm New Password</FormLabel>
+                  <FormLabel className="text-[#40C4FF]/80">
+                    Confirm New Password
+                  </FormLabel>
                   <FormControl>
                     <div className="relative">
                       <Input
@@ -175,9 +203,15 @@ const ChangePasswordForm: React.FC = () => {
                         variant="ghost"
                         size="icon"
                         className="absolute right-0 top-0 h-full px-3 text-[#40C4FF]/60 hover:text-[#40C4FF]"
-                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                        onClick={() =>
+                          setShowConfirmPassword(!showConfirmPassword)
+                        }
                       >
-                        {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                        {showConfirmPassword ? (
+                          <EyeOff className="h-4 w-4" />
+                        ) : (
+                          <Eye className="h-4 w-4" />
+                        )}
                       </Button>
                     </div>
                   </FormControl>
@@ -186,12 +220,12 @@ const ChangePasswordForm: React.FC = () => {
               )}
             />
 
-            <Button 
-              type="submit" 
+            <Button
+              type="submit"
               disabled={isLoading}
               className="w-full bg-[#40C4FF] hover:bg-[#40C4FF]/80 text-black font-medium mt-6"
             >
-              {isLoading ? 'Updating...' : 'Update Password'}
+              {isLoading ? "Updating..." : "Update Password"}
             </Button>
           </form>
         </Form>
@@ -200,4 +234,4 @@ const ChangePasswordForm: React.FC = () => {
   );
 };
 
-export default ChangePasswordForm; 
+export default ChangePasswordForm;

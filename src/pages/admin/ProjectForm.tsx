@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
-import { useAdminStore } from '@/data/adminStore';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
+import React, { useState, useEffect } from "react";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { useAdminStore } from "@/data/adminStore";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 import {
   Form,
   FormControl,
@@ -12,11 +12,11 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
-import { Separator } from '@/components/ui/separator';
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { Separator } from "@/components/ui/separator";
 import {
   Card,
   CardContent,
@@ -24,14 +24,14 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
+} from "@/components/ui/card";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
+} from "@/components/ui/select";
 import {
   Save,
   X,
@@ -42,37 +42,51 @@ import {
   AlertCircle,
   Eye,
   ArrowLeft,
-} from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
-import { Calendar as CalendarComponent } from '@/components/ui/calendar';
+} from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Calendar as CalendarComponent } from "@/components/ui/calendar";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '@/components/ui/popover';
-import { cn } from '@/lib/utils';
-import { format } from 'date-fns';
-import { useToast } from '@/components/ui/use-toast';
-import { Alert, AlertDescription } from '@/components/ui/alert';
+} from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
+import { format } from "date-fns";
+import { useToast } from "@/components/ui/use-toast";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 // Form schema for validation
 const projectSchema = z.object({
   title: z.string().min(3, {
-    message: 'Title must be at least 3 characters.',
+    message: "Title must be at least 3 characters.",
   }),
-  description: z.string().min(10, {
-    message: 'Description must be at least 10 characters.',
-  }).max(500, {
-    message: 'Description must be at most 500 characters.',
-  }),
-  longDescription: z.string().min(10, {
-    message: 'Detailed description must be at least 10 characters.',
-  }).optional(),
-  repoUrl: z.string().url({ message: "Please enter a valid URL" }).optional().or(z.literal('')),
-  demoUrl: z.string().url({ message: "Please enter a valid URL" }).optional().or(z.literal('')),
+  description: z
+    .string()
+    .min(10, {
+      message: "Description must be at least 10 characters.",
+    })
+    .max(500, {
+      message: "Description must be at most 500 characters.",
+    }),
+  longDescription: z
+    .string()
+    .min(10, {
+      message: "Detailed description must be at least 10 characters.",
+    })
+    .optional(),
+  repoUrl: z
+    .string()
+    .url({ message: "Please enter a valid URL" })
+    .optional()
+    .or(z.literal("")),
+  demoUrl: z
+    .string()
+    .url({ message: "Please enter a valid URL" })
+    .optional()
+    .or(z.literal("")),
   date: z.date().optional(),
   technologies: z.array(z.string()).min(1, {
-    message: 'Please add at least one technology.',
+    message: "Please add at least one technology.",
   }),
   image: z.any().optional(),
 });
@@ -85,48 +99,47 @@ const ProjectForm: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const [searchParams] = useSearchParams();
   const { toast } = useToast();
-  
-  const isEditMode = slug !== undefined && slug !== 'new';
-  const project = isEditMode 
-    ? projects.find(p => p.slug === slug) 
-    : null;
-  
+
+  const isEditMode = slug !== undefined && slug !== "new";
+  const project = isEditMode ? projects.find((p) => p.slug === slug) : null;
+
   // For technology tags input
-  const [newTag, setNewTag] = useState('');
-  
+  const [newTag, setNewTag] = useState("");
+
   // For image preview
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
-  
+
   // Form setup with default values
   const form = useForm<ProjectFormValues>({
     resolver: zodResolver(projectSchema),
     defaultValues: {
-      title: project?.title || '',
-      description: project?.description || '',
-      longDescription: project?.longDescription || '',
-      repoUrl: project?.repoUrl || '',
-      demoUrl: project?.demoUrl || '',
+      title: project?.title || "",
+      description: project?.description || "",
+      longDescription: project?.longDescription || "",
+      repoUrl: project?.repoUrl || "",
+      demoUrl: project?.demoUrl || "",
       technologies: project?.technologies || [],
       date: project?.date ? new Date(project?.date) : new Date(),
       image: undefined,
     },
   });
-  
+
   // Check for restore parameter to undo a deleted project
   useEffect(() => {
-    const restoreSlug = searchParams.get('restore');
+    const restoreSlug = searchParams.get("restore");
     if (restoreSlug) {
       // This would typically fetch the deleted project from a backup or trash
       // For now, we just show a notification
       toast({
         title: "Restore not implemented",
-        description: "In a real app, this would restore the deleted project from a backup.",
+        description:
+          "In a real app, this would restore the deleted project from a backup.",
         variant: "destructive",
       });
     }
   }, [searchParams, toast]);
-  
+
   // Update form when project changes
   useEffect(() => {
     if (project) {
@@ -134,21 +147,21 @@ const ProjectForm: React.FC = () => {
       form.reset({
         title: project.title,
         description: project.description,
-        longDescription: project.longDescription || '',
-        repoUrl: project.repoUrl || '',
-        demoUrl: project.demoUrl || '',
+        longDescription: project.longDescription || "",
+        repoUrl: project.repoUrl || "",
+        demoUrl: project.demoUrl || "",
         technologies: project.technologies,
         date: project.date ? new Date(project.date) : new Date(),
         image: undefined,
       });
-      
+
       // Set image preview if project has an image
       if (project.image) {
         setImagePreview(project.image);
       }
     }
   }, [project, form]);
-  
+
   const onSubmit = (data: ProjectFormValues) => {
     // Handle image upload (in a real app, this would upload to a server or CDN)
     let imageUrl = project?.image || null;
@@ -159,7 +172,7 @@ const ProjectForm: React.FC = () => {
       reader.onload = (e) => {
         if (e.target?.result) {
           imageUrl = e.target.result as string;
-          
+
           // Now continue with saving the project
           saveProject(data, imageUrl);
         }
@@ -170,20 +183,22 @@ const ProjectForm: React.FC = () => {
       saveProject(data, imageUrl);
     }
   };
-  
+
   const saveProject = (data: ProjectFormValues, imageUrl: string | null) => {
     // Prepare project data
     const projectData = {
       title: data.title,
       description: data.description,
-      longDescription: data.longDescription || '',
-      repoUrl: data.repoUrl || '',
-      demoUrl: data.demoUrl || '',
+      longDescription: data.longDescription || "",
+      repoUrl: data.repoUrl || "",
+      demoUrl: data.demoUrl || "",
       technologies: data.technologies,
-      date: data.date ? format(data.date, 'yyyy-MM-dd') : format(new Date(), 'yyyy-MM-dd'),
+      date: data.date
+        ? format(data.date, "yyyy-MM-dd")
+        : format(new Date(), "yyyy-MM-dd"),
       image: imageUrl,
     };
-    
+
     if (isEditMode && slug) {
       // Update existing project
       updateProject(slug, projectData);
@@ -199,24 +214,29 @@ const ProjectForm: React.FC = () => {
         description: `"${data.title}" has been successfully added to your portfolio.`,
       });
     }
-    
+
     // Navigate back to projects list
-    navigate('/admin/projects');
+    navigate("/admin/projects");
   };
-  
+
   const handleAddTag = () => {
-    if (newTag.trim() && !form.getValues().technologies.includes(newTag.trim())) {
+    if (
+      newTag.trim() &&
+      !form.getValues().technologies.includes(newTag.trim())
+    ) {
       const updatedTags = [...form.getValues().technologies, newTag.trim()];
-      form.setValue('technologies', updatedTags, { shouldValidate: true });
-      setNewTag('');
+      form.setValue("technologies", updatedTags, { shouldValidate: true });
+      setNewTag("");
     }
   };
-  
+
   const handleRemoveTag = (tagToRemove: string) => {
-    const updatedTags = form.getValues().technologies.filter(tag => tag !== tagToRemove);
-    form.setValue('technologies', updatedTags, { shouldValidate: true });
+    const updatedTags = form
+      .getValues()
+      .technologies.filter((tag) => tag !== tagToRemove);
+    form.setValue("technologies", updatedTags, { shouldValidate: true });
   };
-  
+
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -229,9 +249,9 @@ const ProjectForm: React.FC = () => {
         });
         return;
       }
-      
+
       // Validate file type
-      if (!file.type.startsWith('image/')) {
+      if (!file.type.startsWith("image/")) {
         toast({
           title: "Invalid file type",
           description: "Please upload a valid image file (JPEG, PNG).",
@@ -239,41 +259,43 @@ const ProjectForm: React.FC = () => {
         });
         return;
       }
-      
+
       setImageFile(file);
-      
+
       // Create preview
       const reader = new FileReader();
       reader.onload = () => {
         setImagePreview(reader.result as string);
       };
       reader.readAsDataURL(file);
-      
+
       // Update form value
-      form.setValue('image', file, { shouldValidate: true });
+      form.setValue("image", file, { shouldValidate: true });
     }
   };
-  
+
   const removeImage = () => {
     setImagePreview(null);
     setImageFile(null);
-    form.setValue('image', undefined, { shouldValidate: true });
+    form.setValue("image", undefined, { shouldValidate: true });
   };
-  
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-white">{isEditMode ? 'Edit Project' : 'Add New Project'}</h1>
+          <h1 className="text-3xl font-bold text-white">
+            {isEditMode ? "Edit Project" : "Add New Project"}
+          </h1>
           <p className="text-[#40C4FF]/70 mt-1">
-            {isEditMode 
-              ? 'Update the details of your existing project' 
-              : 'Add a new project to your portfolio'}
+            {isEditMode
+              ? "Update the details of your existing project"
+              : "Add a new project to your portfolio"}
           </p>
         </div>
         <Button
           variant="outline"
-          onClick={() => navigate('/admin/projects')}
+          onClick={() => navigate("/admin/projects")}
           className="bg-transparent border-[#40C4FF]/30 text-white hover:bg-[#40C4FF]/10 hover:text-white gap-2"
         >
           <ArrowLeft className="h-4 w-4" />
@@ -303,9 +325,9 @@ const ProjectForm: React.FC = () => {
                       <FormItem>
                         <FormLabel>Title</FormLabel>
                         <FormControl>
-                          <Input 
-                            placeholder="Enter project title" 
-                            {...field} 
+                          <Input
+                            placeholder="Enter project title"
+                            {...field}
                             className="bg-black/60 border-[#40C4FF]/40 focus:border-[#40C4FF] text-white"
                           />
                         </FormControl>
@@ -316,7 +338,7 @@ const ProjectForm: React.FC = () => {
                       </FormItem>
                     )}
                   />
-                  
+
                   <FormField
                     control={form.control}
                     name="description"
@@ -324,20 +346,21 @@ const ProjectForm: React.FC = () => {
                       <FormItem>
                         <FormLabel>Short Description</FormLabel>
                         <FormControl>
-                          <Textarea 
-                            placeholder="Brief overview of your project" 
-                            {...field} 
+                          <Textarea
+                            placeholder="Brief overview of your project"
+                            {...field}
                             className="bg-black/60 border-[#40C4FF]/40 focus:border-[#40C4FF] text-white resize-none h-24"
                           />
                         </FormControl>
                         <FormDescription className="text-[#40C4FF]/60">
-                          A concise summary (200-500 characters) that will appear in the project card
+                          A concise summary (200-500 characters) that will
+                          appear in the project card
                         </FormDescription>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
-                  
+
                   <FormField
                     control={form.control}
                     name="longDescription"
@@ -345,14 +368,15 @@ const ProjectForm: React.FC = () => {
                       <FormItem>
                         <FormLabel>Detailed Description</FormLabel>
                         <FormControl>
-                          <Textarea 
-                            placeholder="Full explanation of your project, including goals, challenges, and outcomes" 
-                            {...field} 
+                          <Textarea
+                            placeholder="Full explanation of your project, including goals, challenges, and outcomes"
+                            {...field}
                             className="bg-black/60 border-[#40C4FF]/40 focus:border-[#40C4FF] text-white resize-none h-40"
                           />
                         </FormControl>
                         <FormDescription className="text-[#40C4FF]/60">
-                          Detailed information that will be displayed on the project detail page
+                          Detailed information that will be displayed on the
+                          project detail page
                         </FormDescription>
                         <FormMessage />
                       </FormItem>
@@ -360,7 +384,7 @@ const ProjectForm: React.FC = () => {
                   />
                 </CardContent>
               </Card>
-              
+
               <Card className="bg-black/30 border-[#40C4FF]/20 text-white">
                 <CardHeader>
                   <CardTitle>Technologies & Links</CardTitle>
@@ -377,15 +401,15 @@ const ProjectForm: React.FC = () => {
                         <FormLabel>Technologies & Skills</FormLabel>
                         <div className="flex flex-wrap gap-2 p-3 bg-black/40 rounded-md border border-[#40C4FF]/30 min-h-14">
                           {form.getValues().technologies.map((tech) => (
-                            <Badge 
-                              key={tech} 
+                            <Badge
+                              key={tech}
                               variant="secondary"
                               className="bg-[#40C4FF]/20 hover:bg-[#40C4FF]/30 text-white gap-1.5 px-3 py-1.5"
                             >
                               {tech}
-                              <button 
-                                type="button" 
-                                onClick={() => handleRemoveTag(tech)} 
+                              <button
+                                type="button"
+                                onClick={() => handleRemoveTag(tech)}
                                 className="text-white hover:bg-[#40C4FF]/40 rounded-full ml-1"
                               >
                                 <X className="h-3 w-3" />
@@ -393,25 +417,27 @@ const ProjectForm: React.FC = () => {
                             </Badge>
                           ))}
                           {form.getValues().technologies.length === 0 && (
-                            <span className="text-[#40C4FF]/40 text-sm">No technologies added</span>
+                            <span className="text-[#40C4FF]/40 text-sm">
+                              No technologies added
+                            </span>
                           )}
                         </div>
-                        
+
                         <div className="flex mt-3 gap-2">
-                          <Input 
-                            placeholder="Add technology (e.g., React, Python)" 
+                          <Input
+                            placeholder="Add technology (e.g., React, Python)"
                             value={newTag}
                             onChange={(e) => setNewTag(e.target.value)}
                             onKeyDown={(e) => {
-                              if (e.key === 'Enter') {
+                              if (e.key === "Enter") {
                                 e.preventDefault();
                                 handleAddTag();
                               }
                             }}
                             className="bg-black/60 border-[#40C4FF]/40 focus:border-[#40C4FF] text-white"
                           />
-                          <Button 
-                            type="button" 
+                          <Button
+                            type="button"
                             onClick={handleAddTag}
                             className="bg-[#40C4FF] hover:bg-[#40C4FF]/80 text-black"
                           >
@@ -419,13 +445,14 @@ const ProjectForm: React.FC = () => {
                           </Button>
                         </div>
                         <FormDescription className="text-[#40C4FF]/60">
-                          Add key technologies, frameworks, or skills used in this project
+                          Add key technologies, frameworks, or skills used in
+                          this project
                         </FormDescription>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
-                  
+
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <FormField
                       control={form.control}
@@ -434,9 +461,9 @@ const ProjectForm: React.FC = () => {
                         <FormItem>
                           <FormLabel>Repository URL (Optional)</FormLabel>
                           <FormControl>
-                            <Input 
-                              placeholder="https://github.com/yourusername/repo" 
-                              {...field} 
+                            <Input
+                              placeholder="https://github.com/yourusername/repo"
+                              {...field}
                               className="bg-black/60 border-[#40C4FF]/40 focus:border-[#40C4FF] text-white"
                             />
                           </FormControl>
@@ -447,7 +474,7 @@ const ProjectForm: React.FC = () => {
                         </FormItem>
                       )}
                     />
-                    
+
                     <FormField
                       control={form.control}
                       name="demoUrl"
@@ -455,9 +482,9 @@ const ProjectForm: React.FC = () => {
                         <FormItem>
                           <FormLabel>Demo URL (Optional)</FormLabel>
                           <FormControl>
-                            <Input 
-                              placeholder="https://your-demo-link.com" 
-                              {...field} 
+                            <Input
+                              placeholder="https://your-demo-link.com"
+                              {...field}
                               className="bg-black/60 border-[#40C4FF]/40 focus:border-[#40C4FF] text-white"
                             />
                           </FormControl>
@@ -469,7 +496,7 @@ const ProjectForm: React.FC = () => {
                       )}
                     />
                   </div>
-                  
+
                   <FormField
                     control={form.control}
                     name="date"
@@ -483,7 +510,7 @@ const ProjectForm: React.FC = () => {
                                 variant="outline"
                                 className={cn(
                                   "pl-3 text-left font-normal bg-black/60 border-[#40C4FF]/40 hover:bg-black/80 text-white w-full sm:w-[240px]",
-                                  !field.value && "text-muted-foreground"
+                                  !field.value && "text-muted-foreground",
                                 )}
                               >
                                 <Calendar className="mr-2 h-4 w-4 text-[#40C4FF]" />
@@ -515,7 +542,7 @@ const ProjectForm: React.FC = () => {
                 </CardContent>
               </Card>
             </div>
-            
+
             {/* Right column - Image, preview and submit */}
             <div className="space-y-6">
               <Card className="bg-black/30 border-[#40C4FF]/20 text-white">
@@ -529,9 +556,9 @@ const ProjectForm: React.FC = () => {
                   <div className="flex flex-col items-center justify-center">
                     {imagePreview ? (
                       <div className="relative w-full">
-                        <img 
-                          src={imagePreview} 
-                          alt="Project thumbnail" 
+                        <img
+                          src={imagePreview}
+                          alt="Project thumbnail"
                           className="w-full h-48 object-cover rounded-md border border-[#40C4FF]/30"
                         />
                         <Button
@@ -545,13 +572,22 @@ const ProjectForm: React.FC = () => {
                         </Button>
                       </div>
                     ) : (
-                      <div className="w-full h-48 border-2 border-dashed border-[#40C4FF]/30 rounded-md flex flex-col items-center justify-center p-4 text-center cursor-pointer hover:border-[#40C4FF]/60 transition-colors duration-200" onClick={() => document.getElementById('project-image')?.click()}>
+                      <div
+                        className="w-full h-48 border-2 border-dashed border-[#40C4FF]/30 rounded-md flex flex-col items-center justify-center p-4 text-center cursor-pointer hover:border-[#40C4FF]/60 transition-colors duration-200"
+                        onClick={() =>
+                          document.getElementById("project-image")?.click()
+                        }
+                      >
                         <UploadCloud className="h-10 w-10 text-[#40C4FF]/50 mb-2" />
-                        <p className="text-[#40C4FF]/80 font-medium">Upload Image</p>
-                        <p className="text-[#40C4FF]/60 text-xs mt-1">PNG, JPG (max 2MB)</p>
+                        <p className="text-[#40C4FF]/80 font-medium">
+                          Upload Image
+                        </p>
+                        <p className="text-[#40C4FF]/60 text-xs mt-1">
+                          PNG, JPG (max 2MB)
+                        </p>
                       </div>
                     )}
-                    
+
                     <input
                       id="project-image"
                       type="file"
@@ -559,25 +595,27 @@ const ProjectForm: React.FC = () => {
                       className="hidden"
                       onChange={handleImageChange}
                     />
-                    
+
                     {!imagePreview && (
                       <Button
                         type="button"
                         variant="outline"
                         className="mt-4 bg-transparent border-[#40C4FF]/30 text-white hover:bg-[#40C4FF]/10 hover:text-white"
-                        onClick={() => document.getElementById('project-image')?.click()}
+                        onClick={() =>
+                          document.getElementById("project-image")?.click()
+                        }
                       >
                         Select Image
                       </Button>
                     )}
                   </div>
-                  
+
                   <FormDescription className="text-[#40C4FF]/60 text-center mt-4">
                     Recommended size: 400×300px
                   </FormDescription>
                 </CardContent>
               </Card>
-              
+
               <Card className="bg-black/30 border-[#40C4FF]/20 text-white">
                 <CardHeader>
                   <CardTitle>Preview</CardTitle>
@@ -588,22 +626,32 @@ const ProjectForm: React.FC = () => {
                 <CardContent className="min-h-[150px] flex items-center justify-center">
                   {form.getValues().title ? (
                     <div className="border border-[#40C4FF]/20 bg-black/40 rounded-lg p-4 w-full">
-                      <div className="font-medium text-lg text-white">{form.getValues().title}</div>
+                      <div className="font-medium text-lg text-white">
+                        {form.getValues().title}
+                      </div>
                       <div className="text-sm text-[#40C4FF]/70 mt-1">
-                        {form.getValues().description ? form.getValues().description.slice(0, 100) + '...' : 'No description added yet'}
+                        {form.getValues().description
+                          ? form.getValues().description.slice(0, 100) + "..."
+                          : "No description added yet"}
                       </div>
                       <div className="flex flex-wrap gap-1.5 mt-3">
-                        {form.getValues().technologies.slice(0, 3).map((tech) => (
-                          <Badge 
-                            key={tech} 
+                        {form
+                          .getValues()
+                          .technologies.slice(0, 3)
+                          .map((tech) => (
+                            <Badge
+                              key={tech}
+                              variant="outline"
+                              className="bg-[#40C4FF]/10 text-[#40C4FF]/80 border-[#40C4FF]/30"
+                            >
+                              {tech}
+                            </Badge>
+                          ))}
+                        {form.getValues().technologies.length > 3 && (
+                          <Badge
                             variant="outline"
                             className="bg-[#40C4FF]/10 text-[#40C4FF]/80 border-[#40C4FF]/30"
                           >
-                            {tech}
-                          </Badge>
-                        ))}
-                        {form.getValues().technologies.length > 3 && (
-                          <Badge variant="outline" className="bg-[#40C4FF]/10 text-[#40C4FF]/80 border-[#40C4FF]/30">
                             +{form.getValues().technologies.length - 3} more
                           </Badge>
                         )}
@@ -616,33 +664,33 @@ const ProjectForm: React.FC = () => {
                   )}
                 </CardContent>
               </Card>
-              
+
               <Card className="bg-black/30 border-[#40C4FF]/20 text-white">
                 <CardContent className="pt-6">
                   <Alert className="bg-[#40C4FF]/5 border-[#40C4FF]/20 mb-6">
                     <AlertCircle className="h-4 w-4 text-[#40C4FF]" />
                     <AlertDescription className="text-[#40C4FF]/80 text-sm">
-                      {isEditMode 
-                        ? 'Changes will be immediately visible on your portfolio.' 
-                        : 'Your new project will be added to your portfolio immediately.'}
+                      {isEditMode
+                        ? "Changes will be immediately visible on your portfolio."
+                        : "Your new project will be added to your portfolio immediately."}
                     </AlertDescription>
                   </Alert>
-                  
+
                   <div className="flex flex-col gap-3">
-                    <Button 
-                      type="submit" 
+                    <Button
+                      type="submit"
                       className="bg-[#40C4FF] hover:bg-[#40C4FF]/80 text-black font-medium w-full gap-2"
                       disabled={form.formState.isSubmitting}
                     >
                       <Save className="h-4 w-4" />
-                      {isEditMode ? 'Update Project' : 'Save Project'}
+                      {isEditMode ? "Update Project" : "Save Project"}
                     </Button>
-                    
-                    <Button 
-                      type="button" 
-                      variant="outline" 
+
+                    <Button
+                      type="button"
+                      variant="outline"
                       className="bg-transparent border-[#40C4FF]/30 text-white hover:bg-[#40C4FF]/10 hover:text-white w-full gap-2"
-                      onClick={() => navigate('/admin/projects')}
+                      onClick={() => navigate("/admin/projects")}
                     >
                       <X className="h-4 w-4" />
                       Cancel
@@ -658,4 +706,4 @@ const ProjectForm: React.FC = () => {
   );
 };
 
-export default ProjectForm; 
+export default ProjectForm;

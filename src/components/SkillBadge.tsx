@@ -5,15 +5,11 @@ interface SkillBadgeProps {
   size?: "sm" | "md";
 }
 
-const SkillBadge: React.FC<SkillBadgeProps> = ({ 
-  name,
-  size = "md"
-}) => {
-
+const SkillBadge: React.FC<SkillBadgeProps> = ({ name, size = "md" }) => {
   const sizeClass = size === "sm" ? "text-xs px-2 py-0.5" : "text-sm px-3 py-1";
 
   return (
-    <span 
+    <span
       className={`
         inline-flex items-center rounded-full 
         border border-border 

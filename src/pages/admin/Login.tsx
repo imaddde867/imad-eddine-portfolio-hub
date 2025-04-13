@@ -1,9 +1,9 @@
-import React from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
-import { z } from 'zod';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
+import React from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,
   FormControl,
@@ -11,17 +11,19 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { AlertCircle, Lock, User, ArrowLeft, Home } from 'lucide-react';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { useToast } from '@/components/ui/use-toast';
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { AlertCircle, Lock, User, ArrowLeft, Home } from "lucide-react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { useToast } from "@/components/ui/use-toast";
 
 // Form schema for validation
 const loginSchema = z.object({
-  username: z.string().min(3, { message: 'Username is required' }),
-  password: z.string().min(8, { message: 'Password must be at least 8 characters' }),
+  username: z.string().min(3, { message: "Username is required" }),
+  password: z
+    .string()
+    .min(8, { message: "Password must be at least 8 characters" }),
 });
 
 type LoginForm = z.infer<typeof loginSchema>;
@@ -42,14 +44,14 @@ const Login: React.FC = () => {
   const location = useLocation();
   const { toast } = useToast();
 
-  const from = location.state?.from?.pathname || '/admin';
+  const from = location.state?.from?.pathname || "/admin";
 
   // For login form
   const loginForm = useForm<LoginForm>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      username: '',
-      password: '',
+      username: "",
+      password: "",
     },
   });
 
@@ -57,9 +59,9 @@ const Login: React.FC = () => {
     try {
       await login(data.username, data.password);
       toast({
-        title: 'Login successful',
-        description: 'Welcome to the admin dashboard.',
-        variant: 'default',
+        title: "Login successful",
+        description: "Welcome to the admin dashboard.",
+        variant: "default",
       });
       navigate(from, { replace: true });
     } catch (err) {
@@ -68,20 +70,20 @@ const Login: React.FC = () => {
   };
 
   const goToPasswordReset = () => {
-    navigate('/admin/reset-password');
+    navigate("/admin/reset-password");
   };
 
   return (
     <div className="flex min-h-screen bg-[#0A0F1F] relative">
       <GradientBackground />
-      
+
       <div className="container relative z-10 flex flex-col items-center justify-center px-4 py-12 mx-auto">
         <div className="absolute top-4 left-4">
-          <Button 
-            variant="outline" 
-            size="sm" 
+          <Button
+            variant="outline"
+            size="sm"
             className="flex gap-2 bg-transparent border-slate-700 text-slate-300 hover:bg-slate-800/50"
-            onClick={() => navigate('/')}
+            onClick={() => navigate("/")}
           >
             <Home className="h-4 w-4" />
             Back to site
@@ -94,26 +96,30 @@ const Login: React.FC = () => {
               <span className="text-white font-bold text-xl">IL</span>
             </div>
           </div>
-          
+
           <div className="bg-slate-900/50 backdrop-blur-sm rounded-lg border border-slate-800 shadow-xl p-8 w-full">
             <div className="text-center mb-6">
-              <h1 className="text-2xl font-bold text-white">
-                Admin Portal
-              </h1>
+              <h1 className="text-2xl font-bold text-white">Admin Portal</h1>
               <p className="text-slate-400 text-sm mt-1">
                 Sign in to access the dashboard
               </p>
             </div>
 
             {error && (
-              <Alert variant="destructive" className="mb-6 bg-red-900/30 border-red-800/50 text-red-200">
+              <Alert
+                variant="destructive"
+                className="mb-6 bg-red-900/30 border-red-800/50 text-red-200"
+              >
                 <AlertCircle className="h-4 w-4" />
                 <AlertDescription>{error}</AlertDescription>
               </Alert>
             )}
 
             <Form {...loginForm}>
-              <form onSubmit={loginForm.handleSubmit(onLoginSubmit)} className="space-y-4">
+              <form
+                onSubmit={loginForm.handleSubmit(onLoginSubmit)}
+                className="space-y-4"
+              >
                 <FormField
                   control={loginForm.control}
                   name="username"
@@ -156,14 +162,14 @@ const Login: React.FC = () => {
                   )}
                 />
 
-                <Button 
-                  type="submit" 
+                <Button
+                  type="submit"
                   disabled={isLoading}
                   className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium"
                 >
-                  {isLoading ? 'Signing in...' : 'Sign in'}
+                  {isLoading ? "Signing in..." : "Sign in"}
                 </Button>
-                
+
                 <Button
                   type="button"
                   variant="ghost"
@@ -175,9 +181,10 @@ const Login: React.FC = () => {
               </form>
             </Form>
           </div>
-          
+
           <p className="text-center text-xs text-slate-500 mt-6">
-            For security reasons, this page is protected and will lock after multiple failed attempts.
+            For security reasons, this page is protected and will lock after
+            multiple failed attempts.
           </p>
         </div>
       </div>
@@ -185,4 +192,4 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login; 
+export default Login;

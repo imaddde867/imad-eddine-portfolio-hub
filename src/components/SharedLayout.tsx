@@ -1,5 +1,5 @@
-import React from 'react';
-import { Outlet, NavLink } from 'react-router-dom';
+import React from "react";
+import { Outlet, NavLink } from "react-router-dom";
 import { Moon, Sun } from "lucide-react"; // Example icons for theme toggle
 
 const Header: React.FC = () => {
@@ -9,9 +9,9 @@ const Header: React.FC = () => {
   React.useEffect(() => {
     const root = window.document.documentElement;
     if (isDarkMode) {
-      root.classList.add('dark');
+      root.classList.add("dark");
     } else {
-      root.classList.remove('dark');
+      root.classList.remove("dark");
     }
   }, [isDarkMode]);
 
@@ -30,19 +30,25 @@ const Header: React.FC = () => {
           <nav className="flex items-center space-x-6 text-sm font-medium">
             <NavLink
               to="/"
-              className={({ isActive }) => `nav-link ${isActive ? 'active-nav-link' : ''}`}
+              className={({ isActive }) =>
+                `nav-link ${isActive ? "active-nav-link" : ""}`
+              }
             >
               Home
             </NavLink>
             <NavLink
               to="/projects"
-              className={({ isActive }) => `nav-link ${isActive ? 'active-nav-link' : ''}`}
+              className={({ isActive }) =>
+                `nav-link ${isActive ? "active-nav-link" : ""}`
+              }
             >
               Projects
             </NavLink>
             <NavLink
               to="/blog"
-              className={({ isActive }) => `nav-link ${isActive ? 'active-nav-link' : ''}`}
+              className={({ isActive }) =>
+                `nav-link ${isActive ? "active-nav-link" : ""}`
+              }
             >
               Blog
             </NavLink>
@@ -50,8 +56,15 @@ const Header: React.FC = () => {
         </div>
         {/* Add Mobile Nav Toggle Here if needed */}
         <div className="flex flex-1 items-center justify-end space-x-2">
-          <button onClick={toggleTheme} className="p-2 rounded-md hover:bg-accent/10">
-            {isDarkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+          <button
+            onClick={toggleTheme}
+            className="p-2 rounded-md hover:bg-accent/10"
+          >
+            {isDarkMode ? (
+              <Sun className="h-5 w-5" />
+            ) : (
+              <Moon className="h-5 w-5" />
+            )}
             <span className="sr-only">Toggle theme</span>
           </button>
           {/* Add other icons like GitHub/LinkedIn here */}
@@ -66,7 +79,25 @@ const Footer: React.FC = () => {
     <footer className="py-6 md:px-8 md:py-0 border-t border-border/40">
       <div className="container-custom flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
         <p className="text-center text-sm leading-loose text-muted-foreground md:text-left">
-          © {new Date().getFullYear()} Your Name. Built with <a href="https://react.dev" target="_blank" rel="noreferrer" className="font-medium underline underline-offset-4 hover:text-accent">React</a> & <a href="https://tailwindcss.com" target="_blank" rel="noreferrer" className="font-medium underline underline-offset-4 hover:text-accent">Tailwind CSS</a>.
+          © {new Date().getFullYear()} Your Name. Built with{" "}
+          <a
+            href="https://react.dev"
+            target="_blank"
+            rel="noreferrer"
+            className="font-medium underline underline-offset-4 hover:text-accent"
+          >
+            React
+          </a>{" "}
+          &{" "}
+          <a
+            href="https://tailwindcss.com"
+            target="_blank"
+            rel="noreferrer"
+            className="font-medium underline underline-offset-4 hover:text-accent"
+          >
+            Tailwind CSS
+          </a>
+          .
         </p>
         {/* Add social links here */}
       </div>
@@ -78,10 +109,12 @@ const SharedLayout: React.FC = () => {
   return (
     <div className="relative flex min-h-screen flex-col bg-background">
       <Header />
-      <main className="flex-1"><Outlet /></main>
+      <main className="flex-1">
+        <Outlet />
+      </main>
       <Footer />
     </div>
   );
 };
 
-export default SharedLayout; 
+export default SharedLayout;

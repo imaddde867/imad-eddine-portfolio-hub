@@ -1,66 +1,106 @@
 # Imad Eddine EL MOUSS - Portfolio Hub
 
-A personal portfolio website showcasing projects and blog posts related to AI, Machine Learning, and Data Engineering. Built with a modern, minimalist dark-mode UI.
+A personal portfolio website showcasing projects and blog posts related to AI, Machine Learning, and Data Engineering. Built with a modern, minimalist design and professional aesthetics.
 
 ## Features
 
-*   **Sleek Dark Theme:** Minimalist design with a dark color scheme, bold typography, and vibrant accents.
-*   **Responsive Design:** Adapts to various screen sizes.
-*   **Projects Section:** Displays project cards linking to detailed project pages.
-*   **Blog Section:** Showcases blog posts with links to full articles.
-*   **Dynamic Routing:** Individual pages for each project and blog post.
-*   **Theme Toggle:** Switch between dark and light modes (basic toggle included).
+* **Modern UI Design:** Clean, responsive interface with dark/light mode support
+* **Project Showcase:** Detailed project cards with individual detail pages
+* **Blog Integration:** Share expertise with a dedicated blog section
+* **Admin Dashboard:** Content management system for projects and blog posts
+* **Contact Form:** Direct messaging with form validation and email integration
+* **Responsive Layout:** Optimized for all device sizes
 
-## Technologies Used
+## Tech Stack
 
-*   **Framework:** React
-*   **Language:** TypeScript
-*   **Build Tool:** Vite
-*   **Styling:** Tailwind CSS
-*   **UI Components:** shadcn/ui (likely, based on initial setup)
-*   **Routing:** React Router DOM
-*   **Icons:** Lucide React
+* **Frontend:** React 18, TypeScript, Vite
+* **State Management:** Zustand
+* **Styling:** Tailwind CSS
+* **UI Components:** shadcn/ui
+* **Form Handling:** React Hook Form with Zod validation
+* **Icons:** Lucide React
+* **Routing:** React Router DOM v6
 
-## Getting Started Locally
+## Project Structure
 
-To run this project on your local machine:
+```
+src/
+├── components/       # UI components
+│   ├── ui/           # shadcn/ui components
+│   └── admin/        # Admin dashboard components
+├── context/          # React context providers
+├── data/             # Data management
+├── hooks/            # Custom React hooks
+├── lib/              # Utility functions
+└── pages/            # Application pages
+    └── admin/        # Admin dashboard pages
+```
 
-1.  **Clone the repository:**
-    ```sh
-    git clone <YOUR_REPOSITORY_URL>
-    cd <REPOSITORY_DIRECTORY>
-    ```
+## Getting Started
 
-2.  **Install dependencies:**
-    This project uses Bun as the package manager (inferred from `bun.lockb`). If you don't have Bun installed, follow the instructions [here](https://bun.sh/docs/installation).
-    ```sh
-    bun install
-    ```
-    *Alternatively, if you prefer npm or yarn:* 
-    ```sh
-    # Using npm
-    # npm install 
+### Prerequisites
+- Node.js 16+ or Bun runtime
+- Git
 
-    # Using yarn
-    # yarn install
-    ```
-    *Note: Using a different package manager might result in slightly different dependency versions than specified in `bun.lockb`.*
+### Installation
 
-3.  **Run the development server:**
-    ```sh
-    bun run dev
-    ```
-    *Or using npm/yarn:*
-    ```sh
-    # npm run dev
-    # yarn dev
-    ```
-    This will start the Vite development server, typically at `http://localhost:5173`.
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/imaddde867/imad-eddine-portfolio-hub.git
+   cd imad-eddine-portfolio-hub
+   ```
+
+2. **Install dependencies:**
+   ```bash
+   # Using Bun (recommended)
+   bun install
+
+   # Using npm
+   npm install
+   ```
+
+3. **Start the development server:**
+   ```bash
+   # Using Bun
+   bun run dev
+
+   # Using npm
+   npm run dev
+   ```
+
+4. **Open in browser:**
+   Navigate to `http://localhost:5173` to view the application.
+
+## Build for Production
+
+```bash
+# Using Bun
+bun run build
+
+# Using npm
+npm run build
+```
+
+The built application will be available in the `dist` directory.
+
+## Deployment
+
+The site can be deployed on any static hosting service like Vercel, Netlify, or GitHub Pages.
 
 ## Contributing
 
-Contributions are welcome! If you have suggestions or find issues, please open an issue or submit a pull request.
+Contributions are welcome! If you'd like to contribute, please:
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/awesome-feature`)
+3. Commit your changes (`git commit -m 'Add awesome feature'`)
+4. Push to the branch (`git push origin feature/awesome-feature`)
+5. Open a Pull Request
+
+## Contact
+
+For any questions or inquiries, please contact me at [imadeddine200507@gmail.com](mailto:imadeddine200507@gmail.com).
 
 ## License
 
- MIT License
+This project is licensed under the MIT License.

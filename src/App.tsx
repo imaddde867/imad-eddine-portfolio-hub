@@ -23,8 +23,9 @@ import ProjectForm from "./pages/admin/ProjectForm";
 import BlogList from "./pages/admin/BlogList";
 import BlogForm from "./pages/admin/BlogForm";
 
-// Auth context
+// Context providers
 import { AuthProvider } from "./context/AuthContext";
+import { EmailProvider } from "./context/EmailContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 const queryClient = new QueryClient();
@@ -33,41 +34,43 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <AuthProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            {/* Public routes */}
-            <Route path="/" element={<SharedLayout />}>
-              <Route index element={<Index />} />
-              <Route path="projects" element={<Projects />} />
-              <Route path="projects/:slug" element={<ProjectDetail />} />
-              <Route path="blog" element={<Blog />} />
-              <Route path="blog/:slug" element={<PostDetail />} />
-              <Route path="*" element={<NotFound />} />
-            </Route>
-            
-            {/* Admin routes */}
-            <Route path="/admin/login" element={<AdminLogin />} />
-            <Route path="/admin/reset-password" element={<PasswordReset />} />
-            <Route 
-              path="/admin" 
-              element={
-                <ProtectedRoute>
-                  <AdminLayout />
-                </ProtectedRoute>
-              }
-            >
-              <Route index element={<Dashboard />} />
-              <Route path="projects" element={<ProjectList />} />
-              <Route path="projects/new" element={<ProjectForm />} />
-              <Route path="projects/edit/:slug" element={<ProjectForm />} />
-              <Route path="blog" element={<BlogList />} />
-              <Route path="blog/new" element={<BlogForm />} />
-              <Route path="blog/edit/:slug" element={<BlogForm />} />
-            </Route>
-          </Routes>
-        </BrowserRouter>
+        <EmailProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <Routes>
+              {/* Public routes */}
+              <Route path="/" element={<SharedLayout />}>
+                <Route index element={<Index />} />
+                <Route path="projects" element={<Projects />} />
+                <Route path="projects/:slug" element={<ProjectDetail />} />
+                <Route path="blog" element={<Blog />} />
+                <Route path="blog/:slug" element={<PostDetail />} />
+                <Route path="*" element={<NotFound />} />
+              </Route>
+
+              {/* Admin routes */}
+              <Route path="/admin/login" element={<AdminLogin />} />
+              <Route path="/admin/reset-password" element={<PasswordReset />} />
+              <Route
+                path="/admin"
+                element={
+                  <ProtectedRoute>
+                    <AdminLayout />
+                  </ProtectedRoute>
+                }
+              >
+                <Route index element={<Dashboard />} />
+                <Route path="projects" element={<ProjectList />} />
+                <Route path="projects/new" element={<ProjectForm />} />
+                <Route path="projects/edit/:slug" element={<ProjectForm />} />
+                <Route path="blog" element={<BlogList />} />
+                <Route path="blog/new" element={<BlogForm />} />
+                <Route path="blog/edit/:slug" element={<BlogForm />} />
+              </Route>
+            </Routes>
+          </BrowserRouter>
+        </EmailProvider>
       </AuthProvider>
     </TooltipProvider>
   </QueryClientProvider>

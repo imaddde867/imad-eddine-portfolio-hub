@@ -1,12 +1,22 @@
-import { ProjectData } from './sampleData';
+import { ProjectData } from "./sampleData";
 
 // Updated project data from the provided READMEs
 export const updatedProjects: ProjectData[] = [
   {
     slug: "navicast-maritime-intelligence",
     title: "NAVICAST - Maritime Traffic Intelligence Platform",
-    description: "A comprehensive system for collecting, processing, and visualizing maritime vessel traffic data from AIS feeds. The platform provides real-time vessel tracking, trajectory prediction, and data querying capabilities.",
-    technologies: ["Python", "PostgreSQL", "Machine Learning", "FastAPI", "MQTT", "Leaflet.js", "Random Forest", "API Development"],
+    description:
+      "A comprehensive system for collecting, processing, and visualizing maritime vessel traffic data from AIS feeds. The platform provides real-time vessel tracking, trajectory prediction, and data querying capabilities.",
+    technologies: [
+      "Python",
+      "PostgreSQL",
+      "Machine Learning",
+      "FastAPI",
+      "MQTT",
+      "Leaflet.js",
+      "Random Forest",
+      "API Development",
+    ],
     repoUrl: "https://github.com/imaddde867/NaviCast",
     demoUrl: "http://navicast.tech",
     image: "/images/navicast.png",
@@ -26,14 +36,25 @@ NAVICAST consists of four main components:
 4. **Web-based Visualization**: Interactive map interface for visualizing vessels and their predicted paths.
 
 The machine learning model uses an advanced Random Forest algorithm to predict vessel positions 30 minutes into the future. The model was trained on 363,899 vessel position records collected from the Baltic Sea region, allowing it to learn complex vessel movement patterns under various conditions.`,
-    date: "2024-05-15"
+    date: "2024-05-15",
   },
   {
     slug: "unsupervised-music-recommendation",
     title: "Unsupervised Music Recommendation System",
-    description: "A project that leverages unsupervised machine learning to analyze Spotify track features, cluster similar songs, and generate personalized music recommendations.",
-    technologies: ["Python", "Scikit-learn", "Pandas", "NumPy", "Matplotlib", "Jupyter", "Clustering Algorithms", "Dimensionality Reduction"],
-    repoUrl: "https://github.com/imaddde867/unsupervised-learning-ecommerce-analysis",
+    description:
+      "A project that leverages unsupervised machine learning to analyze Spotify track features, cluster similar songs, and generate personalized music recommendations.",
+    technologies: [
+      "Python",
+      "Scikit-learn",
+      "Pandas",
+      "NumPy",
+      "Matplotlib",
+      "Jupyter",
+      "Clustering Algorithms",
+      "Dimensionality Reduction",
+    ],
+    repoUrl:
+      "https://github.com/imaddde867/unsupervised-learning-ecommerce-analysis",
     demoUrl: "",
     image: "/images/music-recommendation.png",
     longDescription: `This project applies unsupervised learning techniques to Spotify track data to identify song clusters and generate smart music recommendations. By combining clustering algorithms, dimensionality reduction, and content-based filtering, the system reveals hidden structures in musical data and suggests songs based on audio similarities.
@@ -64,13 +85,24 @@ The analysis workflow includes:
 5. Clustering – Grouping similar songs using ML models
 6. Recommendation System – Suggesting songs based on similarity
 7. Insights & Evaluation – Interpreting results and findings`,
-    date: "2024-04-10"
+    date: "2024-04-10",
   },
   {
     slug: "clearbox-secure-messaging",
     title: "ClearBox - Secure Messaging Platform",
-    description: "A secure, scalable, GDPR-compliant messaging application with encryption and real-time communication capabilities.",
-    technologies: ["React", "FastAPI", "Python", "PostgreSQL", "SQLAlchemy", "JWT", "MQTT", "Cryptography", "WebSockets"],
+    description:
+      "A secure, scalable, GDPR-compliant messaging application with encryption and real-time communication capabilities.",
+    technologies: [
+      "React",
+      "FastAPI",
+      "Python",
+      "PostgreSQL",
+      "SQLAlchemy",
+      "JWT",
+      "MQTT",
+      "Cryptography",
+      "WebSockets",
+    ],
     repoUrl: "https://github.com/yourusername/clearbox",
     demoUrl: "https://clearbox.live",
     image: "/images/clearbox.png",
@@ -95,13 +127,22 @@ The analysis workflow includes:
 **Tech Stack**
 - Frontend: React 18.2.0, Axios, MQTT.js, React Router, CSS3
 - Backend: FastAPI 0.104.0, SQLite (development), PostgreSQL (production), SQLAlchemy 2.0.22, JWT, MQTT (Mosquitto), Pydantic, Cryptography`,
-    date: "2024-03-05"
+    date: "2024-03-05",
   },
   {
     slug: "sisu-speak",
     title: "Sisu-Speak - AI Finnish Language Tutor",
-    description: "An interactive Finnish language tutor that uses AI and Natural Language Processing to analyze spoken input, assess pronunciation and grammar, and provide real-time feedback.",
-    technologies: ["AI", "NLP", "Speech-to-Text", "Text-to-Speech", "Pronunciation Analysis", "Audio Processing", "Language Learning"],
+    description:
+      "An interactive Finnish language tutor that uses AI and Natural Language Processing to analyze spoken input, assess pronunciation and grammar, and provide real-time feedback.",
+    technologies: [
+      "AI",
+      "NLP",
+      "Speech-to-Text",
+      "Text-to-Speech",
+      "Pronunciation Analysis",
+      "Audio Processing",
+      "Language Learning",
+    ],
     repoUrl: "https://github.com/imaddde867/sisu-speak",
     demoUrl: "",
     image: "/images/sisu-speak.png",
@@ -121,6 +162,6 @@ The system captures spoken audio, processes it using speech-to-text and pronunci
 9. Text-to-Speech (TTS): Converts feedback into audio for the user.
 
 This tool uses AI-driven NLP to provide personalized tutoring for Finnish learners, focusing on pronunciation, grammar, and practical communication skills. It's ideal for language enthusiasts or students aiming to master Finnish in a conversational context.`,
-    date: "2025-03-27"
-  }
-]; 
+    date: "2025-03-27",
+  },
+];

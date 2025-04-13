@@ -32,8 +32,8 @@ const BlogCard: React.FC<BlogCardProps> = ({
         <div className="relative overflow-hidden h-48">
           {thumbnail && (
             <div className="absolute inset-0 bg-muted/50">
-              <img 
-                src={thumbnail} 
+              <img
+                src={thumbnail}
                 alt={`${title} thumbnail`}
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
               />
@@ -41,7 +41,9 @@ const BlogCard: React.FC<BlogCardProps> = ({
           )}
           {!thumbnail && (
             <div className="absolute inset-0 bg-gradient-to-br from-accent/10 to-secondary/10 flex items-center justify-center">
-              <span className="text-3xl font-bold text-accent font-heading opacity-50">{category.charAt(0)}</span>
+              <span className="text-3xl font-bold text-accent font-heading opacity-50">
+                {category.charAt(0)}
+              </span>
             </div>
           )}
         </div>
@@ -55,7 +57,11 @@ const BlogCard: React.FC<BlogCardProps> = ({
             <time dateTime={date}>{date}</time>
           </div>
         </div>
-        <Link to={linkTo} aria-label={`Read post: ${title}`} className="block mb-2">
+        <Link
+          to={linkTo}
+          aria-label={`Read post: ${title}`}
+          className="block mb-2"
+        >
           <h3 className="text-lg font-bold text-foreground group-hover:text-accent transition-colors duration-200 line-clamp-2">
             {title}
           </h3>
@@ -68,7 +74,10 @@ const BlogCard: React.FC<BlogCardProps> = ({
             <Clock size={14} className="mr-1.5" />
             <span>{readTime}</span>
           </div>
-          <Link to={linkTo} className="font-medium text-accent hover:underline underline-offset-2">
+          <Link
+            to={linkTo}
+            className="font-medium text-accent hover:underline underline-offset-2"
+          >
             Read More &rarr;
           </Link>
         </div>

@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
-import { useAdminStore } from '@/data/adminStore';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
+import React, { useState, useEffect } from "react";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { useAdminStore } from "@/data/adminStore";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 import {
   Form,
   FormControl,
@@ -12,25 +12,25 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
-import { Separator } from '@/components/ui/separator';
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { Separator } from "@/components/ui/separator";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
+} from "@/components/ui/card";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
+} from "@/components/ui/select";
 import {
   Save,
   X,
@@ -43,61 +43,59 @@ import {
   Clock,
   BookOpen,
   Tag,
-} from 'lucide-react';
-import { Calendar as CalendarComponent } from '@/components/ui/calendar';
+} from "lucide-react";
+import { Calendar as CalendarComponent } from "@/components/ui/calendar";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '@/components/ui/popover';
-import { 
-  Tabs, 
-  TabsContent, 
-  TabsList, 
-  TabsTrigger 
-} from '@/components/ui/tabs';
-import { cn } from '@/lib/utils';
-import { format } from 'date-fns';
-import { useToast } from '@/components/ui/use-toast';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Switch } from '@/components/ui/switch';
+} from "@/components/ui/popover";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { cn } from "@/lib/utils";
+import { format } from "date-fns";
+import { useToast } from "@/components/ui/use-toast";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Switch } from "@/components/ui/switch";
 
 // Predefined categories
 const BLOG_CATEGORIES = [
-  'AI',
-  'Machine Learning',
-  'Data Science',
-  'Cloud',
-  'DevOps',
-  'Web Development',
-  'Programming',
-  'Technology',
-  'Career',
-  'Other',
+  "AI",
+  "Machine Learning",
+  "Data Science",
+  "Cloud",
+  "DevOps",
+  "Web Development",
+  "Programming",
+  "Technology",
+  "Career",
+  "Other",
 ];
 
 // Form schema for validation
 const blogSchema = z.object({
   title: z.string().min(5, {
-    message: 'Title must be at least 5 characters.',
+    message: "Title must be at least 5 characters.",
   }),
-  excerpt: z.string().min(10, {
-    message: 'Excerpt must be at least 10 characters.',
-  }).max(200, {
-    message: 'Excerpt must be at most 200 characters.',
-  }),
+  excerpt: z
+    .string()
+    .min(10, {
+      message: "Excerpt must be at least 10 characters.",
+    })
+    .max(200, {
+      message: "Excerpt must be at most 200 characters.",
+    }),
   content: z.string().min(50, {
-    message: 'Content must be at least 50 characters.',
+    message: "Content must be at least 50 characters.",
   }),
   category: z.string().min(1, {
-    message: 'Please select a category.',
+    message: "Please select a category.",
   }),
   date: z.date(),
   readTime: z.string().min(1, {
-    message: 'Read time is required.'
+    message: "Read time is required.",
   }),
   thumbnail: z.any().optional(),
-  status: z.enum(['draft', 'published']).default('published'),
+  status: z.enum(["draft", "published"]).default("published"),
 });
 
 type BlogFormValues = z.infer<typeof blogSchema>;
@@ -115,61 +113,62 @@ const BlogForm: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const [searchParams] = useSearchParams();
   const { toast } = useToast();
-  
-  const isEditMode = slug !== undefined && slug !== 'new';
-  const post = isEditMode 
-    ? posts.find(p => p.slug === slug) 
-    : null;
-  
+
+  const isEditMode = slug !== undefined && slug !== "new";
+  const post = isEditMode ? posts.find((p) => p.slug === slug) : null;
+
   // For image preview
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
-  
+
   // Content editor tab state
-  const [activeTab, setActiveTab] = useState('write');
-  
+  const [activeTab, setActiveTab] = useState("write");
+
   // Form setup with default values
   const form = useForm<BlogFormValues>({
     resolver: zodResolver(blogSchema),
     defaultValues: {
-      title: post?.title || '',
-      excerpt: post?.excerpt || '',
-      content: post?.content || '',
-      category: post?.category || '',
+      title: post?.title || "",
+      excerpt: post?.excerpt || "",
+      content: post?.content || "",
+      category: post?.category || "",
       date: post?.date ? new Date(post.date) : new Date(),
-      readTime: post?.readTime || '5 min read',
-      status: 'published',
+      readTime: post?.readTime || "5 min read",
+      status: "published",
     },
   });
-  
+
   // Auto-update read time when content changes
   useEffect(() => {
     const subscription = form.watch((value, { name }) => {
-      if (name === 'content') {
+      if (name === "content") {
         const content = value.content as string;
         if (content && content.length > 0) {
-          form.setValue('readTime', calculateReadTime(content), { shouldValidate: true });
+          form.setValue("readTime", calculateReadTime(content), {
+            shouldValidate: true,
+          });
         }
       }
     });
-    
+
     return () => subscription.unsubscribe();
   }, [form]);
-  
+
   // Check for restore parameter to undo a deleted post
   useEffect(() => {
-    const restoreSlug = searchParams.get('restore');
+    const restoreSlug = searchParams.get("restore");
     if (restoreSlug) {
       // This would typically fetch the deleted post from a backup or trash
       // For now, we just show a notification
       toast({
         title: "Restore not implemented",
-        description: "In a real app, this would restore the deleted post from a backup.",
+        description:
+          "In a real app, this would restore the deleted post from a backup.",
         variant: "destructive",
       });
     }
   }, [searchParams, toast]);
-  
+
   // Set active post when in edit mode
   useEffect(() => {
     if (isEditMode && slug) {
@@ -177,17 +176,17 @@ const BlogForm: React.FC = () => {
     } else {
       setActivePost(null);
     }
-    
+
     // If post has thumbnail, set preview
     if (post?.thumbnail) {
       setImagePreview(post.thumbnail);
     }
-    
+
     return () => {
       setActivePost(null);
     };
   }, [isEditMode, slug, post, setActivePost]);
-  
+
   const onSubmit = (data: BlogFormValues) => {
     // Handle image upload (in a real app, this would upload to a server or CDN)
     let thumbnailUrl = post?.thumbnail || null;
@@ -198,7 +197,7 @@ const BlogForm: React.FC = () => {
       reader.onload = (e) => {
         if (e.target?.result) {
           thumbnailUrl = e.target.result as string;
-          
+
           // Now continue with saving the post
           savePost(data, thumbnailUrl);
         }
@@ -209,7 +208,7 @@ const BlogForm: React.FC = () => {
       savePost(data, thumbnailUrl);
     }
   };
-  
+
   const savePost = (data: BlogFormValues, thumbnailUrl: string | null) => {
     // Prepare post data
     const postData = {
@@ -217,11 +216,11 @@ const BlogForm: React.FC = () => {
       excerpt: data.excerpt,
       content: data.content,
       category: data.category,
-      date: format(data.date, 'yyyy-MM-dd'),
+      date: format(data.date, "yyyy-MM-dd"),
       readTime: data.readTime,
       thumbnail: thumbnailUrl,
     };
-    
+
     if (isEditMode && slug) {
       // Update existing post
       updatePost(slug, postData);
@@ -237,11 +236,11 @@ const BlogForm: React.FC = () => {
         description: `"${data.title}" has been successfully published.`,
       });
     }
-    
+
     // Navigate back to posts list
-    navigate('/admin/blog');
+    navigate("/admin/blog");
   };
-  
+
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -254,9 +253,9 @@ const BlogForm: React.FC = () => {
         });
         return;
       }
-      
+
       // Validate file type
-      if (!file.type.startsWith('image/')) {
+      if (!file.type.startsWith("image/")) {
         toast({
           title: "Invalid file type",
           description: "Please upload a valid image file (JPEG, PNG).",
@@ -264,49 +263,52 @@ const BlogForm: React.FC = () => {
         });
         return;
       }
-      
+
       setImageFile(file);
-      
+
       // Create preview
       const reader = new FileReader();
       reader.onload = () => {
         setImagePreview(reader.result as string);
       };
       reader.readAsDataURL(file);
-      
+
       // Update form value
-      form.setValue('thumbnail', file, { shouldValidate: true });
+      form.setValue("thumbnail", file, { shouldValidate: true });
     }
   };
-  
+
   const removeImage = () => {
     setImagePreview(null);
     setImageFile(null);
-    form.setValue('thumbnail', undefined, { shouldValidate: true });
+    form.setValue("thumbnail", undefined, { shouldValidate: true });
   };
-  
+
   const handlePreviewClick = () => {
     // In a real app, this would open a preview in a new window or modal
     toast({
       title: "Preview",
-      description: "In a real app, this would show a complete rendered preview of your post.",
+      description:
+        "In a real app, this would show a complete rendered preview of your post.",
     });
   };
-  
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-white">{isEditMode ? 'Edit Blog Post' : 'Create New Post'}</h1>
+          <h1 className="text-3xl font-bold text-white">
+            {isEditMode ? "Edit Blog Post" : "Create New Post"}
+          </h1>
           <p className="text-[#40C4FF]/70 mt-1">
-            {isEditMode 
-              ? 'Update your existing blog post' 
-              : 'Write a new blog post for your readers'}
+            {isEditMode
+              ? "Update your existing blog post"
+              : "Write a new blog post for your readers"}
           </p>
         </div>
         <Button
           variant="outline"
-          onClick={() => navigate('/admin/blog')}
+          onClick={() => navigate("/admin/blog")}
           className="bg-transparent border-[#40C4FF]/30 text-white hover:bg-[#40C4FF]/10 hover:text-white gap-2"
         >
           <ArrowLeft className="h-4 w-4" />
@@ -336,9 +338,9 @@ const BlogForm: React.FC = () => {
                       <FormItem>
                         <FormLabel>Title</FormLabel>
                         <FormControl>
-                          <Input 
-                            placeholder="Enter a compelling title" 
-                            {...field} 
+                          <Input
+                            placeholder="Enter a compelling title"
+                            {...field}
                             className="bg-black/60 border-[#40C4FF]/40 focus:border-[#40C4FF] text-white"
                           />
                         </FormControl>
@@ -349,7 +351,7 @@ const BlogForm: React.FC = () => {
                       </FormItem>
                     )}
                   />
-                  
+
                   <FormField
                     control={form.control}
                     name="excerpt"
@@ -357,14 +359,15 @@ const BlogForm: React.FC = () => {
                       <FormItem>
                         <FormLabel>Excerpt</FormLabel>
                         <FormControl>
-                          <Textarea 
-                            placeholder="Write a brief summary of your post" 
-                            {...field} 
+                          <Textarea
+                            placeholder="Write a brief summary of your post"
+                            {...field}
                             className="bg-black/60 border-[#40C4FF]/40 focus:border-[#40C4FF] text-white resize-none h-24"
                           />
                         </FormControl>
                         <FormDescription className="text-[#40C4FF]/60">
-                          A short summary (100-200 characters) that will appear in blog cards and previews
+                          A short summary (100-200 characters) that will appear
+                          in blog cards and previews
                         </FormDescription>
                         <FormMessage />
                       </FormItem>
@@ -372,7 +375,7 @@ const BlogForm: React.FC = () => {
                   />
                 </CardContent>
               </Card>
-              
+
               <Card className="bg-black/30 border-[#40C4FF]/20 text-white">
                 <CardHeader>
                   <CardTitle>Content</CardTitle>
@@ -381,16 +384,21 @@ const BlogForm: React.FC = () => {
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
-                  <Tabs defaultValue="write" value={activeTab} onValueChange={setActiveTab} className="w-full">
+                  <Tabs
+                    defaultValue="write"
+                    value={activeTab}
+                    onValueChange={setActiveTab}
+                    className="w-full"
+                  >
                     <TabsList className="w-full bg-black/40 border border-[#40C4FF]/20">
-                      <TabsTrigger 
-                        value="write" 
+                      <TabsTrigger
+                        value="write"
                         className="data-[state=active]:bg-[#40C4FF]/20 data-[state=active]:text-white"
                       >
                         Write
                       </TabsTrigger>
-                      <TabsTrigger 
-                        value="preview" 
+                      <TabsTrigger
+                        value="preview"
                         className="data-[state=active]:bg-[#40C4FF]/20 data-[state=active]:text-white"
                         onClick={handlePreviewClick}
                       >
@@ -404,30 +412,37 @@ const BlogForm: React.FC = () => {
                         render={({ field }) => (
                           <FormItem>
                             <FormControl>
-                              <Textarea 
-                                placeholder="Write your blog post content here. You can use Markdown for formatting." 
-                                {...field} 
+                              <Textarea
+                                placeholder="Write your blog post content here. You can use Markdown for formatting."
+                                {...field}
                                 className="bg-black/60 border-[#40C4FF]/40 focus:border-[#40C4FF] text-white resize-none min-h-[300px]"
                               />
                             </FormControl>
                             <FormDescription className="text-[#40C4FF]/60">
-                              The main content of your post. Use headings, lists, and formatting to organize your ideas.
+                              The main content of your post. Use headings,
+                              lists, and formatting to organize your ideas.
                             </FormDescription>
                             <FormMessage />
                           </FormItem>
                         )}
                       />
-                      
+
                       <div className="mt-2 text-xs text-[#40C4FF]/60">
-                        <p>Estimated read time: {form.watch('readTime')}</p>
+                        <p>Estimated read time: {form.watch("readTime")}</p>
                       </div>
                     </TabsContent>
                     <TabsContent value="preview" className="mt-4">
                       <div className="bg-black/60 border border-[#40C4FF]/40 rounded-md p-4 min-h-[300px] prose prose-invert prose-blue max-w-none">
-                        <h2 className="text-2xl font-bold mb-4">{form.watch('title') || 'Post Title'}</h2>
-                        <p className="mb-6 text-[#40C4FF]/70">{form.watch('excerpt') || 'Post excerpt will appear here...'}</p>
+                        <h2 className="text-2xl font-bold mb-4">
+                          {form.watch("title") || "Post Title"}
+                        </h2>
+                        <p className="mb-6 text-[#40C4FF]/70">
+                          {form.watch("excerpt") ||
+                            "Post excerpt will appear here..."}
+                        </p>
                         <div className="whitespace-pre-wrap">
-                          {form.watch('content') || 'Your content will be rendered here...'}
+                          {form.watch("content") ||
+                            "Your content will be rendered here..."}
                         </div>
                       </div>
                     </TabsContent>
@@ -435,7 +450,7 @@ const BlogForm: React.FC = () => {
                 </CardContent>
               </Card>
             </div>
-            
+
             {/* Right column - Meta info, image, and submit */}
             <div className="space-y-6">
               <Card className="bg-black/30 border-[#40C4FF]/20 text-white">
@@ -464,7 +479,11 @@ const BlogForm: React.FC = () => {
                           </FormControl>
                           <SelectContent className="bg-black/90 border-[#40C4FF]/20 text-white">
                             {BLOG_CATEGORIES.map((category) => (
-                              <SelectItem key={category} value={category} className="focus:bg-[#40C4FF]/20 focus:text-white">
+                              <SelectItem
+                                key={category}
+                                value={category}
+                                className="focus:bg-[#40C4FF]/20 focus:text-white"
+                              >
                                 {category}
                               </SelectItem>
                             ))}
@@ -477,7 +496,7 @@ const BlogForm: React.FC = () => {
                       </FormItem>
                     )}
                   />
-                  
+
                   <FormField
                     control={form.control}
                     name="date"
@@ -491,7 +510,7 @@ const BlogForm: React.FC = () => {
                                 variant="outline"
                                 className={cn(
                                   "pl-3 text-left font-normal bg-black/60 border-[#40C4FF]/40 hover:bg-black/80 text-white w-full",
-                                  !field.value && "text-muted-foreground"
+                                  !field.value && "text-muted-foreground",
                                 )}
                               >
                                 <Calendar className="mr-2 h-4 w-4 text-[#40C4FF]" />
@@ -520,7 +539,7 @@ const BlogForm: React.FC = () => {
                       </FormItem>
                     )}
                   />
-                  
+
                   <FormField
                     control={form.control}
                     name="status"
@@ -529,18 +548,28 @@ const BlogForm: React.FC = () => {
                         <div className="space-y-0.5">
                           <FormLabel>Publishing Status</FormLabel>
                           <FormDescription className="text-[#40C4FF]/60">
-                            {field.value === 'published' ? 'Post will be visible to all visitors' : 'Post will be saved as a draft'}
+                            {field.value === "published"
+                              ? "Post will be visible to all visitors"
+                              : "Post will be saved as a draft"}
                           </FormDescription>
                         </div>
                         <FormControl>
                           <div className="flex items-center space-x-2">
-                            <span className={field.value === 'draft' ? 'text-[#40C4FF]/60' : 'text-[#40C4FF]'}>
-                              {field.value === 'published' ? 'Published' : 'Draft'}
+                            <span
+                              className={
+                                field.value === "draft"
+                                  ? "text-[#40C4FF]/60"
+                                  : "text-[#40C4FF]"
+                              }
+                            >
+                              {field.value === "published"
+                                ? "Published"
+                                : "Draft"}
                             </span>
                             <Switch
-                              checked={field.value === 'published'}
+                              checked={field.value === "published"}
                               onCheckedChange={(checked) => {
-                                field.onChange(checked ? 'published' : 'draft');
+                                field.onChange(checked ? "published" : "draft");
                               }}
                               className="data-[state=checked]:bg-[#40C4FF]"
                             />
@@ -551,7 +580,7 @@ const BlogForm: React.FC = () => {
                   />
                 </CardContent>
               </Card>
-              
+
               <Card className="bg-black/30 border-[#40C4FF]/20 text-white">
                 <CardHeader>
                   <CardTitle>Featured Image</CardTitle>
@@ -563,9 +592,9 @@ const BlogForm: React.FC = () => {
                   <div className="flex flex-col items-center justify-center">
                     {imagePreview ? (
                       <div className="relative w-full">
-                        <img 
-                          src={imagePreview} 
-                          alt="Post featured image" 
+                        <img
+                          src={imagePreview}
+                          alt="Post featured image"
                           className="w-full h-48 object-cover rounded-md border border-[#40C4FF]/30"
                         />
                         <Button
@@ -579,13 +608,22 @@ const BlogForm: React.FC = () => {
                         </Button>
                       </div>
                     ) : (
-                      <div className="w-full h-48 border-2 border-dashed border-[#40C4FF]/30 rounded-md flex flex-col items-center justify-center p-4 text-center cursor-pointer hover:border-[#40C4FF]/60 transition-colors duration-200" onClick={() => document.getElementById('post-image')?.click()}>
+                      <div
+                        className="w-full h-48 border-2 border-dashed border-[#40C4FF]/30 rounded-md flex flex-col items-center justify-center p-4 text-center cursor-pointer hover:border-[#40C4FF]/60 transition-colors duration-200"
+                        onClick={() =>
+                          document.getElementById("post-image")?.click()
+                        }
+                      >
                         <UploadCloud className="h-10 w-10 text-[#40C4FF]/50 mb-2" />
-                        <p className="text-[#40C4FF]/80 font-medium">Upload Image</p>
-                        <p className="text-[#40C4FF]/60 text-xs mt-1">PNG, JPG (max 3MB)</p>
+                        <p className="text-[#40C4FF]/80 font-medium">
+                          Upload Image
+                        </p>
+                        <p className="text-[#40C4FF]/60 text-xs mt-1">
+                          PNG, JPG (max 3MB)
+                        </p>
                       </div>
                     )}
-                    
+
                     <input
                       id="post-image"
                       type="file"
@@ -593,57 +631,59 @@ const BlogForm: React.FC = () => {
                       className="hidden"
                       onChange={handleImageChange}
                     />
-                    
+
                     {!imagePreview && (
                       <Button
                         type="button"
                         variant="outline"
                         className="mt-4 bg-transparent border-[#40C4FF]/30 text-white hover:bg-[#40C4FF]/10 hover:text-white"
-                        onClick={() => document.getElementById('post-image')?.click()}
+                        onClick={() =>
+                          document.getElementById("post-image")?.click()
+                        }
                       >
                         Select Image
                       </Button>
                     )}
                   </div>
-                  
+
                   <FormDescription className="text-[#40C4FF]/60 text-center mt-4">
                     Recommended size: 800×400px
                   </FormDescription>
                 </CardContent>
               </Card>
-              
+
               <Card className="bg-black/30 border-[#40C4FF]/20 text-white">
                 <CardContent className="pt-6">
                   <Alert className="bg-[#40C4FF]/5 border-[#40C4FF]/20 mb-6">
                     <AlertCircle className="h-4 w-4 text-[#40C4FF]" />
                     <AlertDescription className="text-[#40C4FF]/80 text-sm">
-                      {isEditMode 
-                        ? 'Your changes will be saved and immediately visible on your blog.' 
-                        : form.watch('status') === 'published' 
-                          ? 'Your post will be published immediately.' 
-                          : 'Your post will be saved as a draft and can be published later.'}
+                      {isEditMode
+                        ? "Your changes will be saved and immediately visible on your blog."
+                        : form.watch("status") === "published"
+                          ? "Your post will be published immediately."
+                          : "Your post will be saved as a draft and can be published later."}
                     </AlertDescription>
                   </Alert>
-                  
+
                   <div className="flex flex-col gap-3">
-                    <Button 
-                      type="submit" 
+                    <Button
+                      type="submit"
                       className="bg-[#40C4FF] hover:bg-[#40C4FF]/80 text-black font-medium w-full gap-2"
                       disabled={form.formState.isSubmitting}
                     >
                       <Save className="h-4 w-4" />
-                      {isEditMode 
-                        ? 'Update Post' 
-                        : form.watch('status') === 'published' 
-                          ? 'Publish Post' 
-                          : 'Save Draft'}
+                      {isEditMode
+                        ? "Update Post"
+                        : form.watch("status") === "published"
+                          ? "Publish Post"
+                          : "Save Draft"}
                     </Button>
-                    
-                    <Button 
-                      type="button" 
-                      variant="outline" 
+
+                    <Button
+                      type="button"
+                      variant="outline"
                       className="bg-transparent border-[#40C4FF]/30 text-white hover:bg-[#40C4FF]/10 hover:text-white w-full gap-2"
-                      onClick={() => navigate('/admin/blog')}
+                      onClick={() => navigate("/admin/blog")}
                     >
                       <X className="h-4 w-4" />
                       Cancel
@@ -659,4 +699,4 @@ const BlogForm: React.FC = () => {
   );
 };
 
-export default BlogForm; 
+export default BlogForm;
