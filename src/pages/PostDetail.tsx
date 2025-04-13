@@ -187,7 +187,7 @@ const PostContent: React.FC<{
   content: string;
 }> = ({ content }) => (
   <article className="prose prose-invert prose-lg max-w-none">
-    <div className="bg-card/50 backdrop-blur-md rounded-xl p-6 lg:p-8 border border-border/50 shadow-md">
+    <div className="bg-card/70 backdrop-blur-lg rounded-xl p-6 lg:p-8 border-2 border-border/70 shadow-lg">
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         rehypePlugins={[
@@ -222,64 +222,100 @@ const PostDetail: React.FC = () => {
     <div className="container-custom section-padding">
       <BackLink />
       
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-        <div className="lg:col-span-2">
-          <PostHeader 
-            category={post.category} 
-            title={post.title} 
-            date={post.date} 
-            readTime={post.readTime} 
-          />
-          
-          {post.thumbnail && (
-            <PostThumbnail thumbnail={post.thumbnail} title={post.title} />
-          )}
-          
-          <PostContent content={post.content} />
-          
-          {/* Newsletter subscription at the bottom of the post */}
-          <div className="mt-16 pt-8 border-t border-border/30">
-            <NewsletterSubscription />
+      {/* Post Header */}
+      <header className="mb-12">
+        <div className="flex items-center justify-between mb-4">
+          <SkillBadge name={post.category} />
+          <div className="flex items-center gap-3">
+            <button 
+              className="p-2 rounded-full bg-muted/30 text-muted-foreground hover:text-accent hover:bg-muted/50 transition-colors"
+              aria-label="Share post"
+            >
+              <Share2 size={18} />
+            </button>
+            <button 
+              className="p-2 rounded-full bg-muted/30 text-muted-foreground hover:text-accent hover:bg-muted/50 transition-colors"
+              aria-label="Bookmark post"
+            >
+              <Bookmark size={18} />
+            </button>
           </div>
         </div>
+        <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
+          {post.title}
+        </h1>
+        <div className="flex items-center text-muted-foreground text-sm space-x-4">
+          <div className="flex items-center">
+            <Calendar size={14} className="mr-1.5" />
+            <time dateTime={post.date}>{post.date}</time>
+          </div>
+          <div className="flex items-center">
+            <Clock size={14} className="mr-1.5" />
+            <span>{post.readTime}</span>
+          </div>
+        </div>
+      </header>
+      
+      {/* Thumbnail and Details Side by Side */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
+        {/* Thumbnail */}
+        <div className="lg:col-span-2">
+          {post.thumbnail && (
+            <div className="rounded-xl overflow-hidden border border-border/30 shadow-lg aspect-video">
+              <img
+                src={post.thumbnail}
+                alt={`${post.title} thumbnail`}
+                className="w-full h-full object-cover"
+              />
+            </div>
+          )}
+        </div>
         
-        {/* Sidebar */}
-        <aside className="lg:col-span-1">
-          <div className="bg-card/30 border border-border rounded-xl p-6 lg:p-8 h-fit shadow-sm sticky top-24">
-            <h3 className="text-xl font-semibold text-foreground mb-6 pb-3 border-b border-border">
-              About This Post
-            </h3>
+        {/* Post Details Sidebar */}
+        <aside className="bg-card/70 backdrop-blur-lg rounded-xl p-6 lg:p-8 h-fit shadow-lg border-2 border-border/70">
+          <h3 className="text-xl font-semibold text-foreground mb-6 pb-3 border-b border-border">
+            About This Post
+          </h3>
+          
+          <div className="space-y-6">
+            <div>
+              <h4 className="text-sm font-semibold text-muted-foreground uppercase mb-3">
+                Category
+              </h4>
+              <SkillBadge name={post.category} />
+            </div>
             
-            <div className="space-y-6">
-              <div>
-                <h4 className="text-sm font-semibold text-muted-foreground uppercase mb-3">
-                  Category
-                </h4>
-                <SkillBadge name={post.category} />
+            <div>
+              <h4 className="text-sm font-semibold text-muted-foreground uppercase mb-3">
+                Published
+              </h4>
+              <div className="flex items-center text-muted-foreground text-sm">
+                <Calendar size={16} className="mr-2 flex-shrink-0" />
+                <time dateTime={post.date}>{post.date}</time>
               </div>
-              
-              <div>
-                <h4 className="text-sm font-semibold text-muted-foreground uppercase mb-3">
-                  Published
-                </h4>
-                <div className="flex items-center text-muted-foreground text-sm">
-                  <Calendar size={16} className="mr-2 flex-shrink-0" />
-                  <time dateTime={post.date}>{post.date}</time>
-                </div>
-              </div>
-              
-              <div>
-                <h4 className="text-sm font-semibold text-muted-foreground uppercase mb-3">
-                  Read Time
-                </h4>
-                <div className="flex items-center text-muted-foreground text-sm">
-                  <Clock size={16} className="mr-2 flex-shrink-0" />
-                  <span>{post.readTime}</span>
-                </div>
+            </div>
+            
+            <div>
+              <h4 className="text-sm font-semibold text-muted-foreground uppercase mb-3">
+                Read Time
+              </h4>
+              <div className="flex items-center text-muted-foreground text-sm">
+                <Clock size={16} className="mr-2 flex-shrink-0" />
+                <span>{post.readTime}</span>
               </div>
             </div>
           </div>
         </aside>
+      </div>
+      
+      {/* Main Content Area - Full Width */}
+      <div className="space-y-8">
+        <PostContent content={post.content} />
+        
+        {/* Newsletter subscription at the bottom of the post */}
+        <div className="mt-16 pt-8 border-t border-border/30">
+          <NewsletterSubscription />
+        </div>
       </div>
     </div>
   );
