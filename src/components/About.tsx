@@ -1,6 +1,103 @@
 import React from "react";
 import { Code2, Database, BrainCircuit, Layers, Award, GraduationCap, Terminal, LineChart, Briefcase, Server, GitBranch, BarChart, ArrowRight } from "lucide-react";
 
+// Reusable components
+const SectionHeader: React.FC<{
+  badge: string;
+  title: string;
+  subtitle: string;
+}> = ({ badge, title, subtitle }) => (
+  <div className="text-center mb-16 max-w-2xl mx-auto">
+    <span className="inline-block mb-3 px-3 py-1 text-xs font-medium uppercase tracking-wider text-accent border border-accent/20 rounded-full">{badge}</span>
+    <h2 className="section-title">{title}</h2>
+    <p className="section-subtitle mx-auto">{subtitle}</p>
+  </div>
+);
+
+const BentoCard: React.FC<{
+  icon: React.ReactNode;
+  title: string;
+  iconBg?: string;
+  children: React.ReactNode;
+}> = ({ icon, title, iconBg = "bg-primary/10", children }) => (
+  <div className="bento-card">
+    <div className="inline-flex items-center gap-2 mb-6">
+      <div className={`flex h-10 w-10 items-center justify-center rounded-full ${iconBg}`}>
+        {icon}
+      </div>
+      <h3 className="font-heading text-xl font-bold">{title}</h3>
+    </div>
+    {children}
+  </div>
+);
+
+const SkillItem: React.FC<{
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+  color: "accent" | "secondary";
+}> = ({ icon, title, description, color }) => (
+  <div className="flex items-start gap-3">
+    <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-${color} to-${color === "accent" ? "primary" : "secondary"}/70 dark:shadow-neon-${color === "accent" ? "blue" : "purple"}-glow/20`}>
+      {icon}
+    </div>
+    <div>
+      <h4 className={`font-medium text-sm text-${color}`}>{title}</h4>
+      <p className="text-xs text-muted-foreground mt-1">{description}</p>
+    </div>
+  </div>
+);
+
+const TimelineItem: React.FC<{
+  title: string;
+  subtitle: string;
+  date: string;
+  status?: string;
+  description?: string;
+  color: "accent" | "secondary";
+  children?: React.ReactNode;
+}> = ({ title, subtitle, date, status, description, color, children }) => (
+  <div className={`relative pl-5 border-l-2 border-${color}/50`}>
+    <div className={`absolute w-3 h-3 rounded-full bg-${color} top-1 -left-[7px]`}></div>
+    <h4 className={`font-medium text-${color}`}>{title}</h4>
+    <p className="text-sm text-muted-foreground">{subtitle}</p>
+    <div className="flex items-center gap-2 mt-1">
+      <p className="text-xs text-muted-foreground">{date}</p>
+      {status && (
+        <span className={`text-xs px-2 py-0.5 rounded-full bg-${color}/10 text-${color}`}>{status}</span>
+      )}
+    </div>
+    {description && <p className="text-xs text-muted-foreground mt-2">{description}</p>}
+    {children}
+  </div>
+);
+
+const ProcessStep: React.FC<{
+  number: number;
+  title: string;
+  description: string;
+  icon: React.ReactNode;
+  color: "accent" | "secondary";
+}> = ({ number, title, description, icon, color }) => (
+  <div className="text-center px-4 mb-12 md:mb-0 md:w-1/3">
+    <div className="inline-flex mb-6 transform transition-transform hover:scale-105 duration-300">
+      <div className={`w-20 h-20 rounded-2xl bg-gradient-to-br from-${color} to-${color === "accent" ? "primary" : "secondary"}/70 p-[3px] shadow-lg`}>
+        <div className="w-full h-full rounded-xl bg-card flex items-center justify-center relative overflow-hidden">
+          {icon}
+        </div>
+      </div>
+    </div>
+    
+    <div>
+      <div className="flex items-center justify-center gap-2 mb-3">
+        <span className={`inline-flex items-center justify-center w-7 h-7 rounded-full bg-${color}/10 text-${color} text-sm font-semibold`}>{number}</span>
+        <h4 className={`font-semibold text-lg text-${color}`}>{title}</h4>
+      </div>
+      <p className="text-sm text-muted-foreground max-w-xs mx-auto">{description}</p>
+    </div>
+  </div>
+);
+
 const About = () => {
   return (
     <section id="about" className="section-padding relative bg-card/50 dark:bg-dark-bg-alt/50">
@@ -10,28 +107,21 @@ const About = () => {
       </div>
 
       <div className="container-custom relative z-10">
-        {/* Section header */}
-        <div className="text-center mb-16 max-w-2xl mx-auto">
-          <span className="inline-block mb-3 px-3 py-1 text-xs font-medium uppercase tracking-wider text-accent border border-accent/20 rounded-full">About Me</span>
-          <h2 className="section-title">Data Engineering & AI</h2>
-          <p className="section-subtitle mx-auto">
-            Transforming complex data challenges into elegant, intelligent solutions
-          </p>
-        </div>
+        <SectionHeader 
+          badge="About Me" 
+          title="Data Engineering & AI" 
+          subtitle="Transforming complex data challenges into elegant, intelligent solutions" 
+        />
 
         {/* Main content in clean grid layout */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
           {/* Left column */}
           <div className="space-y-8">
             {/* Expertise card */}
-            <div className="bento-card">
-              <div className="inline-flex items-center gap-2 mb-6">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10">
-                  <Award className="h-5 w-5 text-primary dark:text-accent" />
-                </div>
-                <h3 className="font-heading text-xl font-bold">Areas of Focus</h3>
-              </div>
-              
+            <BentoCard 
+              icon={<Award className="h-5 w-5 text-primary dark:text-accent" />} 
+              title="Areas of Focus"
+            >
               <div className="grid grid-cols-2 gap-3">
                 {/* Engineering focused - blue */}
                 <div className="flex items-center gap-3 p-3 rounded-xl bg-muted/30 dark:bg-muted/10 border border-accent/20 hover:border-accent/50 transition-colors duration-300">
@@ -54,168 +144,127 @@ const About = () => {
                   <span className="font-medium">Cloud Architecture</span>
                 </div>
               </div>
-            </div>
+            </BentoCard>
 
             {/* Technical Expertise */}
-            <div className="bento-card">
-              <div className="inline-flex items-center gap-2 mb-6">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-accent to-primary/70">
-                  <LineChart className="h-5 w-5 text-white" />
-                </div>
-                <h3 className="font-heading text-xl font-bold">Technical Expertise</h3>
-              </div>
-              
+            <BentoCard 
+              icon={<LineChart className="h-5 w-5 text-white" />} 
+              title="Technical Expertise"
+              iconBg="bg-gradient-to-br from-accent to-primary/70"
+            >
               <div className="space-y-5">
-                {/* Engineering/Infrastructure - blue */}
-                <div className="flex items-start gap-3">
-                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-accent to-primary dark:shadow-neon-blue-glow/20">
-                    <Database className="h-4 w-4 text-white" />
-                  </div>
-                  <div>
-                    <h4 className="font-medium text-sm text-accent">Data & ML Engineering</h4>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      Apache Airflow, Spark, PySpark, ETL, TensorFlow, Scikit-learn
-                    </p>
-                  </div>
-                </div>
+                <SkillItem 
+                  icon={<Database className="h-4 w-4 text-white" />}
+                  title="Data & ML Engineering"
+                  description="Apache Airflow, Spark, PySpark, ETL, TensorFlow, Scikit-learn"
+                  color="accent"
+                />
                 
-                {/* Database/Storage - blue */}
-                <div className="flex items-start gap-3">
-                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-accent to-primary dark:shadow-neon-blue-glow/20">
-                    <Server className="h-4 w-4 text-white" />
-                  </div>
-                  <div>
-                    <h4 className="font-medium text-sm text-accent">Databases & Storage</h4>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      PostgreSQL (PostGIS, Citus), MySQL, MongoDB, InfluxDB, Amazon S3
-                    </p>
-                  </div>
-                </div>
+                <SkillItem 
+                  icon={<Server className="h-4 w-4 text-white" />}
+                  title="Databases & Storage"
+                  description="PostgreSQL (PostGIS, Citus), MySQL, MongoDB, InfluxDB, Amazon S3"
+                  color="accent"
+                />
                 
-                {/* Development/Programming - blue */}
-                <div className="flex items-start gap-3">
-                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-accent to-primary dark:shadow-neon-blue-glow/20">
-                    <Code2 className="h-4 w-4 text-white" />
-                  </div>
-                  <div>
-                    <h4 className="font-medium text-sm text-accent">Development & APIs</h4>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      Python (Advanced), SQL, Django, Flask, FastAPI, REST APIs, requests
-                    </p>
-                  </div>
-                </div>
+                <SkillItem 
+                  icon={<Code2 className="h-4 w-4 text-white" />}
+                  title="Development & APIs"
+                  description="Python (Advanced), SQL, Django, Flask, FastAPI, REST APIs, requests"
+                  color="accent"
+                />
                 
-                {/* Analysis/Visualization - purple */}
-                <div className="flex items-start gap-3">
-                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-secondary to-secondary/70 dark:shadow-neon-purple-glow/20">
-                    <BarChart className="h-4 w-4 text-white" />
-                  </div>
-                  <div>
-                    <h4 className="font-medium text-sm text-secondary">Data Analysis & Visualization</h4>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      Pandas, NumPy, Matplotlib, Seaborn, Plotly, Folium, Grafana
-                    </p>
-                  </div>
-                </div>
+                <SkillItem 
+                  icon={<BarChart className="h-4 w-4 text-white" />}
+                  title="Data Analysis & Visualization"
+                  description="Pandas, NumPy, Matplotlib, Seaborn, Plotly, Folium, Grafana"
+                  color="secondary"
+                />
                 
-                {/* Infrastructure/DevOps - purple */}
-                <div className="flex items-start gap-3">
-                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-secondary to-secondary/70 dark:shadow-neon-purple-glow/20">
-                    <Layers className="h-4 w-4 text-white" />
-                  </div>
-                  <div>
-                    <h4 className="font-medium text-sm text-secondary">Messaging & DevOps</h4>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      RabbitMQ, MQTT, Apache Pulsar, Docker, virtualenv, Conda, Git
-                    </p>
-                  </div>
-                </div>
+                <SkillItem 
+                  icon={<Layers className="h-4 w-4 text-white" />}
+                  title="Messaging & DevOps"
+                  description="RabbitMQ, MQTT, Apache Pulsar, Docker, virtualenv, Conda, Git"
+                  color="secondary"
+                />
               </div>
-            </div>
+            </BentoCard>
           </div>
 
           {/* Right column */}
           <div className="space-y-8">
             {/* Education card - purple for academic/learning */}
-            <div className="bento-card">
-              <div className="inline-flex items-center gap-2 mb-6">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-secondary to-secondary/70">
-                  <GraduationCap className="h-5 w-5 text-white" />
-                </div>
-                <h3 className="font-heading text-xl font-bold">Education</h3>
-              </div>
-              
+            <BentoCard 
+              icon={<GraduationCap className="h-5 w-5 text-white" />} 
+              title="Education"
+              iconBg="bg-gradient-to-br from-secondary to-secondary/70"
+            >
               <div className="space-y-5">
-                <div className="relative pl-5 border-l-2 border-secondary/50">
-                  <div className="absolute w-3 h-3 rounded-full bg-secondary top-1 -left-[7px]"></div>
-                  <h4 className="font-medium text-secondary">Bachelor of Engineering in ICT</h4>
-                  <p className="text-sm text-muted-foreground">Turku University of Applied Sciences</p>
-                  <div className="flex items-center gap-2 mt-1">
-                    <p className="text-xs text-muted-foreground">2023 - Present</p>
-                    <span className="text-xs px-2 py-0.5 rounded-full bg-secondary/10 text-secondary">In Progress</span>
-                  </div>
-                  <p className="text-xs text-muted-foreground mt-2">Specialization: Data Engineering and AI</p>
-                </div>
+                <TimelineItem 
+                  title="Bachelor of Engineering in ICT"
+                  subtitle="Turku University of Applied Sciences"
+                  date="2023 - Present"
+                  status="In Progress"
+                  description="Specialization: Data Engineering and AI"
+                  color="secondary"
+                />
                 
-                <div className="relative pl-5 border-l-2 border-secondary/50">
-                  <div className="absolute w-3 h-3 rounded-full bg-secondary top-1 -left-[7px]"></div>
-                  <div className="flex items-center gap-2">
-                    <h4 className="font-medium text-secondary">AWS Certifications</h4>
-                  </div>
-                  <p className="text-xs text-muted-foreground mt-1">Cloud Foundations, ML Foundations, NLP</p>
-                </div>
+                <TimelineItem 
+                  title="AWS Certifications"
+                  subtitle=""
+                  date=""
+                  description="Cloud Foundations, ML Foundations, NLP"
+                  color="secondary"
+                />
               </div>
-            </div>
+            </BentoCard>
             
             {/* Work Experience Card - blue for professional/implementation */}
-            <div className="bento-card">
-              <div className="inline-flex items-center gap-2 mb-6">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-accent to-primary/70">
-                  <Briefcase className="h-5 w-5 text-white" />
-                </div>
-                <h3 className="font-heading text-xl font-bold">Experience</h3>
-              </div>
-              
+            <BentoCard 
+              icon={<Briefcase className="h-5 w-5 text-white" />} 
+              title="Experience"
+              iconBg="bg-gradient-to-br from-accent to-primary/70"
+            >
               <div className="space-y-4">
-                <div className="relative pl-5 border-l-2 border-accent/50">
-                  <div className="absolute w-3 h-3 rounded-full bg-accent top-1 -left-[7px]"></div>
-                  <h4 className="font-medium text-accent">Data Engineering Intern</h4>
-                  <p className="text-sm text-muted-foreground">AIS Laboratory - TUAS</p>
-                  <p className="text-xs text-muted-foreground mt-1">January 2025 - Present</p>
-                  
+                <TimelineItem 
+                  title="Data Engineering Intern"
+                  subtitle="AIS Laboratory - TUAS"
+                  date="January 2025 - Present"
+                  color="accent"
+                >
                   <div className="mt-3 space-y-3">
-                    <div>
+                <div>
                       <p className="text-sm font-medium text-accent">ISMO Water Data Pipeline Project</p>
                       <ul className="text-xs text-muted-foreground list-disc pl-4 mt-1 space-y-1">
                         <li>Architected an end-to-end data pipeline for real-time metrics</li>
                         <li>Reduced processing latency by 40% with optimized Telegraf</li>
                         <li>Developed Grafana dashboards with 99.9% system uptime</li>
                       </ul>
-                    </div>
-                    
-                    <div>
+              </div>
+              
+                <div>
                       <p className="text-sm font-medium text-accent">TSIRP Research Data Platform</p>
                       <ul className="text-xs text-muted-foreground list-disc pl-4 mt-1 space-y-1">
                         <li>Developed microservices supporting 1000+ daily transactions</li>
                         <li>Optimized PostgreSQL with PostGIS and Citus extensions</li>
                         <li>Reduced response time by 60% with Apache Pulsar</li>
                       </ul>
-                    </div>
-                  </div>
                 </div>
               </div>
-            </div>
+                </TimelineItem>
+              </div>
+            </BentoCard>
           </div>
         </div>
 
-        {/* Completely redesigned process flow section */}
+        {/* Process flow section */}
         <div className="glass-card p-10 mx-auto max-w-4xl backdrop-blur-md border border-border/30 relative overflow-hidden">
           {/* Subtle background elements */}
           <div className="absolute inset-0 bg-gradient-to-r from-accent/3 to-secondary/3 opacity-30"></div>
           <div className="absolute -top-40 -right-40 w-80 h-80 bg-secondary/5 rounded-full blur-3xl opacity-20"></div>
           <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-accent/5 rounded-full blur-3xl opacity-20"></div>
           
-          <div className="relative">
+            <div className="relative">
             <h3 className="font-heading text-2xl font-bold mb-10 text-center">
               <span className="relative inline-block px-4">
                 <span className="bg-gradient-to-r from-accent to-secondary bg-clip-text text-transparent">My Approach</span>
@@ -223,75 +272,32 @@ const About = () => {
               </span>
             </h3>
             
-            {/* Simplified process steps with fixed-height containers but NO horizontal line */}
+            {/* Process steps */}
             <div className="md:flex md:justify-between md:items-start">
-              {/* Step 1 */}
-              <div className="text-center px-4 mb-12 md:mb-0 md:w-1/3">
-                <div className="inline-flex mb-6 transform transition-transform hover:scale-105 duration-300">
-                  <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-secondary to-secondary/70 p-[3px] shadow-lg">
-                    <div className="w-full h-full rounded-xl bg-card flex items-center justify-center relative overflow-hidden">
-                      <BrainCircuit className="h-10 w-10 text-secondary" />
-                    </div>
-                  </div>
-                </div>
-                
-                <div>
-                  <div className="flex items-center justify-center gap-2 mb-3">
-                    <span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-secondary/10 text-secondary text-sm font-semibold">1</span>
-                    <h4 className="font-semibold text-lg text-secondary">Research</h4>
-                  </div>
-                  <p className="text-sm text-muted-foreground max-w-xs mx-auto">
-                    Exploring state-of-the-art techniques for each problem
-                  </p>
-                </div>
-              </div>
+              <ProcessStep 
+                number={1}
+                title="Research"
+                description="Exploring state-of-the-art techniques for each problem"
+                icon={<BrainCircuit className="h-10 w-10 text-secondary" />}
+                color="secondary"
+              />
               
-              {/* Step 2 */}
-              <div className="text-center px-4 mb-12 md:mb-0 md:w-1/3 relative">
-                {/* Static connector lines (desktop only) removed */}
-                
-                <div className="inline-flex mb-6 transform transition-transform hover:scale-105 duration-300">
-                  <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-accent to-primary p-[3px] shadow-lg">
-                    <div className="w-full h-full rounded-xl bg-card flex items-center justify-center relative overflow-hidden">
-                      <Code2 className="h-10 w-10 text-accent" />
-                    </div>
-                  </div>
-                </div>
-                
-                <div>
-                  <div className="flex items-center justify-center gap-2 mb-3">
-                    <span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-accent/10 text-accent text-sm font-semibold">2</span>
-                    <h4 className="font-semibold text-lg text-accent">Development</h4>
-                  </div>
-                  <p className="text-sm text-muted-foreground max-w-xs mx-auto">
-                    Iterative prototyping with continuous optimization
-                  </p>
-                </div>
-              </div>
+              <ProcessStep 
+                number={2}
+                title="Development"
+                description="Iterative prototyping with continuous optimization"
+                icon={<Code2 className="h-10 w-10 text-accent" />}
+                color="accent"
+              />
               
-              {/* Step 3 */}
-              <div className="text-center px-4 md:w-1/3">
-                <div className="inline-flex mb-6 transform transition-transform hover:scale-105 duration-300">
-                  <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-secondary to-secondary/70 p-[3px] shadow-lg">
-                    <div className="w-full h-full rounded-xl bg-card flex items-center justify-center relative overflow-hidden">
-                      <LineChart className="h-10 w-10 text-secondary" />
-                    </div>
-                  </div>
-                </div>
-                
-                <div>
-                  <div className="flex items-center justify-center gap-2 mb-3">
-                    <span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-secondary/10 text-secondary text-sm font-semibold">3</span>
-                    <h4 className="font-semibold text-lg text-secondary">Deployment</h4>
-                  </div>
-                  <p className="text-sm text-muted-foreground max-w-xs mx-auto">
-                    Production-grade implementation with monitoring
-                  </p>
-                </div>
-              </div>
+              <ProcessStep 
+                number={3}
+                title="Deployment"
+                description="Production-grade implementation with monitoring"
+                icon={<LineChart className="h-10 w-10 text-secondary" />}
+                color="secondary"
+              />
             </div>
-            
-            {/* Main connector line (desktop only) - completely removed */}
           </div>
         </div>
       </div>

@@ -1,164 +1,214 @@
 import React from "react";
-import { ArrowDown, Code, Database, Terminal, Sparkles } from "lucide-react";
+import { ArrowDown, Code, Database, Terminal, Sparkles, BrainCircuit, Network, Cpu, LineChart } from "lucide-react";
 
-const Hero = () => {
+// Reusable components
+const HighlightText: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <span className="highlight ml-1 mr-1 group">
+    <span className="relative">
+      {children}
+      <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-accent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+    </span>
+  </span>
+);
+
+const TechBadge: React.FC<{
+  icon?: React.ReactNode;
+  text?: string;
+  className?: string;
+  delay?: number;
+}> = ({ icon, text, className = "", delay = 0 }) => (
+  <div 
+    className={`absolute bg-card shadow-lg dark:shadow-neon-blue-glow/20 rounded-xl border border-border/50 dark:border-accent/20 backdrop-blur-sm animate-float-smooth ${className}`}
+    style={{ animationDelay: `${delay}s` }}
+  >
+    {text ? (
+      <span className="px-4 py-2 text-foreground font-semibold text-sm dark:text-white">{text}</span>
+    ) : (
+      <div className="p-3">{icon}</div>
+    )}
+  </div>
+);
+
+const BackgroundEffects: React.FC = () => (
+  <div className="absolute inset-0 pointer-events-none overflow-hidden">
+    {/* Static grid overlay */}
+    <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=\'40\' height=\'40\' viewBox=\'0 0 40 40\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'%239C92AC\' fill-opacity=\'0.1\' fill-rule=\'evenodd\'%3E%3Cpath d=\'M0 40L40 0H20L0 20M40 40V20L20 40\'/%3E%3C/g%3E%3C/svg%3E')] bg-[length:40px_40px] opacity-[0.03]" />
+    
+    {/* Static mesh gradient */}
+    <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-secondary/5 to-transparent opacity-10" />
+    
+    {/* Minimal floating particles */}
+    <div className="absolute top-1/4 left-1/4 w-2 h-2 rounded-full bg-accent/30 animate-float-smooth" style={{ animationDelay: '0s' }} />
+    <div className="absolute top-2/3 right-1/4 w-3 h-3 rounded-full bg-secondary/30 animate-float-smooth" style={{ animationDelay: '5s' }} />
+    <div className="absolute top-1/3 right-1/3 w-1.5 h-1.5 rounded-full bg-primary/20 animate-float-smooth" style={{ animationDelay: '2s' }} />
+    <div className="absolute bottom-1/4 left-1/3 w-2.5 h-2.5 rounded-full bg-accent/25 animate-float-smooth" style={{ animationDelay: '7s' }} />
+    
+    {/* Static glow accent */}
+    <div className="absolute -left-32 top-1/4 w-64 h-1 bg-gradient-to-r from-transparent via-primary/20 to-transparent opacity-20 blur-xl" />
+    
+    {/* Static radial gradient */}
+    <div className="absolute inset-0 bg-gradient-radial from-accent/5 via-transparent to-transparent opacity-30" />
+    
+    {/* Modern geometric shapes */}
+    <div className="absolute top-1/4 right-1/4 w-32 h-32 rounded-full border border-primary/10 opacity-20 animate-pulse-slow" style={{ animationDuration: '8s' }} />
+    <div className="absolute bottom-1/3 left-1/4 w-24 h-24 rounded-full border border-secondary/10 opacity-20 animate-pulse-slow" style={{ animationDuration: '6s' }} />
+    
+    {/* Animated gradient orbs */}
+    <div className="absolute top-1/3 left-1/3 w-40 h-40 rounded-full bg-gradient-to-r from-primary/5 to-accent/5 blur-3xl animate-float-slow" style={{ animationDelay: '3s' }} />
+    <div className="absolute bottom-1/4 right-1/4 w-60 h-60 rounded-full bg-gradient-to-r from-secondary/5 to-primary/5 blur-3xl animate-float-slow" style={{ animationDelay: '6s' }} />
+    
+    {/* Subtle noise texture */}
+    <div className="absolute inset-0 opacity-[0.015] mix-blend-overlay" style={{ 
+      backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
+      backgroundSize: '200px 200px'
+    }} />
+    
+    {/* Animated lines */}
+    <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary/10 to-transparent animate-slide-right" style={{ animationDuration: '15s' }} />
+    <div className="absolute bottom-0 right-0 w-full h-1 bg-gradient-to-r from-transparent via-secondary/10 to-transparent animate-slide-left" style={{ animationDuration: '12s' }} />
+  </div>
+);
+
+// New reusable components
+const TagLine: React.FC<{ text: string }> = ({ text }) => (
+  <div className="inline-flex items-center rounded-full border border-border/30 bg-card/30 backdrop-blur-sm px-3 py-1 text-sm font-medium text-muted-foreground mb-6 group hover:border-accent/50 hover:text-accent transition-colors duration-300">
+    <Sparkles className="h-3 w-3 text-accent mr-2" />
+    <span className="flex h-2 w-2 rounded-full bg-accent mr-2"></span>
+    {text}
+  </div>
+);
+
+const GradientHeading: React.FC<{ firstLine: string; secondLine: string }> = ({ firstLine, secondLine }) => (
+  <h1 className="text-4xl sm:text-5xl md:text-6xl xl:text-7xl font-bold mb-5 font-display tracking-tight">
+    <span className="block">{firstLine}</span>
+    <span className="block mt-1 bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent">{secondLine}</span>
+  </h1>
+);
+
+const CTAButton: React.FC<{
+  href: string;
+  primary?: boolean;
+  children: React.ReactNode;
+}> = ({ href, primary = true, children }) => (
+  <a
+    href={href}
+    className={`relative overflow-hidden group px-8 py-3 rounded-full font-medium transition-all duration-300 hover:scale-105 ${
+      primary 
+        ? "bg-gradient-to-r from-primary/90 to-accent/90 text-white shadow-lg hover:shadow-accent/20" 
+        : "bg-transparent border border-border/50 dark:border-border/30 shadow-sm hover:border-accent/50 hover:text-accent"
+    }`}
+  >
+    <span className={`flex items-center gap-2 ${primary ? "relative z-10" : ""}`}>
+      {children}
+      <ArrowDown className="h-4 w-4 group-hover:translate-y-1 transition-transform duration-300" />
+    </span>
+    {primary && (
+      <span className="absolute inset-0 bg-gradient-to-r from-accent to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+    )}
+  </a>
+);
+
+const ProfileAvatar: React.FC = () => (
+  <div className="w-64 h-64 sm:w-80 sm:h-80 relative">
+    {/* Background glow effect */}
+    <div className="absolute inset-0 rounded-full">
+      <div className="absolute inset-0 rounded-full bg-gradient-to-br from-accent via-primary to-secondary opacity-60 dark:opacity-80 blur-xl"></div>
+    </div>
+    
+    {/* Main circle */}
+    <div className="absolute inset-0 rounded-full overflow-hidden">
+      <div className="relative h-full w-full rounded-full bg-gradient-to-br from-card to-background p-1 dark:from-dark-card dark:to-dark-bg shadow-xl overflow-hidden">
+        <div className="w-full h-full rounded-full bg-card dark:bg-dark-card flex items-center justify-center overflow-hidden border border-border/50">
+          <span className="text-8xl font-bold text-accent/70 font-display dark:text-accent/90 dark:drop-shadow-[0_0_8px_rgba(64,196,255,0.5)]">
+            IE
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
+const ScrollIndicator: React.FC = () => (
+  <div className="absolute bottom-0 left-0 right-0 flex flex-col items-center opacity-70 hover:opacity-100 transition-opacity">
+    <p className="text-muted-foreground text-xs mb-2 flex items-center gap-1">
+      <Sparkles className="h-3 w-3 text-accent" />
+      Scroll for more
+    </p>
+    <a
+      href="#about"
+      className="group w-9 h-9 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-accent hover:border-accent transition-all duration-300 hover:scale-110"
+    >
+      <ArrowDown size={14} className="group-hover:translate-y-1 transition-transform duration-300" />
+    </a>
+  </div>
+);
+
+const Hero: React.FC = () => {
   return (
     <section
       id="home"
       className="relative min-h-[90vh] flex items-center pt-24 pb-20 overflow-hidden bg-background dark:bg-dark-bg"
     >
-      {/* Optimized background elements */}
-      <div className="absolute inset-0 pointer-events-none">
-        {/* Single static grid overlay */}
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=\'40\' height=\'40\' viewBox=\'0 0 40 40\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'%239C92AC\' fill-opacity=\'0.1\' fill-rule=\'evenodd\'%3E%3Cpath d=\'M0 40L40 0H20L0 20M40 40V20L20 40\'/%3E%3C/g%3E%3C/svg%3E')] bg-[length:40px_40px] opacity-[0.03]" />
-        
-        {/* Static mesh gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-secondary/5 to-transparent opacity-10" />
-        
-        {/* Minimal floating particles */}
-        <div className="absolute top-1/4 left-1/4 w-2 h-2 rounded-full bg-accent/30 animate-float-slow" style={{ animationDuration: '15s' }} />
-        <div className="absolute top-2/3 right-1/4 w-3 h-3 rounded-full bg-secondary/30 animate-float-slow" style={{ animationDuration: '15s', animationDelay: '5s' }} />
-        
-        {/* Static glow accents */}
-        <div className="absolute -left-32 top-1/4 w-64 h-1 bg-gradient-to-r from-transparent via-primary/20 to-transparent opacity-20 blur-xl" />
-        <div className="absolute -right-32 top-2/3 w-64 h-1 bg-gradient-to-r from-transparent via-secondary/20 to-transparent opacity-20 blur-xl" />
-        
-        {/* Single static radial gradient */}
-        <div className="absolute inset-0 bg-gradient-radial from-accent/5 via-transparent to-transparent opacity-30" />
-      </div>
+      <BackgroundEffects />
 
       <div className="container-custom relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-[1fr,0.8fr] gap-12 md:gap-16 items-center">
           <div className="order-2 md:order-1">
-            {/* Modern tag line */}
-            <div className="inline-flex items-center rounded-full border border-border/30 bg-card/30 backdrop-blur-sm px-3 py-1 text-sm font-medium text-muted-foreground mb-6 group hover:border-accent/50 hover:text-accent transition-colors duration-300">
-              <Sparkles className="h-3 w-3 text-accent mr-2" />
-              <span className="flex h-2 w-2 rounded-full bg-accent mr-2"></span>
-              Data Engineering & AI Student
-            </div>
+            {/* Tag line */}
+            <TagLine text="Data Engineering & AI Student" />
             
-            {/* Modern main heading */}
-            <h1 className="text-4xl sm:text-5xl md:text-6xl xl:text-7xl font-bold mb-5 font-display tracking-tight">
-              <span className="block">Imad Eddine</span>
-              <span className="block mt-1 bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent">EL MOUSS</span>
-            </h1>
+            {/* Main heading */}
+            <GradientHeading firstLine="Imad Eddine" secondLine="EL MOUSS" />
             
-            {/* Modern description */}
+            {/* Description */}
             <p className="text-lg text-muted-foreground mb-8 max-w-lg">
               Results-driven Data Engineering & AI student with a focus on 
-              <span className="highlight ml-1 mr-1 group">
-                <span className="relative">
-                  scalable data pipelines
-                  <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-accent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
-                </span>
-              </span>,
-              <span className="highlight ml-1 mr-1 group">
-                <span className="relative">
-                  machine learning
-                  <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-accent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
-                </span>
-              </span>, and
-              <span className="highlight ml-1 group">
-                <span className="relative">
-                  big data solutions
-                  <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-accent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
-                </span>
-              </span>.
+              <HighlightText>scalable data pipelines</HighlightText>,
+              <HighlightText>machine learning</HighlightText>, and
+              <HighlightText>big data solutions</HighlightText>.
             </p>
             
-            {/* Modern CTA buttons */}
+            {/* CTA buttons */}
             <div className="flex gap-5 mb-10">
-              <a
-                href="#projects"
-                className="relative overflow-hidden group px-8 py-3 bg-gradient-to-r from-primary/90 to-accent/90 rounded-full text-white font-medium shadow-lg hover:shadow-accent/20 transition-all duration-300 hover:scale-105"
-              >
-                <span className="relative z-10 flex items-center gap-2">
-                  Projects
-                  <ArrowDown className="h-4 w-4 group-hover:translate-y-1 transition-transform duration-300" />
-                </span>
-                <span className="absolute inset-0 bg-gradient-to-r from-accent to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
-              </a>
-              <a
-                href="#blog"
-                className="relative overflow-hidden group px-8 py-3 bg-transparent border border-border/50 dark:border-border/30 rounded-full font-medium shadow-sm hover:border-accent/50 hover:text-accent transition-all duration-300 hover:scale-105"
-              >
-                <span className="flex items-center gap-2">
-                  Blog
-                  <ArrowDown className="h-4 w-4 group-hover:translate-y-1 transition-transform duration-300" />
-                </span>
-              </a>
+              <CTAButton href="#projects">
+                Projects
+              </CTAButton>
+              <CTAButton href="#blog" primary={false}>
+                Blog
+              </CTAButton>
             </div>
           </div>
           
-          {/* Modern right side with profile illustration */}
+          {/* Profile illustration */}
           <div className="order-1 md:order-2 flex justify-center md:justify-end">
             <div className="relative">
-              {/* Modern main profile blob */}
-              <div className="w-64 h-64 sm:w-80 sm:h-80 relative group">
-                {/* Modern background glow effect */}
-                <div className="absolute inset-0 rounded-full">
-                  <div className="absolute inset-0 rounded-full bg-gradient-to-br from-accent via-primary to-secondary opacity-60 dark:opacity-80 blur-xl" style={{ borderRadius: '50%' }}></div>
-                </div>
-                
-                {/* Modern main circle */}
-                <div className="absolute inset-0 rounded-full overflow-hidden">
-                  <div className="relative h-full w-full rounded-full bg-gradient-to-br from-card to-background p-1 dark:from-dark-card dark:to-dark-bg shadow-xl overflow-hidden group-hover:shadow-accent/20 transition-shadow duration-300">
-                    <div className="w-full h-full rounded-full bg-card dark:bg-dark-card flex items-center justify-center overflow-hidden border border-border/50 group-hover:border-accent/50 transition-colors duration-300">
-                      <span className="text-8xl font-bold text-accent/70 font-display dark:text-accent/90 dark:drop-shadow-[0_0_8px_rgba(64,196,255,0.5)]">
-                        IE
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <ProfileAvatar />
               
-              {/* Optimized floating tech badges */}
-              <div 
-                className="absolute top-0 -right-4 bg-card shadow-lg dark:shadow-neon-blue-glow/20 rounded-xl p-3 border border-border/50 dark:border-accent/20 backdrop-blur-sm animate-float-slow" 
-                style={{ animationDuration: '15s' }}
-              >
-                <Code className="text-primary h-6 w-6 dark:text-accent dark:drop-shadow-[0_0_5px_rgba(64,196,255,0.5)]" />
-              </div>
-              
-              <div 
-                className="absolute -bottom-2 -left-6 bg-card shadow-lg dark:shadow-neon-blue-glow/20 rounded-xl p-3 border border-border/50 dark:border-accent/20 backdrop-blur-sm animate-float-slow" 
-                style={{ animationDuration: '15s', animationDelay: '5s' }}
-              >
-                <Database className="text-secondary h-6 w-6 dark:text-secondary dark:drop-shadow-[0_0_5px_rgba(190,75,255,0.5)]" />
-              </div>
-              
-              <div 
-                className="absolute bottom-20 -right-8 bg-card shadow-lg dark:shadow-neon-blue-glow/20 rounded-xl px-4 py-2 border border-border/50 dark:border-accent/20 backdrop-blur-sm animate-float-slow" 
-                style={{ animationDuration: '15s', animationDelay: '10s' }}
-              >
-                <span className="text-foreground font-semibold text-sm dark:text-white">
-                  Python & SQL
-                </span>
-              </div>
-              
-              <div 
-                className="absolute top-16 -left-10 bg-card shadow-lg dark:shadow-neon-blue-glow/20 rounded-xl p-3 border border-border/50 dark:border-accent/20 backdrop-blur-sm animate-float-slow" 
-                style={{ animationDuration: '15s', animationDelay: '7s' }}
-              >
-                <Terminal className="text-primary h-6 w-6 dark:text-accent dark:drop-shadow-[0_0_5px_rgba(64,196,255,0.5)]" />
-              </div>
+              {/* Tech badges */}
+              <TechBadge
+                icon={<Code className="text-primary h-6 w-6 dark:text-accent dark:drop-shadow-[0_0_5px_rgba(64,196,255,0.5)]" />}
+                className="top-0 -right-4"
+              />
+              <TechBadge
+                icon={<Database className="text-secondary h-6 w-6 dark:text-secondary dark:drop-shadow-[0_0_5px_rgba(190,75,255,0.5)]" />}
+                className="-bottom-2 -left-6"
+                delay={5}
+              />
+              <TechBadge
+                icon={<Network className="text-secondary h-6 w-6 dark:text-secondary dark:drop-shadow-[0_0_5px_rgba(190,75,255,0.5)]" />}
+                className="bottom-20 -right-8"
+                delay={10}
+              />
+              <TechBadge
+                icon={<Terminal className="text-primary h-6 w-6 dark:text-accent dark:drop-shadow-[0_0_5px_rgba(64,196,255,0.5)]" />}
+                className="top-16 -left-10"
+                delay={7}
+              />
             </div>
           </div>
         </div>
 
-        {/* Modern scroll indicator */}
-        <div className="absolute bottom-0 left-0 right-0 flex flex-col items-center opacity-70 hover:opacity-100 transition-opacity">
-          <p className="text-muted-foreground text-xs mb-2 flex items-center gap-1">
-            <Sparkles className="h-3 w-3 text-accent" />
-            Scroll for more
-          </p>
-          <a
-            href="#about"
-            className="group w-9 h-9 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-accent hover:border-accent transition-all duration-300 hover:scale-110"
-          >
-            <ArrowDown size={14} className="group-hover:translate-y-1 transition-transform duration-300" />
-          </a>
-        </div>
+        <ScrollIndicator />
       </div>
     </section>
   );

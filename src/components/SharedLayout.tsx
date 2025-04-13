@@ -3,6 +3,51 @@ import { Outlet, NavLink, Link } from "react-router-dom";
 import { Moon, Sun, Menu, X, Github, Linkedin, ChevronRight } from "lucide-react";
 import NewsletterPopup from "./NewsletterPopup";
 
+// Social media links component to avoid duplication
+const SocialLinks: React.FC<{ className?: string }> = ({ className = "" }) => (
+  <div className={`flex items-center gap-3 ${className}`}>
+    <a
+      href="https://github.com/imaddde867"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="p-2 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted/40 transition-all duration-300 hover:scale-110"
+      aria-label="GitHub"
+    >
+      <Github size={18} />
+    </a>
+    <a
+      href="https://www.linkedin.com/in/imad-eddine-el-mouss-986741262/"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="p-2 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted/40 transition-all duration-300 hover:scale-110"
+      aria-label="LinkedIn"
+    >
+      <Linkedin size={18} />
+    </a>
+  </div>
+);
+
+// Modern NavLink component with simplified styling
+const NavItem: React.FC<{ to: string; children: React.ReactNode; onClick?: () => void }> = ({ 
+  to, 
+  children, 
+  onClick 
+}) => (
+  <NavLink
+    to={to}
+    className={({ isActive }) =>
+      `relative px-4 py-2 text-sm font-medium transition-all duration-300 ${
+        isActive
+          ? "text-accent after:scale-x-100"
+          : "text-foreground/70 hover:text-foreground after:group-hover:scale-x-100"
+      } after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-full after:origin-left after:scale-x-0 after:bg-accent after:transition-transform after:duration-300`
+    }
+    onClick={onClick}
+  >
+    {children}
+  </NavLink>
+);
+
 // Modern Header with enhanced animations and theme toggle
 const Header: React.FC = () => {
   const [isDarkMode, setIsDarkMode] = React.useState(true);
@@ -11,32 +56,23 @@ const Header: React.FC = () => {
 
   React.useEffect(() => {
     const root = window.document.documentElement;
-    if (isDarkMode) {
-      root.classList.add("dark");
-    } else {
-      root.classList.remove("dark");
-    }
+    root.classList.toggle("dark", isDarkMode);
   }, [isDarkMode]);
 
   React.useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
+    const handleScroll = () => setIsScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const toggleTheme = () => setIsDarkMode(!isDarkMode);
-  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
-
   return (
     <header 
-      className={`sticky top-0 z-50 w-full border-b border-border/20 bg-background/80 backdrop-blur-lg supports-[backdrop-filter]:bg-background/60 transition-all duration-300 ${
-        isScrolled ? "shadow-lg" : ""
+      className={`sticky top-0 z-50 w-full border-b border-border/10 bg-background/80 backdrop-blur-lg supports-[backdrop-filter]:bg-background/60 transition-all duration-300 ${
+        isScrolled ? "shadow-sm" : ""
       }`}
     >
       <div className="container-custom flex h-16 items-center justify-between">
-        {/* Modern logo with subtle animation */}
+        {/* Logo */}
         <Link 
           to="/" 
           className="group flex items-center gap-2 transition-all duration-300 hover:opacity-90"
@@ -50,155 +86,55 @@ const Header: React.FC = () => {
           </span>
         </Link>
 
-        {/* Modern desktop navigation */}
-        <nav className="hidden md:flex items-center space-x-1">
-          <NavLink
-            to="/"
-            className={({ isActive }) =>
-              `nav-link ${isActive ? "active-nav-link" : ""} relative group`
-            }
-          >
-            Home
-            <span className="absolute bottom-0 left-0 w-full h-0.5 bg-accent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300" />
-          </NavLink>
-          <NavLink
-            to="/projects"
-            className={({ isActive }) =>
-              `nav-link ${isActive ? "active-nav-link" : ""} relative group`
-            }
-          >
-            Projects
-            <span className="absolute bottom-0 left-0 w-full h-0.5 bg-accent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300" />
-          </NavLink>
-          <NavLink
-            to="/blog"
-            className={({ isActive }) =>
-              `nav-link ${isActive ? "active-nav-link" : ""} relative group`
-            }
-          >
-            Blog
-            <span className="absolute bottom-0 left-0 w-full h-0.5 bg-accent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300" />
-          </NavLink>
+        {/* Desktop navigation */}
+        <nav className="hidden md:flex items-center space-x-6">
+          <NavItem to="/">Home</NavItem>
+          <NavItem to="/projects">Projects</NavItem>
+          <NavItem to="/blog">Blog</NavItem>
         </nav>
 
-        {/* Modern right side controls */}
-        <div className="flex items-center gap-2">
-          <div className="hidden md:flex items-center gap-3 mr-3">
-            <a
-              href="https://github.com/imaddde867"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="p-2 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted/40 transition-all duration-300 hover:scale-110"
-              aria-label="GitHub"
-            >
-              <Github size={18} />
-            </a>
-            <a
-              href="https://www.linkedin.com/in/imad-eddine-el-mouss-986741262/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="p-2 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted/40 transition-all duration-300 hover:scale-110"
-              aria-label="LinkedIn"
-            >
-              <Linkedin size={18} />
-            </a>
-          </div>
-
+        {/* Right side controls */}
+        <div className="flex items-center gap-4">
+          <SocialLinks className="hidden md:flex" />
+          
           {/* Modern theme toggle */}
           <button
-            onClick={toggleTheme}
-            className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border bg-background text-sm font-medium ring-offset-background transition-all duration-300 hover:bg-muted hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
+            onClick={() => setIsDarkMode(!isDarkMode)}
+            className="relative inline-flex h-8 w-8 items-center justify-center rounded-full bg-muted/30 text-muted-foreground transition-all duration-300 hover:bg-muted/50 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50"
+            aria-label="Toggle theme"
           >
-            <div className="relative h-[1.2rem] w-[1.2rem] transition-transform duration-300 hover:rotate-12">
+            <div className="relative h-4 w-4 transition-transform duration-500">
               {isDarkMode ? (
-                <Sun className="h-full w-full text-amber-500" />
+                <Sun className="h-full w-full text-amber-400" />
               ) : (
-                <Moon className="h-full w-full text-indigo-500" />
+                <Moon className="h-full w-full text-indigo-400" />
               )}
             </div>
-            <span className="sr-only">Toggle theme</span>
           </button>
 
           {/* Modern mobile menu button */}
           <button
-            className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border bg-background p-2 text-sm font-medium md:hidden transition-all duration-300 hover:bg-muted hover:scale-110"
-            onClick={toggleMenu}
+            className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-muted/30 text-muted-foreground md:hidden transition-all duration-300 hover:bg-muted/50 hover:text-foreground"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
             aria-label="Toggle menu"
           >
-            {isMenuOpen ? <X size={18} /> : <Menu size={18} />}
+            {isMenuOpen ? <X size={16} /> : <Menu size={16} />}
           </button>
         </div>
       </div>
 
-      {/* Modern mobile menu */}
+      {/* Mobile menu */}
       <div
-        className={`md:hidden absolute inset-x-0 top-16 z-50 w-full origin-top overflow-hidden border-t border-border/20 bg-background/95 backdrop-blur-lg transition-all duration-300 ease-in-out ${
+        className={`md:hidden absolute inset-x-0 top-16 z-50 w-full origin-top overflow-hidden border-t border-border/10 bg-background/95 backdrop-blur-lg transition-all duration-300 ease-in-out ${
           isMenuOpen ? "max-h-screen opacity-100" : "max-h-0 opacity-0"
         }`}
       >
         <nav className="container-custom flex flex-col py-6 gap-4">
-          <NavLink
-            to="/"
-            className={({ isActive }) =>
-              `flex items-center px-4 py-3 rounded-md transition-all duration-300 ${
-                isActive
-                  ? "bg-accent/10 text-accent font-medium"
-                  : "text-foreground hover:bg-muted/40 hover:translate-x-2"
-              }`
-            }
-            onClick={() => setIsMenuOpen(false)}
-          >
-            Home
-            <ChevronRight size={16} className="ml-auto transition-transform duration-300 group-hover:translate-x-1" />
-          </NavLink>
-          <NavLink
-            to="/projects"
-            className={({ isActive }) =>
-              `flex items-center px-4 py-3 rounded-md transition-all duration-300 ${
-                isActive
-                  ? "bg-accent/10 text-accent font-medium"
-                  : "text-foreground hover:bg-muted/40 hover:translate-x-2"
-              }`
-            }
-            onClick={() => setIsMenuOpen(false)}
-          >
-            Projects
-            <ChevronRight size={16} className="ml-auto transition-transform duration-300 group-hover:translate-x-1" />
-          </NavLink>
-          <NavLink
-            to="/blog"
-            className={({ isActive }) =>
-              `flex items-center px-4 py-3 rounded-md transition-all duration-300 ${
-                isActive
-                  ? "bg-accent/10 text-accent font-medium"
-                  : "text-foreground hover:bg-muted/40 hover:translate-x-2"
-              }`
-            }
-            onClick={() => setIsMenuOpen(false)}
-          >
-            Blog
-            <ChevronRight size={16} className="ml-auto transition-transform duration-300 group-hover:translate-x-1" />
-          </NavLink>
-
-          <div className="flex items-center gap-4 mt-4 px-4">
-            <a
-              href="https://github.com/imaddde867"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="p-2 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted/40 transition-all duration-300 hover:scale-110"
-              aria-label="GitHub"
-            >
-              <Github size={20} />
-            </a>
-            <a
-              href="https://www.linkedin.com/in/imad-eddine-el-mouss-986741262/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="p-2 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted/40 transition-all duration-300 hover:scale-110"
-              aria-label="LinkedIn"
-            >
-              <Linkedin size={20} />
-            </a>
+          <NavItem to="/" onClick={() => setIsMenuOpen(false)}>Home</NavItem>
+          <NavItem to="/projects" onClick={() => setIsMenuOpen(false)}>Projects</NavItem>
+          <NavItem to="/blog" onClick={() => setIsMenuOpen(false)}>Blog</NavItem>
+          <div className="mt-4 px-4">
+            <SocialLinks />
           </div>
         </nav>
       </div>
@@ -224,26 +160,7 @@ const Footer: React.FC = () => {
             <p className="text-muted-foreground mb-4 max-w-xs">
               AI & Machine Learning Engineer transforming complex data into intelligent solutions with a focus on predictive analytics and ML pipelines.
             </p>
-            <div className="flex space-x-4">
-              <a
-                href="https://github.com/imaddde867"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group p-2 rounded-md transition-all duration-300 hover:scale-110"
-                aria-label="GitHub"
-              >
-                <Github className="h-5 w-5 text-muted-foreground transition-colors group-hover:text-accent" />
-              </a>
-              <a
-                href="https://www.linkedin.com/in/imad-eddine-el-mouss-986741262/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group p-2 rounded-md transition-all duration-300 hover:scale-110"
-                aria-label="LinkedIn"
-              >
-                <Linkedin className="h-5 w-5 text-muted-foreground transition-colors group-hover:text-accent" />
-              </a>
-            </div>
+            <SocialLinks />
           </div>
 
           <div>
@@ -252,27 +169,24 @@ const Footer: React.FC = () => {
               <li>
                 <NavLink
                   to="/"
-                  className="text-muted-foreground hover:text-accent transition-all duration-300 hover:translate-x-1 flex items-center"
+                  className="text-muted-foreground hover:text-foreground transition-colors"
                 >
-                  <ChevronRight size={14} className="mr-1 opacity-0 group-hover:opacity-100 transition-opacity" />
                   Home
                 </NavLink>
               </li>
               <li>
                 <NavLink
                   to="/projects"
-                  className="text-muted-foreground hover:text-accent transition-all duration-300 hover:translate-x-1 flex items-center"
+                  className="text-muted-foreground hover:text-foreground transition-colors"
                 >
-                  <ChevronRight size={14} className="mr-1 opacity-0 group-hover:opacity-100 transition-opacity" />
                   Projects
                 </NavLink>
               </li>
               <li>
                 <NavLink
                   to="/blog"
-                  className="text-muted-foreground hover:text-accent transition-all duration-300 hover:translate-x-1 flex items-center"
+                  className="text-muted-foreground hover:text-foreground transition-colors"
                 >
-                  <ChevronRight size={14} className="mr-1 opacity-0 group-hover:opacity-100 transition-opacity" />
                   Blog
                 </NavLink>
               </li>
@@ -281,14 +195,41 @@ const Footer: React.FC = () => {
 
           <div>
             <h3 className="font-heading text-lg font-medium mb-4">Contact</h3>
-            <p className="text-muted-foreground">
-              Let's connect and discuss how we can work together to bring your ideas to life.
-            </p>
+            <ul className="space-y-2">
+              <li>
+                <a
+                  href="mailto:imad.eddine.elmouss@gmail.com"
+                  className="text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  imad.eddine.elmouss@gmail.com
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://github.com/imaddde867"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  GitHub
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://www.linkedin.com/in/imad-eddine-el-mouss-986741262/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  LinkedIn
+                </a>
+              </li>
+            </ul>
           </div>
         </div>
 
         <div className="mt-12 pt-8 border-t border-border/20">
-          <p className="text-sm text-muted-foreground text-center">
+          <p className="text-center text-sm text-muted-foreground">
             © {currentYear} ImadLab. All rights reserved.
           </p>
         </div>
@@ -305,8 +246,6 @@ const SharedLayout: React.FC = () => {
         <Outlet />
       </main>
       <Footer />
-      
-      {/* Newsletter Popup */}
       <NewsletterPopup />
     </div>
   );

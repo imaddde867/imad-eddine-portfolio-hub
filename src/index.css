@@ -39,36 +39,37 @@
   }
 
   .dark {
-    --background: 230 25% 7%;
-    --foreground: 210 40% 98%;
+    /* New color palette */
+    --background: 0 0% 0%; /* Jet Black #000000 */
+    --foreground: 0 0% 100%; /* White #FFFFFF */
 
-    --card: 230 25% 9%;
-    --card-foreground: 210 40% 98%;
+    --card: 0 0% 10%; /* Charcoal Gray #1A1A1A */
+    --card-foreground: 0 0% 100%; /* White #FFFFFF */
 
-    --popover: 230 25% 9%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 0 0% 10%; /* Charcoal Gray #1A1A1A */
+    --popover-foreground: 0 0% 100%; /* White #FFFFFF */
 
-    --primary: 190 95% 55%;
-    --primary-foreground: 230 25% 8%;
+    --primary: 14 100% 57%; /* Burnt Orange #FF5722 */
+    --primary-foreground: 0 0% 100%; /* White #FFFFFF */
 
-    --secondary: 270 90% 70%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 45 100% 50%; /* Amber Gold #FFB300 */
+    --secondary-foreground: 0 0% 0%; /* Jet Black #000000 */
 
-    --muted: 230 25% 15%;
-    --muted-foreground: 215 20% 75%;
+    --muted: 200 9% 46%; /* Cool Blue-Gray #607D8B */
+    --muted-foreground: 0 0% 69%; /* Silver #B0B0B0 */
 
-    --accent: 190 95% 55%;
-    --accent-foreground: 230 25% 8%;
+    --accent: 14 100% 57%; /* Burnt Orange #FF5722 */
+    --accent-foreground: 0 0% 100%; /* White #FFFFFF */
 
-    --destructive: 0 75% 55%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%; /* White #FFFFFF */
 
-    --border: 230 25% 15%;
-    --input: 230 25% 15%;
-    --ring: 190 95% 55%;
+    --border: 0 0% 17%; /* Steel Gray #2C2C2C */
+    --input: 0 0% 17%; /* Steel Gray #2C2C2C */
+    --ring: 14 100% 57%; /* Burnt Orange #FF5722 */
 
     /* Custom color properties */
-    --glow-color: 64, 196, 255;
+    --glow-color: 255, 87, 34; /* Burnt Orange #FF5722 */
     --glow-spread: 3px;
     --glow-opacity: 0.5;
   }
