@@ -13,7 +13,7 @@ const Contact = () => {
   } = useContactForm();
 
   return (
-    <section id="contact" className="section-padding relative bg-background dark:bg-dark-bg">
+    <section id="contact" className="section-padding relative bg-dark-bg">
       {/* Enhanced background elements */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div className="absolute inset-0 bg-dot-pattern opacity-[0.03] animate-grid-shift" />
@@ -44,20 +44,18 @@ const Contact = () => {
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 items-start">
           {/* Enhanced contact information card */}
           <div className="animate-fade-in-scale lg:col-span-2" style={{ animationDelay: "0.2s" }}>
-            <div className="bento-card h-full dark:backdrop-blur-md flex flex-col group hover:shadow-lg transition-all duration-300">
+            <div className="bento-card h-full backdrop-blur-md bg-card/50 dark:bg-dark-card/50 flex flex-col group hover:shadow-lg transition-all duration-300">
               <h3 className="text-2xl font-display font-bold text-foreground mb-6 flex items-center gap-2">
                 <Sparkles className="h-5 w-5 text-accent" />
                 Contact Information
               </h3>
               <p className="text-muted-foreground mb-8">
-                Whether you're looking for an AI consultant, need help with your
-                data architecture, or just want to connect, feel free to reach out
-                using the form or through any of my channels.
+                Ready to innovate in AI and data engineering? I'm passionate about creating impactful solutions and always open to exciting collaborations. Let's discuss how we can work together to bring your ideas to life.
               </p>
 
               <div className="space-y-6 mb-10">
                 <div className="flex items-start group">
-                  <div className="p-2 rounded-full bg-accent/10 group-hover:bg-accent/20 transition-all duration-300 mr-4 dark:shadow-neon-blue-glow/20 group-hover:scale-110">
+                  <div className="p-2 rounded-full bg-accent/10 group-hover:bg-accent/20 transition-all duration-300 mr-4 shadow-neon-blue-glow/20 group-hover:scale-110">
                     <Mail className="text-accent transition-transform duration-300" size={20} />
                   </div>
                   <div>
@@ -73,7 +71,7 @@ const Contact = () => {
                 </div>
                 
                 <div className="flex items-start group">
-                  <div className="p-2 rounded-full bg-accent/10 group-hover:bg-accent/20 transition-all duration-300 mr-4 dark:shadow-neon-blue-glow/20 group-hover:scale-110">
+                  <div className="p-2 rounded-full bg-accent/10 group-hover:bg-accent/20 transition-all duration-300 mr-4 shadow-neon-blue-glow/20 group-hover:scale-110">
                     <MapPin className="text-accent transition-transform duration-300" size={20} />
                   </div>
                   <div>
@@ -83,12 +81,12 @@ const Contact = () => {
                 </div>
                 
                 <div className="flex items-start group">
-                  <div className="p-2 rounded-full bg-accent/10 group-hover:bg-accent/20 transition-all duration-300 mr-4 dark:shadow-neon-blue-glow/20 group-hover:scale-110">
+                  <div className="p-2 rounded-full bg-accent/10 group-hover:bg-accent/20 transition-all duration-300 mr-4 shadow-neon-blue-glow/20 group-hover:scale-110">
                     <MessageSquare className="text-accent transition-transform duration-300" size={20} />
                   </div>
                   <div>
-                    <h4 className="font-medium text-foreground">Response Time</h4>
-                    <p className="text-muted-foreground group-hover:text-accent transition-colors duration-300">Usually within 24 hours</p>
+                    <h4 className="font-medium text-foreground">Availability</h4>
+                    <p className="text-muted-foreground group-hover:text-accent transition-colors duration-300">Open for projects and collaborations</p>
                   </div>
                 </div>
               </div>
@@ -125,7 +123,7 @@ const Contact = () => {
           {/* Enhanced contact form card */}
           <div className="animate-fade-in-scale lg:col-span-3" style={{ animationDelay: "0.3s" }}>
             <form
-              className="bento-card dark:backdrop-blur-md bg-card/50 dark:bg-dark-card/50 space-y-6 group hover:shadow-lg transition-all duration-300"
+              className="bento-card h-full backdrop-blur-md bg-card/50 dark:bg-dark-card/50 space-y-6 group hover:shadow-lg transition-all duration-300"
               onSubmit={handleSubmit}
             >
               {submitStatus && (

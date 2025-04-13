@@ -6,7 +6,6 @@ const HighlightText: React.FC<{ children: React.ReactNode }> = ({ children }) =>
   <span className="highlight ml-1 mr-1 group">
     <span className="relative">
       {children}
-      <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-accent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
     </span>
   </span>
 );
@@ -18,11 +17,11 @@ const TechBadge: React.FC<{
   delay?: number;
 }> = ({ icon, text, className = "", delay = 0 }) => (
   <div 
-    className={`absolute bg-card shadow-lg dark:shadow-neon-blue-glow/20 rounded-xl border border-border/50 dark:border-accent/20 backdrop-blur-sm animate-float-smooth ${className}`}
+    className={`absolute bg-card shadow-neon-blue-glow/20 rounded-xl border border-accent/20 backdrop-blur-sm animate-float-smooth ${className}`}
     style={{ animationDelay: `${delay}s` }}
   >
     {text ? (
-      <span className="px-4 py-2 text-foreground font-semibold text-sm dark:text-white">{text}</span>
+      <span className="px-4 py-2 text-white font-semibold text-sm">{text}</span>
     ) : (
       <div className="p-3">{icon}</div>
     )}
@@ -78,7 +77,6 @@ const BackgroundEffects: React.FC = () => (
 const TagLine: React.FC<{ text: string }> = ({ text }) => (
   <div className="inline-flex items-center rounded-full border border-border/30 bg-card/30 backdrop-blur-sm px-3 py-1 text-sm font-medium text-muted-foreground mb-6 group hover:border-accent/50 hover:text-accent transition-colors duration-300">
     <Sparkles className="h-3 w-3 text-accent mr-2" />
-    <span className="flex h-2 w-2 rounded-full bg-accent mr-2"></span>
     {text}
   </div>
 );
@@ -100,12 +98,11 @@ const CTAButton: React.FC<{
     className={`relative overflow-hidden group px-8 py-3 rounded-full font-medium transition-all duration-300 hover:scale-105 ${
       primary 
         ? "bg-gradient-to-r from-primary/90 to-accent/90 text-white shadow-lg hover:shadow-accent/20" 
-        : "bg-transparent border border-border/50 dark:border-border/30 shadow-sm hover:border-accent/50 hover:text-accent"
+        : "bg-transparent border border-border/30 shadow-sm hover:border-accent/50 hover:text-accent"
     }`}
   >
     <span className={`flex items-center gap-2 ${primary ? "relative z-10" : ""}`}>
       {children}
-      <ArrowDown className="h-4 w-4 group-hover:translate-y-1 transition-transform duration-300" />
     </span>
     {primary && (
       <span className="absolute inset-0 bg-gradient-to-r from-accent to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
@@ -117,14 +114,14 @@ const ProfileAvatar: React.FC = () => (
   <div className="w-64 h-64 sm:w-80 sm:h-80 relative">
     {/* Background glow effect */}
     <div className="absolute inset-0 rounded-full">
-      <div className="absolute inset-0 rounded-full bg-gradient-to-br from-accent via-primary to-secondary opacity-60 dark:opacity-80 blur-xl"></div>
+      <div className="absolute inset-0 rounded-full bg-gradient-to-br from-accent via-primary to-secondary opacity-80 blur-xl"></div>
     </div>
     
     {/* Main circle */}
     <div className="absolute inset-0 rounded-full overflow-hidden">
-      <div className="relative h-full w-full rounded-full bg-gradient-to-br from-card to-background p-1 dark:from-dark-card dark:to-dark-bg shadow-xl overflow-hidden">
-        <div className="w-full h-full rounded-full bg-card dark:bg-dark-card flex items-center justify-center overflow-hidden border border-border/50">
-          <span className="text-8xl font-bold text-accent/70 font-display dark:text-accent/90 dark:drop-shadow-[0_0_8px_rgba(64,196,255,0.5)]">
+      <div className="relative h-full w-full rounded-full bg-gradient-to-br from-dark-card to-dark-bg p-1 shadow-xl overflow-hidden">
+        <div className="w-full h-full rounded-full bg-dark-card flex items-center justify-center overflow-hidden border border-border/50">
+          <span className="text-8xl font-bold text-accent/90 font-display drop-shadow-[0_0_8px_rgba(64,196,255,0.5)]">
             IE
           </span>
         </div>
@@ -134,7 +131,7 @@ const ProfileAvatar: React.FC = () => (
 );
 
 const ScrollIndicator: React.FC = () => (
-  <div className="absolute bottom-0 left-0 right-0 flex flex-col items-center opacity-70 hover:opacity-100 transition-opacity">
+  <div className="absolute bottom-[-2rem] left-0 right-0 flex flex-col items-center opacity-70 hover:opacity-100 transition-opacity">
     <p className="text-muted-foreground text-xs mb-2 flex items-center gap-1">
       <Sparkles className="h-3 w-3 text-accent" />
       Scroll for more
@@ -152,7 +149,7 @@ const Hero: React.FC = () => {
   return (
     <section
       id="home"
-      className="relative min-h-[90vh] flex items-center pt-24 pb-20 overflow-hidden bg-background dark:bg-dark-bg"
+      className="relative min-h-[90vh] flex items-center pt-24 pb-20 overflow-hidden bg-dark-bg"
     >
       <BackgroundEffects />
 
@@ -175,17 +172,17 @@ const Hero: React.FC = () => {
             
             {/* CTA buttons */}
             <div className="flex gap-5 mb-10">
-              <CTAButton href="#projects">
+              <CTAButton href="/projects">
                 Projects
               </CTAButton>
-              <CTAButton href="#blog" primary={false}>
+              <CTAButton href="/blog" primary={false}>
                 Blog
               </CTAButton>
             </div>
           </div>
           
           {/* Profile illustration */}
-          <div className="order-1 md:order-2 flex justify-center md:justify-end">
+          <div className="order-1 md:order-2 flex justify-center md:justify-end mt-8 md:mt-12">
             <div className="relative">
               <ProfileAvatar />
               

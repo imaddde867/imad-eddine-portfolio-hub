@@ -256,50 +256,6 @@ const About = () => {
             </BentoCard>
           </div>
         </div>
-
-        {/* Process flow section */}
-        <div className="glass-card p-10 mx-auto max-w-4xl backdrop-blur-md border border-border/30 relative overflow-hidden">
-          {/* Subtle background elements */}
-          <div className="absolute inset-0 bg-gradient-to-r from-accent/3 to-secondary/3 opacity-30"></div>
-          <div className="absolute -top-40 -right-40 w-80 h-80 bg-secondary/5 rounded-full blur-3xl opacity-20"></div>
-          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-accent/5 rounded-full blur-3xl opacity-20"></div>
-          
-            <div className="relative">
-            <h3 className="font-heading text-2xl font-bold mb-10 text-center">
-              <span className="relative inline-block px-4">
-                <span className="bg-gradient-to-r from-accent to-secondary bg-clip-text text-transparent">My Approach</span>
-                <span className="absolute -bottom-2 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent/50 to-transparent"></span>
-              </span>
-            </h3>
-            
-            {/* Process steps */}
-            <div className="md:flex md:justify-between md:items-start">
-              <ProcessStep 
-                number={1}
-                title="Research"
-                description="Exploring state-of-the-art techniques for each problem"
-                icon={<BrainCircuit className="h-10 w-10 text-secondary" />}
-                color="secondary"
-              />
-              
-              <ProcessStep 
-                number={2}
-                title="Development"
-                description="Iterative prototyping with continuous optimization"
-                icon={<Code2 className="h-10 w-10 text-accent" />}
-                color="accent"
-              />
-              
-              <ProcessStep 
-                number={3}
-                title="Deployment"
-                description="Production-grade implementation with monitoring"
-                icon={<LineChart className="h-10 w-10 text-secondary" />}
-                color="secondary"
-              />
-            </div>
-          </div>
-        </div>
       </div>
     </section>
   );

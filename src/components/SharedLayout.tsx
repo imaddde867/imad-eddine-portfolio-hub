@@ -50,14 +50,8 @@ const NavItem: React.FC<{ to: string; children: React.ReactNode; onClick?: () =>
 
 // Modern Header with enhanced animations and theme toggle
 const Header: React.FC = () => {
-  const [isDarkMode, setIsDarkMode] = React.useState(true);
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [isScrolled, setIsScrolled] = React.useState(false);
-
-  React.useEffect(() => {
-    const root = window.document.documentElement;
-    root.classList.toggle("dark", isDarkMode);
-  }, [isDarkMode]);
 
   React.useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
@@ -97,21 +91,6 @@ const Header: React.FC = () => {
         <div className="flex items-center gap-4">
           <SocialLinks className="hidden md:flex" />
           
-          {/* Modern theme toggle */}
-          <button
-            onClick={() => setIsDarkMode(!isDarkMode)}
-            className="relative inline-flex h-8 w-8 items-center justify-center rounded-full bg-muted/30 text-muted-foreground transition-all duration-300 hover:bg-muted/50 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50"
-            aria-label="Toggle theme"
-          >
-            <div className="relative h-4 w-4 transition-transform duration-500">
-              {isDarkMode ? (
-                <Sun className="h-full w-full text-amber-400" />
-              ) : (
-                <Moon className="h-full w-full text-indigo-400" />
-              )}
-            </div>
-          </button>
-
           {/* Modern mobile menu button */}
           <button
             className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-muted/30 text-muted-foreground md:hidden transition-all duration-300 hover:bg-muted/50 hover:text-foreground"
@@ -198,10 +177,10 @@ const Footer: React.FC = () => {
             <ul className="space-y-2">
               <li>
                 <a
-                  href="mailto:imad.eddine.elmouss@gmail.com"
+                  href="mailto:imadeddine200507@gmail.com"
                   className="text-muted-foreground hover:text-foreground transition-colors"
                 >
-                  imad.eddine.elmouss@gmail.com
+                  imadeddine200507@gmail.com
                 </a>
               </li>
               <li>
