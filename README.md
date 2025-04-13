@@ -63,4 +63,4 @@ Contributions are welcome! If you have suggestions or find issues, please open a
 
 ## License
 
-[Specify your license here, e.g., MIT License]
+ MIT License
