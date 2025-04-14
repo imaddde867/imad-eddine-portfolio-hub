@@ -1,121 +1,144 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
-import {
-  sampleProjects,
-  samplePosts,
-  ProjectData,
-  PostData,
-} from "./sampleData";
-import { updatedProjects } from "./updatedProjects";
-
-// Function to convert string to slug
-export const stringToSlug = (str: string) => {
-  return str
-    .toLowerCase()
-    .replace(/[^\w\s-]/g, "")
-    .replace(/[\s_-]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-};
+import { ProjectData, PostData } from "./sampleData";
+import { stringToSlug } from "@/lib/utils";
 
 interface AdminStore {
   projects: ProjectData[];
   posts: PostData[];
   activePost: string | null;
-  addProject: (project: Omit<ProjectData, "slug">) => void;
-  updateProject: (
-    slug: string,
-    project: Partial<Omit<ProjectData, "slug">>,
-  ) => void;
-  deleteProject: (slug: string) => void;
-  addPost: (post: Omit<PostData, "slug">) => void;
-  updatePost: (slug: string, post: Partial<Omit<PostData, "slug">>) => void;
-  deletePost: (slug: string) => void;
+  isLoading: boolean;
+  error: string | null;
+  fetchProjects: () => Promise<void>;
+  fetchPosts: () => Promise<void>;
+  addProject: (project: Omit<ProjectData, "slug">) => Promise<void>;
+  updateProject: (slug: string, project: Partial<Omit<ProjectData, "slug">>) => Promise<void>;
+  deleteProject: (slug: string) => Promise<void>;
+  addPost: (post: Omit<PostData, "slug">) => Promise<void>;
+  updatePost: (slug: string, post: Partial<Omit<PostData, "slug">>) => Promise<void>;
+  deletePost: (slug: string) => Promise<void>;
   setActivePost: (slug: string | null) => void;
 }
 
-// Use create from zustand to create a store with persistence
-export const useAdminStore = create<AdminStore>()(
-  persist(
-    (set) => ({
-      // Initial state - Using the updated projects instead of sample projects
-      projects: updatedProjects,
-      posts: samplePosts,
-      activePost: null,
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
 
-      // Add a new project
-      addProject: (project) =>
-        set((state) => ({
-          projects: [
-            ...state.projects,
-            {
-              ...project,
-              slug: stringToSlug(project.title),
-              _lastUpdated: new Date().getTime(),
-            },
-          ],
-        })),
+export const useAdminStore = create<AdminStore>()((set, get) => ({
+  projects: [],
+  posts: [],
+  activePost: null,
+  isLoading: false,
+  error: null,
 
-      // Update an existing project
-      updateProject: (slug, project) =>
-        set((state) => ({
-          projects: state.projects.map((p) =>
-            p.slug === slug
-              ? {
-                  ...p,
-                  ...project,
-                  _lastUpdated: new Date().getTime(),
-                }
-              : p
-          ),
-        })),
-
-      // Delete a project
-      deleteProject: (slug) =>
-        set((state) => ({
-          projects: state.projects.filter((p) => p.slug !== slug),
-        })),
-
-      // Add a new post
-      addPost: (post) =>
-        set((state) => ({
-          posts: [
-            ...state.posts,
-            {
-              ...post,
-              slug: stringToSlug(post.title),
-              _lastUpdated: new Date().getTime(),
-            },
-          ],
-        })),
-
-      // Update an existing post
-      updatePost: (slug, post) =>
-        set((state) => ({
-          posts: state.posts.map((p) =>
-            p.slug === slug
-              ? {
-                  ...p,
-                  ...post,
-                  _lastUpdated: new Date().getTime(),
-                }
-              : p
-          ),
-        })),
-
-      // Delete a post
-      deletePost: (slug) =>
-        set((state) => ({
-          posts: state.posts.filter((p) => p.slug !== slug),
-        })),
-
-      // Set active post
-      setActivePost: (slug) =>
-        set(() => ({
-          activePost: slug,
-        })),
-    }),
-    {
-      name: "admin-storage",
+  fetchProjects: async () => {
+    set({ isLoading: true, error: null });
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/projects`);
+      if (!response.ok) throw new Error('Failed to fetch projects');
+      const projects = await response.json();
+      set({ projects, isLoading: false });
+    } catch (error) {
+      set({ error: error instanceof Error ? error.message : 'Failed to fetch projects', isLoading: false });
     }
-  )
-);
+  },
+
+  fetchPosts: async () => {
+    set({ isLoading: true, error: null });
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/blog-posts`);
+      if (!response.ok) throw new Error('Failed to fetch posts');
+      const posts = await response.json();
+      set({ posts, isLoading: false });
+    } catch (error) {
+      set({ error: error instanceof Error ? error.message : 'Failed to fetch posts', isLoading: false });
+    }
+  },
+
+  addProject: async (project) => {
+    set({ isLoading: true, error: null });
+    try {
+      const slug = stringToSlug(project.title);
+      const response = await fetch(`${API_BASE_URL}/api/projects`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...project, slug }),
+      });
+      if (!response.ok) throw new Error('Failed to create project');
+      await get().fetchProjects();
+    } catch (error) {
+      set({ error: error instanceof Error ? error.message : 'Failed to create project', isLoading: false });
+    }
+  },
+
+  updateProject: async (slug, project) => {
+    set({ isLoading: true, error: null });
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/projects/${slug}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(project),
+      });
+      if (!response.ok) throw new Error('Failed to update project');
+      await get().fetchProjects();
+    } catch (error) {
+      set({ error: error instanceof Error ? error.message : 'Failed to update project', isLoading: false });
+    }
+  },
+
+  deleteProject: async (slug) => {
+    set({ isLoading: true, error: null });
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/projects/${slug}`, {
+        method: 'DELETE',
+      });
+      if (!response.ok) throw new Error('Failed to delete project');
+      await get().fetchProjects();
+    } catch (error) {
+      set({ error: error instanceof Error ? error.message : 'Failed to delete project', isLoading: false });
+    }
+  },
+
+  addPost: async (post) => {
+    set({ isLoading: true, error: null });
+    try {
+      const slug = stringToSlug(post.title);
+      const response = await fetch(`${API_BASE_URL}/api/blog-posts`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...post, slug }),
+      });
+      if (!response.ok) throw new Error('Failed to create post');
+      await get().fetchPosts();
+    } catch (error) {
+      set({ error: error instanceof Error ? error.message : 'Failed to create post', isLoading: false });
+    }
+  },
+
+  updatePost: async (slug, post) => {
+    set({ isLoading: true, error: null });
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/blog-posts/${slug}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(post),
+      });
+      if (!response.ok) throw new Error('Failed to update post');
+      await get().fetchPosts();
+    } catch (error) {
+      set({ error: error instanceof Error ? error.message : 'Failed to update post', isLoading: false });
+    }
+  },
+
+  deletePost: async (slug) => {
+    set({ isLoading: true, error: null });
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/blog-posts/${slug}`, {
+        method: 'DELETE',
+      });
+      if (!response.ok) throw new Error('Failed to delete post');
+      await get().fetchPosts();
+    } catch (error) {
+      set({ error: error instanceof Error ? error.message : 'Failed to delete post', isLoading: false });
+    }
+  },
+
+  setActivePost: (slug) => set({ activePost: slug }),
+}));
